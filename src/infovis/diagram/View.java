@@ -50,7 +50,14 @@ public class View extends JPanel{
 		
 		// slider scale
 		g2D.scale(scale, scale);
+		
+		//We may need to use this translate method, not sure where.
+		//It seams it works, but now when we want to click in a blue
+		//element does not work correctly, because the coordinate
+		//is not (0,0) anymore.
+		g2D.translate(-1 * getTranslateX(), -1 * getTranslateY());
 		paintDiagram(g2D);
+		g2D.translate(getTranslateX(), getTranslateY());
 		g2D.scale(1/scale, 1/scale); // to not apply zoom to the overview
 		
 		// position 1 for scale
@@ -89,6 +96,7 @@ public class View extends JPanel{
 			element.paint(g2D);
 		}
 	}
+	
 	
 	public void setScale(double scale) {
 		this.scale = scale;

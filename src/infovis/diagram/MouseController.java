@@ -188,13 +188,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		if (markerSelected) {
 			//Debug.p("Dragging marker");
 			//view.updateTranslation(x, y);
-			//Debug.p("x:" + x);
-			//Debug.p("y:" + y);
-			Debug.p("Mouse X: " + x);
-			//It moves quite slow. When pressed again, it comes back to
-			//a random position. Probably the moveOffset del mouse
-			//afecta el starting point.
 			view.updateMarker2((int) ((x - mouseOffsetX)/overviewScale), (int) ((y - mouseOffsetY)/overviewScale), (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
+			//Possible solution to Translate the elements.
+			view.updateTranslation((x - mouseOffsetX)/overviewScale, (y - mouseOffsetY)/overviewScale);
 		}
 		
 		if (fisheyeMode){
