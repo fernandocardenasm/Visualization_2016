@@ -80,7 +80,7 @@ public class View extends JPanel{
 		//updateMarker3();
 		//Debug.p("x" + this.getTranslateX());
 		
-		Debug.p("View x: " + marker.getX());
+		//Debug.p("View x: " + marker.getX());
 		g2D.draw(marker);
 		
 	}

@@ -116,10 +116,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			markerSelected = view.markerContains(x/overviewScale , y/overviewScale);
 			if (markerSelected) {
 				Debug.p("MARKER HIT");
-				/*
+				
 				mouseOffsetX = x - view.getMarker().getX() * overviewScale ;
 				mouseOffsetY = y - view.getMarker().getY() * overviewScale ;
-				*/
 			} else {
 				Debug.p("no marker");
 			}
@@ -182,6 +181,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		int x = e.getX();
 		int y = e.getY();
 		double scale = view.getScale();
+		double overviewScale = view.getOverviewScale();		
 		/*
 		 * Aufgabe 1.2: Navigate the main area by dragging the marker
 		 */
@@ -194,7 +194,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			//It moves quite slow. When pressed again, it comes back to
 			//a random position. Probably the moveOffset del mouse
 			//afecta el starting point.
-			view.updateMarker2(x, y, (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
+			view.updateMarker2((int) ((x - mouseOffsetX)/overviewScale), (int) ((y - mouseOffsetY)/overviewScale), (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
 		}
 		
 		if (fisheyeMode){
