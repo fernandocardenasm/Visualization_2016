@@ -186,8 +186,15 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		 * Aufgabe 1.2: Navigate the main area by dragging the marker
 		 */
 		if (markerSelected) {
-			Debug.p("Dragging marker");
+			//Debug.p("Dragging marker");
 			//view.updateTranslation(x, y);
+			//Debug.p("x:" + x);
+			//Debug.p("y:" + y);
+			Debug.p("Mouse X: " + x);
+			//It moves quite slow. When pressed again, it comes back to
+			//a random position. Probably the moveOffset del mouse
+			//afecta el starting point.
+			view.updateMarker2(x, y, (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
 		}
 		
 		if (fisheyeMode){

@@ -1,5 +1,6 @@
 package infovis.diagram;
 
+import infovis.debug.Debug;
 import infovis.diagram.elements.Element;
 
 import java.awt.BasicStroke;
@@ -75,8 +76,11 @@ public class View extends JPanel{
 		updateMarker((int) translateX, (int) translateY);
 		*/
 		//marker = this.getBounds();
-		//updateMarker2(this.getX(), this.getY(), (int) (this.getWidth() / scale), (int) (this.getHeight() / scale));
-		updateMarker3();
+		updateMarker2((int) marker.getX(),(int) marker.getY(), (int) (this.getWidth() / scale), (int) (this.getHeight() / scale));
+		//updateMarker3();
+		//Debug.p("x" + this.getTranslateX());
+		
+		Debug.p("View x: " + marker.getX());
 		g2D.draw(marker);
 		
 	}
