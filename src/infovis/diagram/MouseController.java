@@ -107,9 +107,8 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			view.repaint();
 		} else {
 			
-			//selectedElement = getElementContainingPosition(x/scale, y/scale);
-			// sth like this, correcting the marker offset:
-			selectedElement = getElementContainingPosition((x + view.getTranslateX())/scale, (y + view.getTranslateY())/scale);
+			// coordinate + getTranslate to include marker offset
+			selectedElement = getElementContainingPosition((x/scale)  + view.getTranslateX(), (y/scale)  + view.getTranslateY());
 			/*
 			 * calculate offset
 			 */
@@ -118,16 +117,18 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			
 			markerSelected = view.markerContains(x/overviewScale , y/overviewScale);
 			if (markerSelected) {
-				Debug.p("MARKER HIT");
-				
+				Debug.p("marker hit");
 				mouseOffsetX = x - view.getMarker().getX() * overviewScale ;
 				mouseOffsetY = y - view.getMarker().getY() * overviewScale ;
-			} else {
-				Debug.p("no marker");
+				/*
+				 * mouseOffsetX = x - view.getMarker().getX() * overviewScale * scale ;
+				 * mouseOffsetY = y - view.getMarker().getY() * overviewScale * scale ;
+				 */
 			}
 		}
 		
 	}
+	// this method needs to be adapted for main view translation with marker
 	public void mouseReleased(MouseEvent arg0){
 		int x = arg0.getX();
 		int y = arg0.getY();
@@ -193,7 +194,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		if (markerSelected) {
 			//Debug.p("Dragging marker");
 			view.updateMarker2((int) ((x - mouseOffsetX)/overviewScale), (int) ((y - mouseOffsetY)/overviewScale), (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
-			//Possible solution to Translate the elements.
+			//Possible solution to translate the elements
 			view.updateTranslation((x - mouseOffsetX)/overviewScale, (y - mouseOffsetY)/overviewScale);
 		}
 		

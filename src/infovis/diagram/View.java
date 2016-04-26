@@ -50,6 +50,7 @@ public class View extends JPanel{
 		
 		// slider scale
 		g2D.scale(scale, scale);
+		Debug.p("scale = " + scale);
 		
 		/*
 		 * We may need to use this translate method, not sure where.
