@@ -23,8 +23,14 @@ public class View extends JPanel{
 	private double overviewScale = 0.2;
 	private double translateX = 0;
 	private double translateY = 0;
+	private double translateOverviewX = 0;
+	private double translateOverviewY = 0;
 	private Rectangle2D marker = new Rectangle2D.Double();
-	private Rectangle2D overviewRect = new Rectangle2D.Double();   
+	private Rectangle2D overviewRect = new Rectangle2D.Double();
+	private double overviewX = 0;
+	private double overviewY = 0;
+	private int overviewWidth = 1400;
+	private int overviewHeight = 710;
 
 	public Model getModel() {
 		return model;
@@ -50,16 +56,8 @@ public class View extends JPanel{
 		
 		// slider scale
 		g2D.scale(scale, scale);
-		Debug.p("scale = " + scale);
 		
-		/*
-		 * We may need to use this translate method, not sure where.
-		 * It seems to work, but now when we want to click in a blue
-		 * element, it does not work correctly because the coordinate
-		 * is not (0,0) anymore.
-		*/
-
-		Debug.p("Translation: x = " + getTranslateX() + ", y = " + getTranslateY());
+		//Debug.p("Translation: x = " + getTranslateX() + ", y = " + getTranslateY());
 		// translation of the main view
 		g2D.translate(-1 * getTranslateX(), -1 * getTranslateY());
 		paintDiagram(g2D);
@@ -73,8 +71,7 @@ public class View extends JPanel{
 		
 		//g2D.setStroke(new BasicStroke(10.0f));
 		g2D.setColor(colorOverview);
-		//overviewRect.setRect(0, 0, getWidth()*0.3, getHeight()*0.32);
-		overviewRect.setRect(0, 0, 1400, 710); // is there a way to not hard code these values?
+		overviewRect.setRect(overviewX, overviewY, overviewWidth, overviewHeight); // is there a way to not hard code these values?
 		g2D.draw(overviewRect);
 		
 		g2D.setColor(colorBackground);
@@ -82,19 +79,15 @@ public class View extends JPanel{
 		
 		// position 2
 		//g2D.scale(0.2, 0.2);
-		
+		g2D.translate(this.translateOverviewX, this.translateOverviewY);
 		paintDiagram(g2D);
 		
 		// set marker to indicate which area of the main view is shown
-
-		/*updateTranslation(x, y);
-		updateMarker((int) translateX, (int) translateY);
-		*/
 		//marker = this.getBounds();
 		updateMarker2((int) marker.getX(),(int) marker.getY(), (int) (this.getWidth() / scale), (int) (this.getHeight() / scale));
 		//updateMarker3();
-		//Debug.p("View x: " + marker.getX());
 		g2D.draw(marker);
+		g2D.translate(-1 * this.translateOverviewX, -1 * this.translateOverviewY);
 		
 	}
 	private void paintDiagram(Graphics2D g2D){
@@ -132,6 +125,9 @@ public class View extends JPanel{
 	public Rectangle2D getMarker(){
 		return marker;
 	}
+	public Rectangle2D getOverview(){
+		return overviewRect;
+	}
 	public boolean markerContains(double x, double y){
 		return marker.contains(x, y);
 	}
@@ -143,8 +139,26 @@ public class View extends JPanel{
 	public void updateMarker3(){
 		marker.setRect(this.getX(), this.getY(), (int) (this.getWidth() / scale), (int) (this.getHeight() / scale));
 	}
+	public void updateOverview(double x, double y){
+		this.overviewX = x;
+		this.overviewY = y;
+		//overviewRect.setRect(x, y, overviewRect.getWidth(), overviewRect.getHeight());
+	}
 	public double getOverviewScale(){
 		return overviewScale;
+	}
+	public boolean overviewContains(double x, double y){
+		return overviewRect.contains(x, y);
+	}
+	public double getTranslateOverviewX() {
+		return this.translateOverviewX;
+	}
+	public double getTranslateOverviewY() {
+		return this.translateOverviewY;
+	}
+	public void updateOverviewTranslation(double x, double y){
+		this.translateOverviewX = x;
+		this.translateOverviewY = y;
 	}
 }
  

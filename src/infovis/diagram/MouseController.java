@@ -23,11 +23,14 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	 private Element selectedElement = new None();
 	 private double mouseOffsetX;
 	 private double mouseOffsetY;
+	 private double overviewOffsetX;
+	 private double overviewOffsetY;
 	 private boolean edgeDrawMode = false;
 	 private DrawingEdge drawingEdge = null;
 	 private boolean fisheyeMode;
 	 private GroupingRectangle groupRectangle;
 	 private boolean markerSelected = false;
+	 private boolean overviewSelected = false;
 	/*
 	 * Getter And Setter
 	 */
@@ -115,16 +118,26 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			mouseOffsetX = x - selectedElement.getX() * scale ;
 			mouseOffsetY = y - selectedElement.getY() * scale ;
 			
-			markerSelected = view.markerContains(x/overviewScale , y/overviewScale);
+			//markerSelected = view.markerContains((x + view.getTranslateOverviewX())/overviewScale , (y + view.getTranslateOverviewY())/overviewScale);
+			Debug.p("Overview translation: x = " + view.getTranslateOverviewX() + ", y = " + view.getTranslateOverviewY());
+			markerSelected = view.markerContains((x/overviewScale) + view.getTranslateOverviewX() , (y/overviewScale) + view.getTranslateOverviewY());
 			if (markerSelected) {
+				// click in marker
 				Debug.p("marker hit");
 				mouseOffsetX = x - view.getMarker().getX() * overviewScale ;
 				mouseOffsetY = y - view.getMarker().getY() * overviewScale ;
-				/*
-				 * mouseOffsetX = x - view.getMarker().getX() * overviewScale * scale ;
-				 * mouseOffsetY = y - view.getMarker().getY() * overviewScale * scale ;
-				 */
-			}
+				overviewSelected = false;
+			} else {
+				overviewSelected = view.overviewContains(x/overviewScale , y/overviewScale);
+				// click in overview
+				if (overviewSelected) {
+					Debug.p("overview hit");
+					overviewOffsetX = x - view.getOverview().getX() * overviewScale ;
+					overviewOffsetY = y - view.getOverview().getY() * overviewScale ;
+					Debug.p("Overview offset: x = " + overviewOffsetX + ", y = " + overviewOffsetY);
+				}
+			}	
+			
 		}
 		
 	}
@@ -192,10 +205,16 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		 * Aufgabe 1.2: Navigate the main area by dragging the marker
 		 */
 		if (markerSelected) {
-			//Debug.p("Dragging marker");
 			view.updateMarker2((int) ((x - mouseOffsetX)/overviewScale), (int) ((y - mouseOffsetY)/overviewScale), (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
-			//Possible solution to translate the elements
+			// translation of the elements
 			view.updateTranslation((x - mouseOffsetX)/overviewScale, (y - mouseOffsetY)/overviewScale);
+		}
+		
+		// Optional task 1.3
+		if (overviewSelected) {
+			//view.updateOverview((e.getX()-overviewOffsetX)/scale, (e.getY()-overviewOffsetY) /scale);
+			view.updateOverview((x - overviewOffsetX)/overviewScale, (y - overviewOffsetY)/overviewScale);
+			view.updateOverviewTranslation((x - overviewOffsetX)/overviewScale, (y - overviewOffsetY)/overviewScale);
 		}
 		
 		if (fisheyeMode){
