@@ -95,6 +95,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		double scale = view.getScale();
 		double overviewScale = view.getOverviewScale();
 		
+		Debug.p("mousePressed: x = " + x + ", y = " + y);
 	   
 	   if (edgeDrawMode){
 			drawingEdge = new DrawingEdge((Vertex)getElementContainingPosition(x/scale,y/scale));
@@ -106,7 +107,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			view.repaint();
 		} else {
 			
-			selectedElement = getElementContainingPosition(x/scale,y/scale);
+			//selectedElement = getElementContainingPosition(x/scale, y/scale);
+			// sth like this, correcting the marker offset:
+			selectedElement = getElementContainingPosition((x + view.getTranslateX())/scale, (y + view.getTranslateY())/scale);
 			/*
 			 * calculate offset
 			 */
@@ -181,13 +184,14 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		int x = e.getX();
 		int y = e.getY();
 		double scale = view.getScale();
-		double overviewScale = view.getOverviewScale();		
+		double overviewScale = view.getOverviewScale();
+		
+		Debug.p("mouseDragged: x = " + x + ", y = " + y);
 		/*
 		 * Aufgabe 1.2: Navigate the main area by dragging the marker
 		 */
 		if (markerSelected) {
 			//Debug.p("Dragging marker");
-			//view.updateTranslation(x, y);
 			view.updateMarker2((int) ((x - mouseOffsetX)/overviewScale), (int) ((y - mouseOffsetY)/overviewScale), (int) (view.getHeight()/scale), (int) (view.getWidth()/scale));
 			//Possible solution to Translate the elements.
 			view.updateTranslation((x - mouseOffsetX)/overviewScale, (y - mouseOffsetY)/overviewScale);

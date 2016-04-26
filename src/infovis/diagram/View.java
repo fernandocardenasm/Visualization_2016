@@ -51,12 +51,19 @@ public class View extends JPanel{
 		// slider scale
 		g2D.scale(scale, scale);
 		
-		//We may need to use this translate method, not sure where.
-		//It seams it works, but now when we want to click in a blue
-		//element does not work correctly, because the coordinate
-		//is not (0,0) anymore.
+		/*
+		 * We may need to use this translate method, not sure where.
+		 * It seems to work, but now when we want to click in a blue
+		 * element, it does not work correctly because the coordinate
+		 * is not (0,0) anymore.
+		*/
+
+		Debug.p("Translation: x = " + getTranslateX() + ", y = " + getTranslateY());
+		// translation of the main view
 		g2D.translate(-1 * getTranslateX(), -1 * getTranslateY());
 		paintDiagram(g2D);
+		
+		// reversing translation before drawing overview
 		g2D.translate(getTranslateX(), getTranslateY());
 		g2D.scale(1/scale, 1/scale); // to not apply zoom to the overview
 		
@@ -85,8 +92,6 @@ public class View extends JPanel{
 		//marker = this.getBounds();
 		updateMarker2((int) marker.getX(),(int) marker.getY(), (int) (this.getWidth() / scale), (int) (this.getHeight() / scale));
 		//updateMarker3();
-		//Debug.p("x" + this.getTranslateX());
-		
 		//Debug.p("View x: " + marker.getX());
 		g2D.draw(marker);
 		
