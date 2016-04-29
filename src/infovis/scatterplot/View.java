@@ -17,8 +17,9 @@ public class View extends JPanel {
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0);
 	 	 private Color color = Color.BLACK;
 	 	 private int plotSize = 90;
-	 	 private int offSetX = 0;
-	 	 private int offSetY = 0;
+	 	 //Please, upgrade this two values if needed
+	 	 private int offSetX = 50; //Offset for the rectangles, I am not sure about the exact value
+	 	 private int offSetY = 30; //Offset for the rectangles, I am not sure about the exact value
 	 	 
 		 public Rectangle2D getMarkerRectangle() {
 			return markerRectangle;
@@ -75,14 +76,26 @@ public class View extends JPanel {
 				y = 20;
 			}
 			for (Range range : model.getRanges()) {
-				Debug.print(range.toString());
-				Debug.print(",  ");
-				Debug.println("");
+				//Debug.print(range.toString());
+				//Debug.print(",  ");
+				//Debug.println("");
 			}
 			for (Data d : model.getList()) {
 				//Debug.print(d.toString());
 				//Debug.println(d.toString() + "");
+				//Debug.p(d.getValue(0) + "");
 			}
+			
+			addRectangles();
+			
+			for (RectanglePlot e : model.getRectangles()) {
+				//Debug.p("id: "+e.id);
+				//Debug.print(" X: " + e.posX);
+				//Debug.print(" Y: "+ e.posY);
+				markerRectangle.setRect(e.posX, e.posY, 5, 5);
+				g2D.draw(markerRectangle);
+			}
+			
 	        
 			
 		}
@@ -105,11 +118,13 @@ public class View extends JPanel {
 					
 					for(int k = 0; k < model.getList().size(); k++){
 						//Get specific value
-						value = model.getElementValueX(i, k);
+						
+						value = model.getList().get(k).getValue(i);
 						RectanglePlot rec = new RectanglePlot(k);
+						
 						rec.calculatePositionX(value, offSetX, plotSize, i, minX, maxX);
 						
-						value = model.getElementValueY(j, k);
+						value = model.getList().get(k).getValue(j);
 						rec.calculatePositionY(value, offSetY, plotSize, j, minY, maxY);
 						
 						model.addRectangle(rec);

@@ -24,6 +24,10 @@ public class Model {
 		rectangles.add(rectangle);
 	}
 	
+	public ArrayList<RectanglePlot> getRectangles(){
+		return rectangles;
+	}
+	
 	public ArrayList<String> getLabels() {
 		return labels;
 	}
@@ -118,16 +122,6 @@ public class Model {
 //			Debug.println("");
 //		}
 		
-	}
-
-	public double getElementValueX(int numLabel, int numElement) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getElementValueY(int numLabel, int numElement) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
     
 }
