@@ -14,13 +14,25 @@ public class RectanglePlot {
 	}
 	
 	public void calculatePositionX(double value, int offSet, int plotSize, int posLabel, double min, double max) {
-		double aux = (value - min) / (max - min);
+		double aux;
+		if (value == max){
+			aux = 0.99;
+		}
+		else {
+			aux = (value - min) / (max - min);
+		}
 		posLabel = posLabel + 1; //If not it will start always in 0 and then it would 0
 		
 		this.posX = (int) (aux * plotSize * posLabel + offSet); 
 	}
 	public void calculatePositionY(double value, int offSet, int plotSize, int posLabel, double min, double max) {
-		double aux = (value - min) / (max - min);
+		double aux;
+		if (value == max){
+			aux = 0.99;
+		}
+		else {
+			aux = (value - min) / (max - min);
+		}
 		posLabel = posLabel + 1;
 		this.posY = (int) (aux * plotSize * posLabel + offSet); 
 	}
