@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -16,7 +17,8 @@ public class View extends JPanel {
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0);
 	 	 private Color color = Color.BLACK;
 	 	 private int plotSize = 90;
-
+	 	 private ArrayList<RectanglePlot> rectangles = new ArrayList<RectanglePlot>();
+	 	 
 		 public Rectangle2D getMarkerRectangle() {
 			return markerRectangle;
 		}
@@ -86,4 +88,5 @@ public class View extends JPanel {
 		public void setModel(Model model) {
 			this.model = model;
 		}
+		
 }
