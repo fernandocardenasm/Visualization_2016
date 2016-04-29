@@ -16,7 +16,13 @@ public class Model {
 	private ArrayList<Data> list  = new ArrayList<Data>();
 	private ArrayList<Range> ranges = new ArrayList<Range>();
 	private ArrayList<String> labels = new ArrayList<String>();
+	private ArrayList<RectanglePlot> rectangles = new ArrayList<RectanglePlot>();
+
 	private int dim = 0;
+	
+	public void addRectangle(RectanglePlot rectangle){
+		rectangles.add(rectangle);
+	}
 	
 	public ArrayList<String> getLabels() {
 		return labels;
@@ -112,6 +118,16 @@ public class Model {
 //			Debug.println("");
 //		}
 		
+	}
+
+	public double getElementValueX(int numLabel, int numElement) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getElementValueY(int numLabel, int numElement) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
     
 }

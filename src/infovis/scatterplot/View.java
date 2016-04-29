@@ -17,7 +17,8 @@ public class View extends JPanel {
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0);
 	 	 private Color color = Color.BLACK;
 	 	 private int plotSize = 90;
-	 	 private ArrayList<RectanglePlot> rectangles = new ArrayList<RectanglePlot>();
+	 	 private int offSetX = 0;
+	 	 private int offSetY = 0;
 	 	 
 		 public Rectangle2D getMarkerRectangle() {
 			return markerRectangle;
@@ -79,8 +80,8 @@ public class View extends JPanel {
 				Debug.println("");
 			}
 			for (Data d : model.getList()) {
-				Debug.print(d.toString());
-				Debug.println("");
+				//Debug.print(d.toString());
+				//Debug.println(d.toString() + "");
 			}
 	        
 			
@@ -88,5 +89,37 @@ public class View extends JPanel {
 		public void setModel(Model model) {
 			this.model = model;
 		}
+		
+		//Add the rectangles that will be plotted in the Scatterplot
+		public void addRectangles(){
+			double minX = 0, maxX = 0;
+			double minY = 0, maxY = 0;
+			double value;
+			for (int i = 0; i < model.getLabels().size(); i++){
+				minX = model.getRanges().get(i).getMin();
+				maxX = model.getRanges().get(i).getMax();
+				
+				for (int j = 0; j < model.getLabels().size(); j++){
+					minY = model.getRanges().get(j).getMin();
+					maxY = model.getRanges().get(j).getMax();
+					
+					for(int k = 0; k < model.getList().size(); k++){
+						//Get specific value
+						value = model.getElementValueX(i, k);
+						RectanglePlot rec = new RectanglePlot(k);
+						rec.calculatePositionX(value, offSetX, plotSize, i, minX, maxX);
+						
+						value = model.getElementValueY(j, k);
+						rec.calculatePositionY(value, offSetY, plotSize, j, minY, maxY);
+						
+						model.addRectangle(rec);
+
+					}
+				}
+
+			}
+		}
+		
+		
 		
 }

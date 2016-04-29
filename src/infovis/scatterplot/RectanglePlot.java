@@ -8,6 +8,7 @@ public class RectanglePlot {
 	
 	public RectanglePlot(int id){
 		this.id = id;
+		this.status = "OFF";
 	}
 	
 	public void calculatePositionX(double value, int offSet, int plotSize, int posLabel, double min, double max) {
