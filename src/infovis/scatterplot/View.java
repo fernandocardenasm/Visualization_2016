@@ -92,6 +92,12 @@ public class View extends JPanel {
 				//Debug.p("id: "+e.id);
 				//Debug.print(" X: " + e.posX);
 				//Debug.print(" Y: "+ e.posY);
+				if (e.status == "OFF"){
+					//The color should be Black
+				}
+				else {
+					//The color should be Red
+				}
 				markerRectangle.setRect(e.posX, e.posY, 5, 5);
 				g2D.draw(markerRectangle);
 			}
