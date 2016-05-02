@@ -36,4 +36,11 @@ public class RectanglePlot {
 		posLabel = posLabel + 1;
 		this.posY = (int) (aux * plotSize * posLabel + offSet); 
 	}
+	
+	public void changeStatusToOn(){
+		this.status = "ON";
+	}
+	public void changeStatusToOFF(){
+		this.status = "OFF";
+	}
 }

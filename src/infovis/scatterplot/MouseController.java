@@ -3,6 +3,7 @@ package infovis.scatterplot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Point2D;
 
 import infovis.debug.Debug;
 
@@ -41,6 +42,14 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		double width = arg0.getX() - this.initPosX;
 		double height = arg0.getY() - this.initPosY;
 		view.getMarkerRectangle().setRect(this.initPosX,this.initPosY,width,height);
+		
+		for (RectanglePlot e : model.getRectangles()) {
+			if(view.getMarkerRectangle().contains(new Point2D.Double(e.posX, e.posY))){
+				e.changeStatusToOn();
+				//Debug.p("Si");
+			}
+		}
+		
 		view.repaint();
 		
 	}

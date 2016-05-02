@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -16,15 +17,21 @@ public class View extends JPanel {
 	     private Model model = null;
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0);
 	     private Rectangle2D rectangle = new Rectangle2D.Double(0,0,0,0);
+	     private Rectangle2D labelRectangle = new Rectangle2D.Double(0,0,0,0);
 	 	 private Color color = Color.BLACK;
 	 	 private int plotSize = 90;
 	 	 //Please, upgrade this two values if needed
 	 	 private int offSetX = 50; //Offset for the rectangles, I am not sure about the exact value
 	 	 private int offSetY = 30; //Offset for the rectangles, I am not sure about the exact value
 	 	 
+	 	 private int controlAddRectangles = 0; //Not sure, where to initialize the rectangles only once, so I added this to control that.
+	 	 
 		 public Rectangle2D getMarkerRectangle() {
 			return markerRectangle;
-		}
+		 }
+		 public Rectangle2D getRectanglePlot() {
+				return rectangle;
+			 }
 		 
 		@Override
 		public void paint(Graphics g) {
@@ -69,8 +76,8 @@ public class View extends JPanel {
 				//g2D.draw(markerRectangle);
 				
 				for (int i = 0; i < model.getDim(); i++) {
-					rectangle.setRect(x, y + i*plotSize, plotSize, plotSize);
-					g2D.draw(rectangle);
+					labelRectangle.setRect(x, y + i*plotSize, plotSize, plotSize);
+					g2D.draw(labelRectangle);
 				}
 				
 				x = x + plotSize;
@@ -87,7 +94,13 @@ public class View extends JPanel {
 				//Debug.p(d.getValue(0) + "");
 			}
 			
-			addRectangles();
+			if (this.controlAddRectangles == 0){
+				addRectangles();
+			}
+			else{
+				this.controlAddRectangles = 1;
+			}
+			
 			
 			for (RectanglePlot e : model.getRectangles()) {
 				//Debug.p("id: "+e.id);
@@ -95,13 +108,17 @@ public class View extends JPanel {
 				//Debug.print(" Y: "+ e.posY);
 				if (e.status == "OFF"){
 					//The color should be Black
+					g2D.setColor(this.color);
 				}
 				else {
 					//The color should be Red
+					g2D.setColor(Color.RED);
+					Debug.p("RED");
 				}
 				rectangle.setRect(e.posX, e.posY, 5, 5);
 				g2D.draw(rectangle);
 			}
+			
 			g2D.setColor(Color.GREEN);
 			g2D.draw(markerRectangle);
 			
