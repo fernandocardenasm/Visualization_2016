@@ -41,7 +41,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	public void mouseDragged(MouseEvent arg0) {
 		double width = arg0.getX() - this.initPosX;
 		double height = arg0.getY() - this.initPosY;
-		view.getMarkerRectangle().setRect(this.initPosX,this.initPosY,width,height);
+		view.getMarkerRectangle().setRect(this.initPosX, this.initPosY, width, height);
 		
 		for (RectanglePlot e : model.getRectangles()) {
 			if(view.getMarkerRectangle().contains(new Point2D.Double(e.posX, e.posY))){

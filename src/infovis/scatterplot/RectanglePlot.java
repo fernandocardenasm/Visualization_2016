@@ -6,7 +6,7 @@ public class RectanglePlot {
 	int id; //It is not unique, it is used to know which RectanglePlot belongs to a car object
 	int posX; //It is X real position on Screen
 	int posY;
-	String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
+	private String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
 	
 	public RectanglePlot(int id){
 		this.id = id;
@@ -42,5 +42,8 @@ public class RectanglePlot {
 	}
 	public void changeStatusToOff(){
 		this.status = "OFF";
+	}
+	public String getStatus(){
+		return this.status;
 	}
 }

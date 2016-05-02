@@ -4,6 +4,7 @@ import infovis.debug.Debug;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Point2D;
@@ -19,12 +20,13 @@ public class View extends JPanel {
 	     private Rectangle2D rectangle = new Rectangle2D.Double(0,0,0,0);
 	     private Rectangle2D labelRectangle = new Rectangle2D.Double(0,0,0,0);
 	 	 private Color color = Color.BLACK;
-	 	 private int plotSize = 90;
-	 	 //Please, upgrade this two values if needed
+	 	 private Color elementColor = Color.BLACK;
+	 	 private int plotSize = 90; // edge size for each scatter plot cell
+	 	 //Please, upgrade these two values if needed
 	 	 private int offSetX = 50; //Offset for the rectangles, I am not sure about the exact value
 	 	 private int offSetY = 30; //Offset for the rectangles, I am not sure about the exact value
 	 	 
-	 	 private int controlAddRectangles = 0; //Not sure, where to initialize the rectangles only once, so I added this to control that.
+	 	 private boolean initialized = false;
 	 	 
 		 public Rectangle2D getMarkerRectangle() {
 			return markerRectangle;
@@ -41,6 +43,10 @@ public class View extends JPanel {
 			int y = 20 + plotSize;
 			int aux = - plotSize - 30;
 			int cont = 0;
+			
+			g2D.clearRect(0, 0, getWidth(), getHeight());
+			
+			// Writing labels
 			g2D.setFont(new Font("TimesRoman", Font.PLAIN, 10));
 			g2D.setColor(this.color);
 			g2D.rotate(-Math.toRadians(90));
@@ -74,7 +80,7 @@ public class View extends JPanel {
 				
 				//markerRectangle.setRect(x, y + 10, 50, 50);
 				//g2D.draw(markerRectangle);
-				
+				// draw each scatter plot box
 				for (int i = 0; i < model.getDim(); i++) {
 					labelRectangle.setRect(x, y + i*plotSize, plotSize, plotSize);
 					g2D.draw(labelRectangle);
@@ -83,52 +89,53 @@ public class View extends JPanel {
 				x = x + plotSize;
 				y = 20;
 			}
-			for (Range range : model.getRanges()) {
+			//for (Range range : model.getRanges()) {
 				//Debug.print(range.toString());
 				//Debug.print(",  ");
 				//Debug.println("");
-			}
-			for (Data d : model.getList()) {
+			//}
+			//for (Data d : model.getList()) {
 				//Debug.print(d.toString());
 				//Debug.println(d.toString() + "");
 				//Debug.p(d.getValue(0) + "");
-			}
+			//}
 			
-			if (this.controlAddRectangles == 0){
+			if (!this.initialized){
 				addRectangles();
-			}
-			else{
-				this.controlAddRectangles = 1;
+				this.initialized = true;
 			}
 			
-			
-			for (RectanglePlot e : model.getRectangles()) {
-				//Debug.p("id: "+e.id);
-				//Debug.print(" X: " + e.posX);
-				//Debug.print(" Y: "+ e.posY);
-				if (e.status == "OFF"){
-					//The color should be Black
-					g2D.setColor(this.color);
-				}
-				else {
-					//The color should be Red
-					g2D.setColor(Color.RED);
-					Debug.p("RED");
-				}
-				rectangle.setRect(e.posX, e.posY, 5, 5);
-				g2D.draw(rectangle);
-			}
-			
+			// selection rectangle
+			g2D.setStroke(new BasicStroke(2.0f));
 			g2D.setColor(Color.GREEN);
 			g2D.draw(markerRectangle);
+
+			//g2D.setStroke(new BasicStroke(2.0f));
 			
-			
+			for (RectanglePlot e : model.getRectangles()) {
+				
+				// if element is selected, draw red
+				if (e.getStatus() == "ON"){
+					elementColor = Color.RED;
+					Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
+				} else {
+					// otherwise black
+					elementColor = Color.BLACK;
+				}
+				if (elementColor == Color.RED) {
+					Debug.p("Color was changed to RED! for " + e.id);
+				}
+				g2D.setColor(elementColor);
+				rectangle.setRect(e.posX, e.posY, 3, 3);
+				g2D.draw(rectangle);
+			}
 		}
+		
 		public void setModel(Model model) {
 			this.model = model;
 		}
 		
-		//Add the rectangles that will be plotted in the Scatterplot
+		// Adding the rectangles that will be plotted in the scatter plot
 		public void addRectangles(){
 			double minX = 0, maxX = 0;
 			double minY = 0, maxY = 0;
