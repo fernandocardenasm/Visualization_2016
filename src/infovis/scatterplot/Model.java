@@ -69,7 +69,7 @@ public class Model {
 	    	 String thisLine = null;
 	    	 BufferedReader br = new BufferedReader(new FileReader(file));
 	         try {
-	        	 //Import Labels
+	        	 // Import Labels
 	        	 thisLine = br.readLine();
 				 String l [] = thisLine.split(";");
 				 for (int i = 1; i < l.length; i++) labels.add(l[i]); // import labels excluding name
@@ -93,8 +93,9 @@ public class Model {
 					 }	
 					 list.add(new Data(dValues, values[0]));
 	   			}
+				
 				for (int i = 0; i < highRanges.length; i++) {
-					ranges.add(new Range(lowRanges[i],highRanges[i]));
+					ranges.add(new Range(lowRanges[i], highRanges[i]));
 				} 
 				 
 				
