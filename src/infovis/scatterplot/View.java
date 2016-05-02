@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 public class View extends JPanel {
 	     private Model model = null;
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0);
+	     private Rectangle2D rectangle = new Rectangle2D.Double(0,0,0,0);
 	 	 private Color color = Color.BLACK;
 	 	 private int plotSize = 90;
 	 	 //Please, upgrade this two values if needed
@@ -40,9 +41,9 @@ public class View extends JPanel {
 				if (cont == 6){
 					aux = aux -20;
 				}
-				Debug.print(l);
-				Debug.print(",  ");
-				Debug.println("");
+				//Debug.print(l);
+				//Debug.print(",  ");
+				//Debug.println("");
 				
 				g2D.drawString(l, aux, 30);
 				//y = y + plotSize;
@@ -57,9 +58,9 @@ public class View extends JPanel {
 			y = 20;
 			
 	        for (String l : model.getLabels()) {
-				Debug.print(l);
-				Debug.print(",  ");
-				Debug.println("");
+				//Debug.print(l);
+				//Debug.print(",  ");
+				//Debug.println("");
 				
 				g2D.drawString(l, x, y);
 				y = y + 10;
@@ -68,8 +69,8 @@ public class View extends JPanel {
 				//g2D.draw(markerRectangle);
 				
 				for (int i = 0; i < model.getDim(); i++) {
-					markerRectangle.setRect(x, y + i*plotSize, plotSize, plotSize);
-					g2D.draw(markerRectangle);
+					rectangle.setRect(x, y + i*plotSize, plotSize, plotSize);
+					g2D.draw(rectangle);
 				}
 				
 				x = x + plotSize;
@@ -98,11 +99,12 @@ public class View extends JPanel {
 				else {
 					//The color should be Red
 				}
-				markerRectangle.setRect(e.posX, e.posY, 5, 5);
-				g2D.draw(markerRectangle);
+				rectangle.setRect(e.posX, e.posY, 5, 5);
+				g2D.draw(rectangle);
 			}
+			g2D.setColor(Color.GREEN);
+			g2D.draw(markerRectangle);
 			
-	        
 			
 		}
 		public void setModel(Model model) {
