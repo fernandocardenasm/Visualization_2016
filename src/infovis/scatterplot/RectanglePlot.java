@@ -40,7 +40,7 @@ public class RectanglePlot {
 	public void changeStatusToOn(){
 		this.status = "ON";
 	}
-	public void changeStatusToOFF(){
+	public void changeStatusToOff(){
 		this.status = "OFF";
 	}
 }

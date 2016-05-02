@@ -48,6 +48,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				e.changeStatusToOn();
 				//Debug.p("Si");
 			}
+			else {
+				e.changeStatusToOff();
+			}
 		}
 		
 		view.repaint();
