@@ -1,6 +1,7 @@
 package infovis.scatterplot;
 
 import infovis.debug.Debug;
+import infovis.paracoords.Axis;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +18,7 @@ public class Model {
 	private ArrayList<Range> ranges = new ArrayList<Range>();
 	private ArrayList<String> labels = new ArrayList<String>();
 	private ArrayList<RectanglePlot> rectangles = new ArrayList<RectanglePlot>();
+	private ArrayList<Axis> axes = new ArrayList<Axis>();
 
 	private int dim = 0;
 	
@@ -46,6 +48,14 @@ public class Model {
 	public void setRanges(ArrayList<Range> ranges) {
 		this.ranges = ranges;
 	}
+	public ArrayList<Axis> getAxes() {
+		return axes;
+	}
+
+	public void setAxes(ArrayList<Axis> axes) {
+		this.axes = axes;
+	}
+
 	public Model() {
 		importValues();
 	}
@@ -72,6 +82,8 @@ public class Model {
 	        	 // Import Labels
 	        	 thisLine = br.readLine();
 				 String l [] = thisLine.split(";");
+				 int offsetX = 100;
+				 
 				 for (int i = 1; i < l.length; i++) labels.add(l[i]); // import labels excluding name
 				 setDim(l.length-1);
 				 
@@ -96,6 +108,7 @@ public class Model {
 				
 				for (int i = 0; i < highRanges.length; i++) {
 					ranges.add(new Range(lowRanges[i], highRanges[i]));
+					axes.add(new Axis(i, labels.get(i), offsetX + i*offsetX, new Range(lowRanges[i], highRanges[i])));
 				} 
 				 
 				

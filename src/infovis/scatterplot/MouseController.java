@@ -71,6 +71,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		//view.getMarkerRectangle().setRect(this.initPosX, this.initPosY, width, height);
 		
 		for (RectanglePlot e : model.getRectangles()) {
+			// if point is being selected
 			if(view.getMarkerRectangle().contains(new Point2D.Double(e.posX, e.posY))){
 				e.changeStatusToOn();
 				//Debug.p("Si");
@@ -81,8 +82,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			else {
 				e.changeStatusToOff();
 			}
+			
 		}
-		
+		// check if the point corresponds to an element selected
 		//Debug.p("size:"+ids.size());
 		for (Integer id: ids){
 			for (RectanglePlot e : model.getRectangles()) {
