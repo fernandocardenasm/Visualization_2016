@@ -34,8 +34,11 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	public void mouseReleased(MouseEvent arg0) {
 		//Add in case we want to erase the marker rectangle
 		//when the mouse is released
-		//view.getMarkerRectangle().setRect(0,0,0,0);
-		//view.repaint();
+		view.getMarkerRectangle().setRect(0,0,0,0);
+		for (RectanglePlot e : model.getRectangles()) {
+			e.changeStatusToOff();
+		}
+		view.repaint();
 	}
 
 	public void mouseDragged(MouseEvent arg0) {
