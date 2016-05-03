@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import infovis.debug.Debug;
 
@@ -44,15 +45,28 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	public void mouseDragged(MouseEvent arg0) {
 		double width = arg0.getX() - this.initPosX;
 		double height = arg0.getY() - this.initPosY;
+		ArrayList<Integer> ids = new ArrayList<>();
 		view.getMarkerRectangle().setRect(this.initPosX, this.initPosY, width, height);
 		
 		for (RectanglePlot e : model.getRectangles()) {
 			if(view.getMarkerRectangle().contains(new Point2D.Double(e.posX, e.posY))){
 				e.changeStatusToOn();
 				//Debug.p("Si");
+				if (!ids.contains(e.id)){
+					ids.add(e.id);
+				}
 			}
 			else {
 				e.changeStatusToOff();
+			}
+		}
+		
+		//Debug.p("size:"+ids.size());
+		for (Integer id: ids){
+			for (RectanglePlot e : model.getRectangles()) {
+				if (ids.contains(e.id)){
+					e.changeStatusToOn();
+				}
 			}
 		}
 		
