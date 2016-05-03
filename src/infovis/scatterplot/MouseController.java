@@ -46,7 +46,29 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		double width = arg0.getX() - this.initPosX;
 		double height = arg0.getY() - this.initPosY;
 		ArrayList<Integer> ids = new ArrayList<>();
-		view.getMarkerRectangle().setRect(this.initPosX, this.initPosY, width, height);
+
+		
+		if (width < 0 && height< 0){
+			width = this.initPosX - arg0.getX();
+			height = this.initPosY - arg0.getY();
+			view.getMarkerRectangle().setRect(arg0.getX(), arg0.getY(), width, height);
+		}
+		else if (width < 0){
+			width = this.initPosX - arg0.getX();
+			view.getMarkerRectangle().setRect(arg0.getX(), this.initPosY, width, height);
+		}
+		else if (height < 0){
+			height = this.initPosY - arg0.getY();
+			view.getMarkerRectangle().setRect(this.initPosX, arg0.getY(), width, height);
+		}
+		else{
+			view.getMarkerRectangle().setRect(this.initPosX, this.initPosY, width, height);
+		}
+		
+		//width = arg0.getX() - this.initPosX;
+		//height = arg0.getY() - this.initPosY;
+		
+		//view.getMarkerRectangle().setRect(this.initPosX, this.initPosY, width, height);
 		
 		for (RectanglePlot e : model.getRectangles()) {
 			if(view.getMarkerRectangle().contains(new Point2D.Double(e.posX, e.posY))){
