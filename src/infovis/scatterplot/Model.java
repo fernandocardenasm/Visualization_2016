@@ -2,6 +2,8 @@ package infovis.scatterplot;
 
 import infovis.debug.Debug;
 import infovis.paracoords.Axis;
+import infovis.paracoords.LinePlot;
+import infovis.paracoords.PointPlot;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +21,7 @@ public class Model {
 	private ArrayList<String> labels = new ArrayList<String>();
 	private ArrayList<RectanglePlot> rectangles = new ArrayList<RectanglePlot>();
 	private ArrayList<Axis> axes = new ArrayList<Axis>();
+	private ArrayList<LinePlot> lines = new ArrayList<LinePlot>();
 	
 	private int top = 20;
 	private int bottom = 620;
@@ -29,6 +32,14 @@ public class Model {
 		rectangles.add(rectangle);
 	}
 	
+	public ArrayList<LinePlot> getLines() {
+		return lines;
+	}
+	
+	public void addLine(LinePlot line){
+		lines.add(line);
+	}
+
 	public ArrayList<RectanglePlot> getRectangles(){
 		return rectangles;
 	}

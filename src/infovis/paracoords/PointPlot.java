@@ -1,10 +1,12 @@
 package infovis.paracoords;
 
+import infovis.debug.Debug;
+
 public class PointPlot {
 	private int px;
 	private int py;
 	private double value;
-	public PointPlot(int px, int py, double value) {
+	public PointPlot(double value) {
 		super();
 		this.value = value;
 	}
@@ -29,9 +31,15 @@ public class PointPlot {
 	
 	public void calculatePositionY(int top, int bottom, double min, double max) {
 		double y;
+		//Debug.p("Value: "+ this.value);
+		//Debug.p("Min: "+ min);
+		//Debug.p("Max: "+ max);
+		//Debug.p("Top: "+ top);
+		//Debug.p("Bottom: "+ bottom);
 		y = (this.value - min) / (max - min);
 		
-		this.py = (int) ((top - bottom) * y + bottom);
+		
+		this.py = (int) ((bottom - top) * y + top);
 		//y + i*plotSize
 	}
 }
