@@ -4,6 +4,7 @@ import infovis.debug.Debug;
 import infovis.scatterplot.Model;
 import infovis.scatterplot.RectanglePlot;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -15,7 +16,8 @@ public class View extends JPanel {
 	private Model model = null;
 	private boolean initAxes = false;
 	private boolean initLines = false;
-	
+	private Color lineColor = Color.BLACK;
+	private Color color = Color.BLACK;
 
 	@Override
 	public void paint(Graphics g) {
@@ -31,6 +33,7 @@ public class View extends JPanel {
 		
 		offsetX = getWidth()/(model.getDim() + 1);
 		// reactive initAxes if the window size changes!
+		g2D.setColor(this.color);
 		
 		for(Axis a : model.getAxes()) {
 			if (!initAxes) {
@@ -58,6 +61,15 @@ public class View extends JPanel {
 				PointPlot pNext = l.getList().get(j + 1);
 				//Debug.p("px:" + p.getPx());
 				//Debug.p("py:" + p.getPy());
+				
+				if (l.getStatus() == "ON"){
+					lineColor = Color.RED;
+					//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
+				} else {
+					// otherwise black
+					lineColor = Color.BLACK;
+				}
+				g2D.setColor(lineColor);
 				g2D.drawLine(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy());
 			}
 		}
@@ -86,7 +98,7 @@ public class View extends JPanel {
 				point.setPx(axis.getPosition());
 				point.calculatePositionY(axis.getTop(), axis.getBottom(), minY, maxY);
 					//rec.calculatePositionY(value, offSetY, plotSize, j, minY, maxY);
-				pointList.add(point);
+				pointList.add(j, point);;
 			}
 			LinePlot line = new LinePlot(k, pointList);
 			model.getLines().add(line);

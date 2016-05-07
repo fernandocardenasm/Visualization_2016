@@ -44,16 +44,20 @@ public class Model {
 		return rectangles;
 	}
 	
-	/*
-	public int pointInTheLines(int mx1, int my1){
+	
+	public void pointInTheLines(int mx1, int my1){
 		for (LinePlot l: this.lines){
-			if (l.pointIsInTheLine(mx1, my1)){
+			/*if (l.pointIsInTheLine(mx1, my1)){
 				return l.getId();
 			}
+			*/
+			if (l.lineContainPoint(mx1, my1)){
+				l.changeStatusToOn();
+				Debug.p("Si");
+			}
 		}
-		return -1;
 	}
-	*/
+	
 	
 	public ArrayList<String> getLabels() {
 		return labels;

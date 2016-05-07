@@ -1,6 +1,9 @@
 package infovis.paracoords;
 
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
+
+import infovis.debug.Debug;
 
 public class LinePlot {
 	private int id;
@@ -33,8 +36,28 @@ public class LinePlot {
 		this.list = list;
 	}
 	
-	/*
-	public boolean pointIsInTheLine(int mx1, int my1){
+	public boolean lineContainPoint(int mx, int my){
+		
+		for (int i = 0; i < this.list.size() - 1; i++){
+			PointPlot p = this.list.get(i);
+			PointPlot pNext = this.list.get(i + 1);
+	
+			if (Line2D.ptSegDist(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy(), mx, my) == 0){
+				return true;
+			}
+			//Debug.p("Numero:" + Line2D.ptSegDist(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy(), mx, my));
+		}
+		return false;
+		
+	}
+	
+	public void changeStatusToOn(){
+		this.status = "ON";
+	}
+	public void changeStatusToOff(){
+		this.status = "OFF";
+	}
+	/*public boolean pointIsInTheLine(int mx1, int my1){
 		for (int i = 0; i < this.list.size() - 1; i++){
 			PointPlot p = this.list.get(i);
 			PointPlot pNext = this.list.get(i + 1);
@@ -53,4 +76,5 @@ public class LinePlot {
 		return (int) Math.sqrt((Math.pow(x1 + x2, 2) + Math.pow(y1 + y2, 2)));
 	}
 	*/
+	
 }

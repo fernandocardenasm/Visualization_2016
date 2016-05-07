@@ -1,12 +1,13 @@
 package infovis.paracoords;
 
 import infovis.scatterplot.Model;
-
+import infovis.scatterplot.RectanglePlot;
 
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Line2D;
 
 import infovis.debug.Debug;
 
@@ -28,14 +29,26 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		//model.pointInTheLines(e.getX(), e.getY());
 	}
 
 	public void mouseReleased(MouseEvent e) {
-
+		for (LinePlot l : model.getLines()) {
+			l.changeStatusToOff();
+		}
+		view.repaint();
 	}
 
 	public void mouseDragged(MouseEvent e) {
-
+		/*if (model.pointInTheLines(e.getX(), e.getY()) != -1){
+			Debug.p("Si");
+		}
+		else{
+			Debug.p("No");
+		}
+		*/
+		model.pointInTheLines(e.getX(), e.getY());
+		view.repaint();
 	}
 
 	public void mouseMoved(MouseEvent e) {
