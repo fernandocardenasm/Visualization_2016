@@ -30,9 +30,11 @@ public class View extends JPanel {
 		for(Axis a : model.getAxes()) {
 			if (!initAxes) {
 				a.setPosition(offsetX + i*offsetX);
+				a.setTop(top);
+				a.setBottom(bottom);
 				initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse
 			}
-			g2D.drawLine(a.getPosition(), top, a.getPosition(), bottom);
+			g2D.drawLine(a.getPosition(), a.getTop(), a.getPosition(), a.getBottom());
 			i++;
 		}
 		

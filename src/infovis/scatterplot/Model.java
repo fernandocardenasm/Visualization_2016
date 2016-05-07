@@ -19,6 +19,9 @@ public class Model {
 	private ArrayList<String> labels = new ArrayList<String>();
 	private ArrayList<RectanglePlot> rectangles = new ArrayList<RectanglePlot>();
 	private ArrayList<Axis> axes = new ArrayList<Axis>();
+	
+	private int top = 20;
+	private int bottom = 620;
 
 	private int dim = 0;
 	
@@ -108,7 +111,7 @@ public class Model {
 				
 				for (int i = 0; i < highRanges.length; i++) {
 					ranges.add(new Range(lowRanges[i], highRanges[i]));
-					axes.add(new Axis(i, labels.get(i), offsetX + i*offsetX, new Range(lowRanges[i], highRanges[i])));
+					axes.add(new Axis(i, labels.get(i), offsetX + i*offsetX, top, bottom , new Range(lowRanges[i], highRanges[i])));
 				} 
 				 
 				
