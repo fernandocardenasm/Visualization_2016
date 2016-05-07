@@ -39,6 +39,9 @@ public class View extends JPanel {
 				initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse
 			}
 			g2D.drawLine(a.getPosition(), a.getTop(), a.getPosition(), a.getBottom());
+			g2D.drawString(model.getRanges().get(i).getMax() + "", a.getPosition() - 10, a.getTop() - 10);
+			g2D.drawString(model.getRanges().get(i).getMin() + "", a.getPosition() - 10, a.getBottom() + 20);
+
 			i++;
 		}
 		
