@@ -44,6 +44,17 @@ public class Model {
 		return rectangles;
 	}
 	
+	/*
+	public int pointInTheLines(int mx1, int my1){
+		for (LinePlot l: this.lines){
+			if (l.pointIsInTheLine(mx1, my1)){
+				return l.getId();
+			}
+		}
+		return -1;
+	}
+	*/
+	
 	public ArrayList<String> getLabels() {
 		return labels;
 	}

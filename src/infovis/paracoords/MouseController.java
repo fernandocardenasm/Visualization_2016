@@ -2,10 +2,13 @@ package infovis.paracoords;
 
 import infovis.scatterplot.Model;
 
+
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import infovis.debug.Debug;
 
 public class MouseController implements MouseListener, MouseMotionListener {
 	private View view = null;
@@ -25,7 +28,6 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-
 	}
 
 	public void mouseReleased(MouseEvent e) {

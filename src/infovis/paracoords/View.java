@@ -15,6 +15,7 @@ public class View extends JPanel {
 	private Model model = null;
 	private boolean initAxes = false;
 	private boolean initLines = false;
+	
 
 	@Override
 	public void paint(Graphics g) {
@@ -55,8 +56,8 @@ public class View extends JPanel {
 			for(int j = 0; j < l.getList().size() - 1; j++){
 				PointPlot p = l.getList().get(j);
 				PointPlot pNext = l.getList().get(j + 1);
-				Debug.p("px:" + p.getPx());
-				Debug.p("py:" + p.getPy());
+				//Debug.p("px:" + p.getPx());
+				//Debug.p("py:" + p.getPy());
 				g2D.drawLine(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy());
 			}
 		}
