@@ -4,6 +4,7 @@ import infovis.debug.Debug;
 import infovis.scatterplot.Model;
 import infovis.scatterplot.RectanglePlot;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -34,6 +35,7 @@ public class View extends JPanel {
 		offsetX = getWidth()/(model.getDim() + 1);
 		// reactive initAxes if the window size changes!
 		g2D.setColor(this.color);
+		g2D.setStroke(new BasicStroke(2.0f));
 		
 		for(Axis a : model.getAxes()) {
 			if (!initAxes) {
@@ -48,7 +50,8 @@ public class View extends JPanel {
 
 			i++;
 		}
-		
+
+		g2D.setStroke(new BasicStroke(1.0f));
 		if (!initLines) {
 			addLines();
 			initLines = true; // to avoid redrawing it wrongly if they are moved by mouse
@@ -63,7 +66,7 @@ public class View extends JPanel {
 				//Debug.p("py:" + p.getPy());
 				
 				if (l.getStatus() == "ON"){
-					lineColor = Color.RED;
+					lineColor = Color.GREEN;
 					//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
 				} else {
 					// otherwise black

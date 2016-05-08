@@ -36,16 +36,19 @@ public class LinePlot {
 		this.list = list;
 	}
 	
-	public boolean lineContainPoint(int mx, int my){
+	public boolean lineContainsPoint(int mx, int my){
 		
+		double distance = 0.0;
 		for (int i = 0; i < this.list.size() - 1; i++){
 			PointPlot p = this.list.get(i);
 			PointPlot pNext = this.list.get(i + 1);
 	
-			if (Line2D.ptSegDist(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy(), mx, my) == 0){
+			distance = Line2D.ptSegDist(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy(), mx, my);
+
+			if (distance < 1.0) {
+				Debug.p("Distance between point and line:" + distance);
 				return true;
 			}
-			//Debug.p("Numero:" + Line2D.ptSegDist(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy(), mx, my));
 		}
 		return false;
 		
