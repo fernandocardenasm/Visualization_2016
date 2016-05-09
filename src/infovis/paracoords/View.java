@@ -40,14 +40,14 @@ public class View extends JPanel {
 		
 		for(Axis a : model.getAxes()) {
 			if (!initAxes) {
-				a.setPosition(offsetX + i*offsetX - correctOffsetX);
+				a.setPosition(offsetX + i*offsetX);
 				a.setTop(top);
 				a.setBottom(bottom);
 			}
 			g2D.drawLine(a.getPosition(), a.getTop(), a.getPosition(), a.getBottom());
 			g2D.drawString(model.getRanges().get(i).getMax() + "", a.getPosition() - 10, a.getTop() - 10);
 			g2D.drawString(model.getRanges().get(i).getMin() + "", a.getPosition() - 10, a.getBottom() + 20);
-			g2D.drawString(model.getLabels().get(i).toString() + "", a.getPosition() - 10, a.getBottom() + 30);
+			g2D.drawString(model.getLabels().get(i).toString() + "", a.getPosition() - 10, a.getBottom() + 40);
 			i++;
 		}
 		initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse

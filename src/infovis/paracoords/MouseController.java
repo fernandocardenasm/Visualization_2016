@@ -8,8 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
+import java.util.Iterator;
 
 import infovis.debug.Debug;
+import infovis.diagram.elements.Vertex;
 
 public class MouseController implements MouseListener, MouseMotionListener {
 	private View view = null;
@@ -29,24 +31,32 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		// maybe it'd be better if this returns a boolean, and repaint() only if it returns true
-		model.pointInTheLines(e.getX(), e.getY());
-		view.repaint();
+		if (model.pointInTheLines(e.getX(), e.getY())) {
+			// only repaint if line selected
+			view.repaint();
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		//Debug.p("mouseReleased");
-		for (LinePlot l : model.getLines()) {
-			l.changeStatusToOff();
+		if (!model.isLineSelected()) {
+			return;
 		}
+		for (Iterator<LinePlot> iter = model.getLines().iterator(); iter.hasNext();){
+			iter.next().changeStatusToOff();
+		}
+		model.setLineSelected(false);
 		view.repaint();
 	}
 
 	public void mouseDragged(MouseEvent e) {
 		// is it ok that several lines can get selected in one dragging action?
-		model.pointInTheLines(e.getX(), e.getY());
 		//Debug.p("Touched point: " + e.getX() + ", " + e.getY());
-		view.repaint();
+		 if (model.pointInTheLines(e.getX(), e.getY())) {
+			 // only repaint if line selected
+			 view.repaint();
+		 }
+		
 	}
 
 	public void mouseMoved(MouseEvent e) {

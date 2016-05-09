@@ -25,8 +25,8 @@ public class Model {
 	
 	private int top = 20;
 	private int bottom = 620;
-
 	private int dim = 0;
+	private boolean lineSelected = false;
 	
 	public void addRectangle(RectanglePlot rectangle){
 		rectangles.add(rectangle);
@@ -45,13 +45,24 @@ public class Model {
 	}
 	
 	
-	public void pointInTheLines(int mx1, int my1){
+	public boolean isLineSelected() {
+		return lineSelected;
+	}
+
+	public void setLineSelected(boolean lineSelected) {
+		this.lineSelected = lineSelected;
+	}
+
+	public boolean pointInTheLines(int mx1, int my1){
+		boolean found = false;
 		for (LinePlot l: this.lines){
 			if (l.lineContainsPoint(mx1, my1)){
 				l.changeStatusToOn();
-				//Debug.p("Si");
+				found = true;
+				this.setLineSelected(true);
 			}
 		}
+		return found;
 	}
 	
 	
