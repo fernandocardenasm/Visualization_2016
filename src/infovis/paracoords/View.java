@@ -27,6 +27,7 @@ public class View extends JPanel {
 		int bottom = 620;
 		int top = 20;
 		int offsetX = 100;
+		int correctOffsetX = 70;
 		int i = 0;
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -39,17 +40,17 @@ public class View extends JPanel {
 		
 		for(Axis a : model.getAxes()) {
 			if (!initAxes) {
-				a.setPosition(offsetX + i*offsetX);
+				a.setPosition(offsetX + i*offsetX - correctOffsetX);
 				a.setTop(top);
 				a.setBottom(bottom);
-				initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse
 			}
 			g2D.drawLine(a.getPosition(), a.getTop(), a.getPosition(), a.getBottom());
 			g2D.drawString(model.getRanges().get(i).getMax() + "", a.getPosition() - 10, a.getTop() - 10);
 			g2D.drawString(model.getRanges().get(i).getMin() + "", a.getPosition() - 10, a.getBottom() + 20);
-
+			g2D.drawString(model.getLabels().get(i).toString() + "", a.getPosition() - 10, a.getBottom() + 30);
 			i++;
 		}
+		initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse
 
 		g2D.setStroke(new BasicStroke(1.0f));
 		if (!initLines) {

@@ -35,7 +35,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		Debug.p("mouseReleased");
+		//Debug.p("mouseReleased");
 		for (LinePlot l : model.getLines()) {
 			l.changeStatusToOff();
 		}

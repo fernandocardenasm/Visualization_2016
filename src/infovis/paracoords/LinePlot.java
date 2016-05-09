@@ -46,7 +46,7 @@ public class LinePlot {
 			distance = Line2D.ptSegDist(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy(), mx, my);
 
 			if (distance < 1.0) {
-				Debug.p("Distance between point and line:" + distance);
+				//Debug.p("Distance between point and line:" + distance);
 				return true;
 			}
 		}

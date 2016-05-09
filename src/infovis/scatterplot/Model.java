@@ -49,7 +49,7 @@ public class Model {
 		for (LinePlot l: this.lines){
 			if (l.lineContainsPoint(mx1, my1)){
 				l.changeStatusToOn();
-				Debug.p("Si");
+				//Debug.p("Si");
 			}
 		}
 	}
