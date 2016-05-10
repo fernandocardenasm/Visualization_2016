@@ -107,6 +107,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			/*
 			 * do handle interactions in fisheye mode
 			 */
+			// focus point is selected by clicking
 			view.repaint();
 		} else {
 			
@@ -221,6 +222,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			/*
 			 * handle fisheye mode interactions
 			 */
+			// focus changes according to dragging movement
 			view.repaint();
 		} else if (edgeDrawMode){
 			drawingEdge.setX(e.getX());

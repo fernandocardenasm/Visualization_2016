@@ -1,6 +1,7 @@
 package infovis.paracoords;
 
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import infovis.debug.Debug;
@@ -47,6 +48,23 @@ public class LinePlot {
 
 			if (distance < 1.0) {
 				//Debug.p("Distance between point and line:" + distance);
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	// check if the line intersects the marker rectangle
+	public boolean lineInRectangle(Rectangle2D markerRectangle){
+		
+		for (int i = 0; i < this.list.size() - 1; i++){
+			PointPlot p = this.list.get(i);
+			PointPlot pNext = this.list.get(i + 1);
+			
+			Line2D line = new Line2D.Double(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy());
+			
+			if (line.intersects(markerRectangle)) {
 				return true;
 			}
 		}

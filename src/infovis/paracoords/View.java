@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ public class View extends JPanel {
 	private boolean initLines = false;
 	private Color lineColor = Color.BLACK;
 	private Color color = Color.BLACK;
+    private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0);
 
 	@Override
 	public void paint(Graphics g) {
@@ -29,6 +31,7 @@ public class View extends JPanel {
 		int offsetX = 100;
 		int correctOffsetX = 70;
 		int i = 0;
+		int labelOffset = 40;
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.clearRect(0, 0, getWidth(), getHeight());
@@ -45,9 +48,19 @@ public class View extends JPanel {
 				a.setBottom(bottom);
 			}
 			g2D.drawLine(a.getPosition(), a.getTop(), a.getPosition(), a.getBottom());
+			// Axis max value
 			g2D.drawString(model.getRanges().get(i).getMax() + "", a.getPosition() - 10, a.getTop() - 10);
+			// Axis min value
 			g2D.drawString(model.getRanges().get(i).getMin() + "", a.getPosition() - 10, a.getBottom() + 20);
-			g2D.drawString(model.getLabels().get(i).toString() + "", a.getPosition() - 10, a.getBottom() + 40);
+			if (model.getDim() > 8) {
+				if ((i % 2) == 0) {
+					labelOffset = 40;
+				} else {
+					labelOffset = 60;
+				}
+			}
+			// Axis name
+			g2D.drawString(model.getLabels().get(i).toString() + "", a.getPosition() - 10, a.getBottom() + labelOffset);
 			i++;
 		}
 		initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse
@@ -58,17 +71,16 @@ public class View extends JPanel {
 			initLines = true; // to avoid redrawing it wrongly if they are moved by mouse
 		}
 		
+		// draw data line
 		for(LinePlot l : model.getLines()) {
 			
 			for(int j = 0; j < l.getList().size() - 1; j++){
 				PointPlot p = l.getList().get(j);
 				PointPlot pNext = l.getList().get(j + 1);
-				//Debug.p("px:" + p.getPx());
-				//Debug.p("py:" + p.getPy());
 				
+				// selected lines are drawn green
 				if (l.getStatus() == "ON"){
 					lineColor = Color.GREEN;
-					//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
 				} else {
 					// otherwise black
 					lineColor = Color.BLACK;
@@ -77,6 +89,10 @@ public class View extends JPanel {
 				g2D.drawLine(p.getPx(), p.getPy(), pNext.getPx(), pNext.getPy());
 			}
 		}
+		
+		// selection rectangle
+		g2D.setColor(Color.BLUE);
+		g2D.draw(markerRectangle);
 			
 	}
 	
@@ -122,5 +138,9 @@ public class View extends JPanel {
 	public void setModel(Model model) {
 		this.model = model;
 	}
+	 
+	 public Rectangle2D getMarkerRectangle() {
+		return markerRectangle;
+	 }
 	
 }

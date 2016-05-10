@@ -44,7 +44,6 @@ public class Model {
 		return rectangles;
 	}
 	
-	
 	public boolean isLineSelected() {
 		return lineSelected;
 	}
@@ -64,7 +63,6 @@ public class Model {
 		}
 		return found;
 	}
-	
 	
 	public ArrayList<String> getLabels() {
 		return labels;
@@ -107,8 +105,8 @@ public class Model {
 	
 	
 	public void importValues() {
-		//File file = new File("cameras.ssv");
-		File file = new File("cars.ssv");
+		File file = new File("cameras.ssv");
+		//File file = new File("cars.ssv");
 	    Debug.p(file.getAbsoluteFile().toString());
 	   
 	    try {
@@ -162,11 +160,11 @@ public class Model {
 //			Debug.print(",  ");
 //			Debug.println("");
 //		}
-//		for (Range range : ranges) {
-//			Debug.print(range.toString());
-//			Debug.print(",  ");
-//			Debug.println("");
-//		}
+		for (Range range : ranges) {
+			Debug.print(range.toString());
+			Debug.print(",  ");
+			Debug.println("");
+		}
 //		for (Data d : list) {
 //			Debug.print(d.toString());
 //			Debug.println("");
