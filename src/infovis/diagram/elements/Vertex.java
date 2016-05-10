@@ -125,5 +125,41 @@ public class Vertex implements Element {
 	public void setGroupedElements(Model groupedElements) {
 		this.groupedElements = groupedElements;
 	}
+	
+	
+	public double transformPosition(Vertex vertex, double pFocus, double pBoundary, double d){
+		double dMax = 0;
+		double dNorm = 0;
+		double gx = 0;
+		
+		dMax = dMax(pBoundary, pFocus, vertex.getX());
+		dNorm = vertex.getX() - pFocus;
+		
+		gx = GX(dNorm/dMax, d);
+		
+		return pFocus + gx * dMax;
+	}
+	public double transformHeight(Vertex vertex, double focusPoint, double width, double d){
+		return 0;
+	}
+	public double transformWidth(Vertex vertex, double focusPoint, double height, double d){
+		return 0;
+	}
+	
+	private double dMax(double pBoundary, double pFocus, double pNorm){
+		double dMax = 1;
+		if (pNorm > pFocus){
+			dMax = pBoundary - pFocus;
+		}
+		else{
+			dMax = 0 - pFocus;
+		}
+		
+		return dMax;
+	}
+	
+	private double GX(double x, double d){
+		return (d + 1) * x / (d * x + 1);
+	}
 
 }

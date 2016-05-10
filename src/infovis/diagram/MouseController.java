@@ -98,7 +98,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		double scale = view.getScale();
 		double overviewScale = view.getOverviewScale();
 		
-		Debug.p("mousePressed: x = " + x + ", y = " + y);
+		//Debug.p("mousePressed: x = " + x + ", y = " + y);
 	   
 	   if (edgeDrawMode){
 			drawingEdge = new DrawingEdge((Vertex)getElementContainingPosition(x/scale,y/scale));
@@ -107,7 +107,8 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			/*
 			 * do handle interactions in fisheye mode
 			 */
-			// focus point is selected by clicking
+			// focus point is selected by clicking (normal coordinates)
+			// each vertex has assigned a Visual Worth (VW) based on its distance to the focus point (normal coordinates)
 			view.repaint();
 		} else {
 			
@@ -120,11 +121,11 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			mouseOffsetY = y - selectedElement.getY() * scale ;
 			
 			//markerSelected = view.markerContains((x + view.getTranslateOverviewX())/overviewScale , (y + view.getTranslateOverviewY())/overviewScale);
-			Debug.p("Overview translation: x = " + view.getTranslateOverviewX() + ", y = " + view.getTranslateOverviewY());
+			//Debug.p("Overview translation: x = " + view.getTranslateOverviewX() + ", y = " + view.getTranslateOverviewY());
 			markerSelected = view.markerContains((x/overviewScale) + view.getTranslateOverviewX() , (y/overviewScale) + view.getTranslateOverviewY());
 			if (markerSelected) {
 				// click in marker
-				Debug.p("marker hit");
+				//Debug.p("marker hit");
 				mouseOffsetX = x - view.getMarker().getX() * overviewScale ;
 				mouseOffsetY = y - view.getMarker().getY() * overviewScale ;
 				overviewSelected = false;
@@ -132,10 +133,10 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				overviewSelected = view.overviewContains(x/overviewScale , y/overviewScale);
 				// click in overview
 				if (overviewSelected) {
-					Debug.p("overview hit");
+					//Debug.p("overview hit");
 					overviewOffsetX = x - view.getOverview().getX() * overviewScale ;
 					overviewOffsetY = y - view.getOverview().getY() * overviewScale ;
-					Debug.p("Overview offset: x = " + overviewOffsetX + ", y = " + overviewOffsetY);
+					//Debug.p("Overview offset: x = " + overviewOffsetX + ", y = " + overviewOffsetY);
 				}
 			}	
 			
@@ -201,7 +202,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		double scale = view.getScale();
 		double overviewScale = view.getOverviewScale();
 		
-		Debug.p("mouseDragged: x = " + x + ", y = " + y);
+		//Debug.p("mouseDragged: x = " + x + ", y = " + y);
 		/*
 		 * Aufgabe 1.2: Navigate the main area by dragging the marker
 		 */
@@ -223,6 +224,8 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			 * handle fisheye mode interactions
 			 */
 			// focus changes according to dragging movement
+			// each vertex is defined by its position, size and amount of detail
+			// important vertices are bigger, non important vertices need to get smaller (whole graph should still fit the screen)
 			view.repaint();
 		} else if (edgeDrawMode){
 			drawingEdge.setX(e.getX());

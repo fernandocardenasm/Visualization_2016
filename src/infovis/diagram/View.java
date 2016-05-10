@@ -31,7 +31,22 @@ public class View extends JPanel{
 	private double overviewY = 0;
 	private int overviewWidth = 1400;
 	private int overviewHeight = 710;
+	
+	double pFocusX = getWidth()/2;
+	double pFocusY = getHeight()/2;
 
+	public double getpFocusX() {
+		return pFocusX;
+	}
+	public void setpFocusX(double pFocusX) {
+		this.pFocusX = pFocusX;
+	}
+	public double getpFocusY() {
+		return pFocusY;
+	}
+	public void setpFocusY(double pFocusY) {
+		this.pFocusY = pFocusY;
+	}
 	public Model getModel() {
 		return model;
 	}
