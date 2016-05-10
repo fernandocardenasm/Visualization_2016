@@ -23,16 +23,18 @@ public class Fisheye implements Layout{
 		
 		double d = 5;
 		
+		double ratio = Vertex.STD_WIDTH / Vertex.STD_HEIGHT;
+		
 		// TODO Auto-generated method stub
 		ArrayList<Vertex> vertexList = new ArrayList<Vertex>();
 		
 		for (Iterator<Vertex> iter = model.iteratorVertices(); iter.hasNext();) {
 			Vertex vertex = iter.next();
 			
-			vertex.setX(vertex.transformPosition(vertex, view.getpFocusX(), view.getWidth(), d));
-			vertex.setY(vertex.transformPosition(vertex, view.getpFocusY(), view.getHeight(), d));
-			vertex.setWidth(vertex.transformWidth(vertex, view.getpFocusX(), view.getWidth(), d));
-			vertex.setHeight(vertex.transformHeight(vertex, view.getpFocusY(), view.getHeight(), d));
+			vertex.setX(vertex.transformF1(vertex.getX(), view.getpFocusX(), view.getWidth(), d));
+			vertex.setY(vertex.transformF1(vertex.getY(), view.getpFocusY(), view.getHeight(), d));
+			//vertex.setWidth(vertex.transformF1(vertex.getX(), view.getpFocusX(), view.getWidth(), d));
+			//vertex.setHeight(vertex.transformF1(vertex.getY(), view.getpFocusY(), view.getHeight(), d));
 
 		}
 		

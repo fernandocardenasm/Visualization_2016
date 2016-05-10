@@ -127,22 +127,24 @@ public class Vertex implements Element {
 	}
 	
 	
-	public double transformPosition(Vertex vertex, double pFocus, double pBoundary, double d){
+	public double transformF1(double pNorm, double pFocus, double pBoundary, double d){
 		double dMax = 0;
 		double dNorm = 0;
 		double gx = 0;
 		
-		dMax = dMax(pBoundary, pFocus, vertex.getX());
-		dNorm = vertex.getX() - pFocus;
+		dMax = dMax(pBoundary, pFocus, pNorm);
+		dNorm = pNorm - pFocus;
 		
 		gx = GX(dNorm/dMax, d);
 		
 		return pFocus + gx * dMax;
 	}
-	public double transformHeight(Vertex vertex, double focusPoint, double width, double d){
-		return 0;
-	}
-	public double transformWidth(Vertex vertex, double focusPoint, double height, double d){
+	//public double transformWidth(double pNorm, double pFocus, double pBoundary, double width, double d){
+		//double qNorm = qNorm(pNorm, width);
+		//double qFish = qFish(qNorm, pFocus, pBoundary,d);
+		//Math.min(a, b)
+	//}
+	public double transformHeight(double pNorm, double focusPoint, double height, double d){
 		return 0;
 	}
 	
@@ -161,5 +163,12 @@ public class Vertex implements Element {
 	private double GX(double x, double d){
 		return (d + 1) * x / (d * x + 1);
 	}
-
+	
+	private double qNorm(double pNorm, double sNorm){
+		return pNorm + sNorm/2;
+	}
+	
+	private double qFish(double qNorm, double pFocus, double pBoundary, double d){
+		return transformF1 (qNorm, pFocus, pBoundary, d);
+	}
 }
