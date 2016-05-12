@@ -126,7 +126,7 @@ public class Vertex implements Element {
 		this.groupedElements = groupedElements;
 	}
 	
-	
+	//Return the PFish of the object, its new position
 	public double transformF1(double pNorm, double pFocus, double pBoundary, double d){
 		double dMax = 0;
 		double dNorm = 0;
@@ -144,8 +144,22 @@ public class Vertex implements Element {
 		//double qFish = qFish(qNorm, pFocus, pBoundary,d);
 		//Math.min(a, b)
 	//}
-	public double transformHeight(double pNorm, double focusPoint, double height, double d){
-		return 0;
+	
+	
+	//Return the new size of the object.
+	public double transformSize(double pNormX, double pNormY , double pFocusX, double pFocusY, double pBoundaryX, double pBoundaryY, double d){
+		double qNormX = qNorm(pNormX, pBoundaryX);
+		double qFishX = qFish(qNormX, pFocusX,pBoundaryX, d);
+		double pFishX = transformF1(pNormX, pFocusX, pBoundaryX, d);
+		
+		double qNormY = qNorm(pNormY, pBoundaryY);
+		double qFishY = qFish(qNormY, pFocusX,pBoundaryY, d);
+		double pFishY = transformF1(pNormY, pFocusY, pBoundaryY, d);
+		 
+		
+		double sGeom = sGeom(pFishX, pFishY, qFishX, qFishY);
+		
+		return sGeom;
 	}
 	
 	private double dMax(double pBoundary, double pFocus, double pNorm){
@@ -171,4 +185,8 @@ public class Vertex implements Element {
 	private double qFish(double qNorm, double pFocus, double pBoundary, double d){
 		return transformF1 (qNorm, pFocus, pBoundary, d);
 	}
+	private double sGeom(double pFishX, double pFishY, double qFishX, double qFishY){
+		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
+	}
+	
 }

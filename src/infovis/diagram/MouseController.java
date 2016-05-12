@@ -21,6 +21,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	 private Model model;
 	 private View view;
 	 private Element selectedElement = new None();
+	 private Fisheye fish = new Fisheye();
 	 private double mouseOffsetX;
 	 private double mouseOffsetY;
 	 private double overviewOffsetX;
@@ -31,6 +32,10 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	 private GroupingRectangle groupRectangle;
 	 private boolean markerSelected = false;
 	 private boolean overviewSelected = false;
+	 
+	 List<Vertex> firstVertexes;
+	 
+	 private boolean firstIteration = false;
 	/*
 	 * Getter And Setter
 	 */
@@ -220,6 +225,27 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		}
 		
 		if (fisheyeMode){
+			
+			view.setpFocusX(x);
+			view.setpFocusY(y);
+			
+			//The idea is to save the initial vertices in the model, in this way
+			//we could still modify the current model, but considering the initial point
+			//of reference.
+			//It needs to be check if it implemented correctly
+			if (!firstIteration){
+				firstVertexes = model.getVertices();
+				model = fish.transform(model, view);
+				firstIteration = true;
+			}
+			else{
+				
+				//Here I send the model, but we work with the firstVertexes
+				model = fish.transform(model, view, firstVertexes);
+				
+			}
+			
+			
 			/*
 			 * handle fisheye mode interactions
 			 */
