@@ -6,8 +6,8 @@ import infovis.diagram.View;
 import infovis.diagram.elements.Edge;
 import infovis.diagram.elements.Vertex;
 
-import java.awt.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 /*
@@ -18,95 +18,121 @@ public class Fisheye implements Layout{
 
 	private int focusX;
 	private int focusY;
+	private View view;
+	private double d = 1.0; // distortion factor
+	private double ratio =  Vertex.STD_HEIGHT / Vertex.STD_WIDTH;
+	private List<Vertex>  originalVertices  =  new ArrayList<Vertex>();
 	
 	// Setting the focus point according to the mouse coordinates
 	public void setMouseCoords(int x, int y, View view) {
 		
 		this.focusX = x;
 		this.focusY = y;
-		// do i need view also?
+		this.view = view;
 	}
 
+	// default transform function
 	public Model transform(Model model, View view) {
-		
-		double d = 5;
-		double ratio =  Vertex.STD_HEIGHT / Vertex.STD_WIDTH;
-		//List vertexList = new List();
-		
-		for (Iterator<Vertex> iter = model.iteratorVertices(); iter.hasNext();) {
-			Vertex vertex = iter.next();
-			
-			//PFishX
-			vertex.setX(vertex.transformF1(vertex.getX(), view.getpFocusX(), view.getWidth(), d));
-			//PFishY
-			vertex.setY(vertex.transformF1(vertex.getY(), view.getpFocusY(), view.getHeight(), d));
-			//SGeomX
-			vertex.setWidth(vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), d));
-			//SGeomY: It multiplies for the variable ratio, to make it smaller than the width
-			vertex.setHeight(ratio * vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), d));
-		}
+
 		return model;
 	}
 	
+	// called in all mouseDragged() events except the first
+	public Model transform(Model model, View view, java.util.List<Vertex> firstVertices) {
+		
+		// transform each vertex into its fisheye version
+		for (Iterator<Vertex> iter = firstVertices.iterator(); iter.hasNext();) {
+			Vertex vertex = iter.next();
+			//PFishX
+			vertex.setX(this.transformF1(vertex.getX(), this.focusX, view.getWidth()));
+			//PFishY
+			vertex.setY(this.transformF1(vertex.getY(), this.focusY, view.getHeight()));
+			
+			//SGeomX
+			//vertex.setWidth(vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), this.d));
+			//SGeomY: It multiplies for the variable ratio, to make it smaller than the width
+			//vertex.setHeight(ratio * vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), this.d));
+
+		}
+		// delete previous vertices
+		model.clearVertices();
+		if (model.isEmpty()) {
+			Debug.p("empty");
+		} else {
+			Debug.p("full");
+		}
+		// add Fisheye version of the vertices
+		model.addVertices(firstVertices);
+		return model;
+		
+	}
+	
 	// Transforms normal position coordinates into Fisheye coordinates
-	public double transformF1(double pNorm, double pFocus, double pBoundary, double d){
+	public double transformF1(double pNorm, double pFocus, double pBoundary){
 		double dMax = 0;
 		double dNorm = 0;
 		double gx = 0;
 		
 		dMax = dMax(pBoundary, pFocus, pNorm);
+		
 		// distance between point being transformed and the focus
-		dNorm = Math.abs(pNorm - pFocus);
+		dNorm = pNorm - pFocus;
 		
-		gx = GX(dNorm/dMax, d);
+		gx = G(dNorm/dMax);
 		
-		return pFocus + gx * dMax;
+		// maybe needs +/-?
+		return (pFocus + gx * dMax);
+	}
+	
+	//public double transformWidth(double pNorm, double pFocus, double pBoundary, double width, double d){
+	//double qNorm = qNorm(pNorm, width);
+	//double qFish = qFish(qNorm, pFocus, pBoundary,d);
+	//Math.min(a, b)
+	//}
+	
+	//Return the new size of the object.
+	public double transformSize(double pNormX, double pNormY , double pFocusX, double pFocusY, double pBoundaryX, double pBoundaryY, double d){
+		double qNormX = qNorm(pNormX, pBoundaryX);
+		double qFishX = qFish(qNormX, pFocusX,pBoundaryX);
+		double pFishX = transformF1(pNormX, pFocusX, pBoundaryX);
+		
+		double qNormY = qNorm(pNormY, pBoundaryY);
+		double qFishY = qFish(qNormY, pFocusX,pBoundaryY);
+		double pFishY = transformF1(pNormY, pFocusY, pBoundaryY);
+		 
+		
+		double sGeom = sGeom(pFishX, pFishY, qFishX, qFishY);
+		
+		return sGeom;
 	}
 	
 	private double dMax(double pBoundary, double pFocus, double pNorm){
-		double dMax = 1;
+		double dMax = 1.0;
+		
 		if (pNorm > pFocus){
 			dMax = pBoundary - pFocus;
 		}
 		else{
-			dMax = 0 - pFocus;
+			dMax = 0.0 - pFocus;
 		}
 		
 		return dMax;
 	}
 	
-	private double GX(double x, double d){
-		return (d + 1) * x / (d * x + 1);
+	private double G(double x){
+		return ((this.d + 1) * x) / (this.d * x + 1);
 	}
-	
-public Model transform(Model model, View view, java.util.List<Vertex> firstVertexes) {
-		
-		double d = 5;
-		
-		double ratio =  Vertex.STD_HEIGHT / Vertex.STD_WIDTH;
-		
-		// TODO Auto-generated method stub
-		//List vertexList = new List();
-		
-		for (Iterator<Vertex> iter = firstVertexes.iterator(); iter.hasNext();) {
-			Vertex vertex = iter.next();
-			//PFishX
-			vertex.setX(vertex.transformF1(vertex.getX(), view.getpFocusX(), view.getWidth(), d));
-			//PFishY
-			vertex.setY(vertex.transformF1(vertex.getY(), view.getpFocusY(), view.getHeight(), d));
-			//SGeomX
-			vertex.setWidth(vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), d));
-			//SGeomY: It multiplies for the variable ratio, to make it smaller than the width
-			vertex.setHeight(ratio * vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), d));
 
-		}
-		
-		return model;
-		
-		
+	private double qNorm(double pNorm, double sNorm){
+		return pNorm + sNorm/2;
 	}
 	
-	
+	private double qFish(double qNorm, double pFocus, double pBoundary){
+		return transformF1 (qNorm, pFocus, pBoundary);
+	}
+	private double sGeom(double pFishX, double pFishY, double qFishX, double qFishY){
+		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
+	}
 	
 }
 

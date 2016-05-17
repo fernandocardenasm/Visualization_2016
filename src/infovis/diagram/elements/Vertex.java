@@ -63,11 +63,11 @@ public class Vertex implements Element {
 	}
 
 	public void setX(double x) {
-		shape.setFrame(x, getY(),getWidth() , getHeight());	
+		shape.setFrame(x, getY(),getWidth(), getHeight());	
 	}
 
 	public void setY(double y) {
-		shape.setFrame(getX(), y, getWidth() , getHeight());	
+		shape.setFrame(getX(), y, getWidth(), getHeight());	
 	}
 
 	public Color getColor() {
@@ -124,69 +124,6 @@ public class Vertex implements Element {
 	}
 	public void setGroupedElements(Model groupedElements) {
 		this.groupedElements = groupedElements;
-	}
-	
-	//Return the PFish of the object, its new position
-	public double transformF1(double pNorm, double pFocus, double pBoundary, double d){
-		double dMax = 0;
-		double dNorm = 0;
-		double gx = 0;
-		
-		dMax = dMax(pBoundary, pFocus, pNorm);
-		dNorm = pNorm - pFocus;
-		
-		gx = GX(dNorm/dMax, d);
-		
-		return pFocus + gx * dMax;
-	}
-	//public double transformWidth(double pNorm, double pFocus, double pBoundary, double width, double d){
-		//double qNorm = qNorm(pNorm, width);
-		//double qFish = qFish(qNorm, pFocus, pBoundary,d);
-		//Math.min(a, b)
-	//}
-	
-	
-	//Return the new size of the object.
-	public double transformSize(double pNormX, double pNormY , double pFocusX, double pFocusY, double pBoundaryX, double pBoundaryY, double d){
-		double qNormX = qNorm(pNormX, pBoundaryX);
-		double qFishX = qFish(qNormX, pFocusX,pBoundaryX, d);
-		double pFishX = transformF1(pNormX, pFocusX, pBoundaryX, d);
-		
-		double qNormY = qNorm(pNormY, pBoundaryY);
-		double qFishY = qFish(qNormY, pFocusX,pBoundaryY, d);
-		double pFishY = transformF1(pNormY, pFocusY, pBoundaryY, d);
-		 
-		
-		double sGeom = sGeom(pFishX, pFishY, qFishX, qFishY);
-		
-		return sGeom;
-	}
-	
-	private double dMax(double pBoundary, double pFocus, double pNorm){
-		double dMax = 1;
-		if (pNorm > pFocus){
-			dMax = pBoundary - pFocus;
-		}
-		else{
-			dMax = 0 - pFocus;
-		}
-		
-		return dMax;
-	}
-	
-	private double GX(double x, double d){
-		return (d + 1) * x / (d * x + 1);
-	}
-	
-	private double qNorm(double pNorm, double sNorm){
-		return pNorm + sNorm/2;
-	}
-	
-	private double qFish(double qNorm, double pFocus, double pBoundary, double d){
-		return transformF1 (qNorm, pFocus, pBoundary, d);
-	}
-	private double sGeom(double pFishX, double pFishY, double qFishX, double qFishY){
-		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
 	}
 	
 }

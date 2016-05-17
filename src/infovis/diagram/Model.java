@@ -101,5 +101,33 @@ public class Model {
 	public List<Element> getElements() {
 		return elements;
 	}
+
+	public List<Vertex> getCopiedVertices() {
+		List<Vertex> copiedVertices  = new ArrayList<Vertex>();
+		
+		for (Iterator<Vertex> iter = iteratorVertices(); iter.hasNext();) {
+			Vertex v = iter.next();
+			copiedVertices.add(new Vertex(v.getX(), v.getY()));
+		}
+		
+		return copiedVertices;
+	}
+	
+	public List<Vertex> copyVertices(List<Vertex> list) {
+		List<Vertex> copiedVertices  = new ArrayList<Vertex>();
+		
+		for (Iterator<Vertex> iter = list.iterator(); iter.hasNext();) {
+			Vertex v = iter.next();
+			copiedVertices.add(new Vertex(v.getX(), v.getY()));
+		}
+		
+		return copiedVertices;
+	}
+	
+	public void clearVertices(){
+		removeVertices(getVertices());
+		vertices.clear();
+		elements.clear();
+	}
 	
 }

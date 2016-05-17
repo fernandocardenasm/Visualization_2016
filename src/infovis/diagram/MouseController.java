@@ -33,7 +33,8 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	 private boolean markerSelected = false;
 	 private boolean overviewSelected = false;
 	 
-	 List<Vertex> firstVertexes;
+	 private List<Vertex> initialVertices  = new ArrayList<Vertex>();
+	 private List<Vertex> firstVertices  = new ArrayList<Vertex>();
 	 
 	 private boolean firstIteration = false;
 	/*
@@ -103,7 +104,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		double scale = view.getScale();
 		double overviewScale = view.getOverviewScale();
 		
-		//Debug.p("mousePressed: x = " + x + ", y = " + y);
+		Debug.p("mousePressed: x = " + x + ", y = " + y + "     " + firstIteration);
 	   
 	   if (edgeDrawMode){
 			drawingEdge = new DrawingEdge((Vertex)getElementContainingPosition(x/scale,y/scale));
@@ -113,8 +114,24 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			 * do handle interactions in fisheye mode
 			 */
 			// focus point is selected by clicking (normal coordinates)
+			view.setpFocusX(x);
+			view.setpFocusY(y);
 			fish.setMouseCoords(x, y, view);
 			// each vertex has assigned a Visual Worth (VW) based on its distance to the focus point (normal coordinates)
+					
+			if (!firstIteration) {
+				// Copy of initial vertices list
+				initialVertices = model.getCopiedVertices();
+				firstIteration = true;
+			}
+			// delete all model vertices
+			model.clearVertices();
+			// deep copy of initial vertices
+			firstVertices.clear();
+			firstVertices = model.copyVertices(initialVertices);
+			// take normal vertices to create fisheye vertices
+			model = fish.transform(model, view, firstVertices);
+			
 			view.repaint();
 		} else {
 			
@@ -199,6 +216,12 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			model.removeElement(groupRectangle);
 			groupRectangle = null;
 		}
+		
+		if (fisheyeMode){
+			this.firstIteration = false;
+		}
+		
+		
 		view.repaint();
 	}
 	
@@ -207,6 +230,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		int y = e.getY();
 		double scale = view.getScale();
 		double overviewScale = view.getOverviewScale();
+		List<Vertex> firstVertices  = new ArrayList<Vertex>();
 		
 		//Debug.p("mouseDragged: x = " + x + ", y = " + y);
 		/*
@@ -227,25 +251,19 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		
 		if (fisheyeMode){
 			
+			// setting focus point
 			view.setpFocusX(x);
 			view.setpFocusY(y);
+			fish.setMouseCoords(x, y, view);
 			
 			//The idea is to save the initial vertices in the model, in this way
 			//we could still modify the current model, but considering the initial point
 			//of reference.
-			//It needs to be check if it implemented correctly
-			if (!firstIteration){
-				firstVertexes = model.getVertices();
-				model = fish.transform(model, view);
-				firstIteration = true;
-			}
-			else{
-				
-				//Here I send the model, but we work with the firstVertexes
-				model = fish.transform(model, view, firstVertexes);
-				
-			}
-			
+
+			// Here I send the model, but we work with the firstVertices
+			//model.clearVertices();
+			firstVertices = model.copyVertices(initialVertices);
+			model = fish.transform(model, view, firstVertices);
 			
 			/*
 			 * handle fisheye mode interactions
