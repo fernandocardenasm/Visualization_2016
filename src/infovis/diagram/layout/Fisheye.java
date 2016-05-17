@@ -19,7 +19,7 @@ public class Fisheye implements Layout{
 	private int focusX;
 	private int focusY;
 	private View view;
-	private double d = 5.0; // distortion factor
+	private double d = 7.0; // distortion factor
 	private double sNormX = Vertex.STD_WIDTH;
 	private double sNormY = Vertex.STD_HEIGHT;
 	private double ratio =  Vertex.STD_HEIGHT / Vertex.STD_WIDTH;
@@ -64,15 +64,7 @@ public class Fisheye implements Layout{
 		}
 		// delete previous vertices
 		model.clearVertices();
-		
-		/*
-		if (model.isEmpty()) {
-			Debug.p("empty");
-		} else {
-			Debug.p("full");
-		}
-		*/
-		
+				
 		// add Fisheye version of the vertices
 		model.addVertices(firstVertices);
 		return model;
@@ -144,9 +136,7 @@ public class Fisheye implements Layout{
 		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
 	}
 	private double sGeomH(double pFishX, double pFishY, double qFishX, double qFishY){
-		Debug.p("abs X " + Math.abs(qFishX - pFishX) + "abs Y " + Math.abs(qFishY - pFishY));
-		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
-		//return 2 * ratio * Math.abs(qFishY - pFishY);
+		return 2 * ratio * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
 	}
 	
 }
