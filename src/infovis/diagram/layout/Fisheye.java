@@ -19,7 +19,9 @@ public class Fisheye implements Layout{
 	private int focusX;
 	private int focusY;
 	private View view;
-	private double d = 1.0; // distortion factor
+	private double d = 5.0; // distortion factor
+	private double sNormX = Vertex.STD_WIDTH;
+	private double sNormY = Vertex.STD_HEIGHT;
 	private double ratio =  Vertex.STD_HEIGHT / Vertex.STD_WIDTH;
 	private List<Vertex>  originalVertices  =  new ArrayList<Vertex>();
 	
@@ -43,24 +45,34 @@ public class Fisheye implements Layout{
 		// transform each vertex into its fisheye version
 		for (Iterator<Vertex> iter = firstVertices.iterator(); iter.hasNext();) {
 			Vertex vertex = iter.next();
-			//PFishX
-			vertex.setX(this.transformF1(vertex.getX(), this.focusX, view.getWidth()));
-			//PFishY
-			vertex.setY(this.transformF1(vertex.getY(), this.focusY, view.getHeight()));
 			
+			double pNormX = vertex.getX();
+			double pNormY = vertex.getY();
+			
+			//PFishX
+			double fishX = this.transformF1(pNormX, this.focusX, view.getWidth());
+			//PFishY
+			double fishY = this.transformF1(pNormY, this.focusY, view.getHeight());
+			
+			vertex.setX(fishX);
+			vertex.setY(fishY);
 			//SGeomX
-			//vertex.setWidth(vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), this.d));
+			vertex.setWidth(this.transformSizeW(pNormX, pNormY, focusX, focusY, view.getWidth(), view.getHeight(), fishX, fishY));
 			//SGeomY: It multiplies for the variable ratio, to make it smaller than the width
-			//vertex.setHeight(ratio * vertex.transformSize(vertex.getX(), vertex.getY(), view.getpFocusX(), view.getpFocusY(), view.getWidth(), view.getHeight(), this.d));
+			vertex.setHeight(this.transformSizeH(pNormX, pNormY, focusX, focusY, view.getWidth(), view.getHeight(), fishX, fishY));
 
 		}
 		// delete previous vertices
 		model.clearVertices();
+		
+		/*
 		if (model.isEmpty()) {
 			Debug.p("empty");
 		} else {
 			Debug.p("full");
 		}
+		*/
+		
 		// add Fisheye version of the vertices
 		model.addVertices(firstVertices);
 		return model;
@@ -84,24 +96,25 @@ public class Fisheye implements Layout{
 		return (pFocus + gx * dMax);
 	}
 	
-	//public double transformWidth(double pNorm, double pFocus, double pBoundary, double width, double d){
-	//double qNorm = qNorm(pNorm, width);
-	//double qFish = qFish(qNorm, pFocus, pBoundary,d);
-	//Math.min(a, b)
-	//}
-	
 	//Return the new size of the object.
-	public double transformSize(double pNormX, double pNormY , double pFocusX, double pFocusY, double pBoundaryX, double pBoundaryY, double d){
-		double qNormX = qNorm(pNormX, pBoundaryX);
-		double qFishX = qFish(qNormX, pFocusX,pBoundaryX);
-		double pFishX = transformF1(pNormX, pFocusX, pBoundaryX);
+	public double transformSizeW(double pNormX, double pNormY, double pFocusX, double pFocusY, double pBoundaryX, double pBoundaryY, double fishX, double fishY){
+		double qNormX = qNorm(pNormX, sNormX);
+		double qFishX = transformF1 (qNormX, this.focusX, pBoundaryX);
+		double qNormY = qNorm(pNormY, sNormY);
+		double qFishY = transformF1 (qNormY, this.focusY, pBoundaryY);
 		
-		double qNormY = qNorm(pNormY, pBoundaryY);
-		double qFishY = qFish(qNormY, pFocusX,pBoundaryY);
-		double pFishY = transformF1(pNormY, pFocusY, pBoundaryY);
-		 
+		double sGeom = sGeomW(fishX, fishY, qFishX, qFishY);
 		
-		double sGeom = sGeom(pFishX, pFishY, qFishX, qFishY);
+		return sGeom;
+	}
+	
+	public double transformSizeH(double pNormX, double pNormY, double pFocusX, double pFocusY, double pBoundaryX, double pBoundaryY, double fishX, double fishY){
+		double qNormX = qNorm(pNormX, sNormX);
+		double qFishX = transformF1 (qNormX, this.focusX, pBoundaryX);
+		double qNormY = qNorm(pNormY, sNormY);
+		double qFishY = transformF1 (qNormY, this.focusY, pBoundaryY);
+		
+		double sGeom = sGeomH(fishX, fishY, qFishX, qFishY);
 		
 		return sGeom;
 	}
@@ -127,11 +140,13 @@ public class Fisheye implements Layout{
 		return pNorm + sNorm/2;
 	}
 	
-	private double qFish(double qNorm, double pFocus, double pBoundary){
-		return transformF1 (qNorm, pFocus, pBoundary);
-	}
-	private double sGeom(double pFishX, double pFishY, double qFishX, double qFishY){
+	private double sGeomW(double pFishX, double pFishY, double qFishX, double qFishY){
 		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
+	}
+	private double sGeomH(double pFishX, double pFishY, double qFishX, double qFishY){
+		Debug.p("abs X " + Math.abs(qFishX - pFishX) + "abs Y " + Math.abs(qFishY - pFishY));
+		return 2 * Math.min(Math.abs(qFishX - pFishX), Math.abs(qFishY - pFishY));
+		//return 2 * ratio * Math.abs(qFishY - pFishY);
 	}
 	
 }
