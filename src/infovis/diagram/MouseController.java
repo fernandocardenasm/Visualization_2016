@@ -113,6 +113,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			 * do handle interactions in fisheye mode
 			 */
 			// focus point is selected by clicking (normal coordinates)
+			fish.setMouseCoords(x, y, view);
 			// each vertex has assigned a Visual Worth (VW) based on its distance to the focus point (normal coordinates)
 			view.repaint();
 		} else {

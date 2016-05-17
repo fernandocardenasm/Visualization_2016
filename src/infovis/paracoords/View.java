@@ -65,7 +65,7 @@ public class View extends JPanel {
 		}
 		initAxes = true; // to avoid redrawing it wrongly if they are moved by mouse
 
-		g2D.setStroke(new BasicStroke(1.0f));
+		g2D.setStroke(new BasicStroke(0.5f));
 		if (!initLines) {
 			addLines();
 			initLines = true; // to avoid redrawing it wrongly if they are moved by mouse
