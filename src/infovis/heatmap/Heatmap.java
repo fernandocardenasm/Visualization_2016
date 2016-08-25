@@ -7,7 +7,6 @@ package infovis.heatmap;
 
 import javax.swing.SwingUtilities;
 
-import infovis.example.Example;
 import infovis.gui.GUI;
 
 /**
