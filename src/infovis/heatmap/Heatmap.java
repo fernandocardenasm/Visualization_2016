@@ -9,10 +9,6 @@ import javax.swing.SwingUtilities;
 
 import infovis.gui.GUI;
 
-/**
- * @author gcmolinaleon
- *
- */
 public class Heatmap {
 	
 	private Model model = null;

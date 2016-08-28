@@ -57,7 +57,8 @@ public class Data{
 	public String toString(){
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append(label);
-		stringBuffer.append('*');
+		stringBuffer.append(':');
+		stringBuffer.append(' ');
 		stringBuffer.append('[');
 		for (double value : values) {
 			stringBuffer.append(value);

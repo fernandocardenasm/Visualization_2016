@@ -142,7 +142,7 @@ public class Model {
 				
 				for (int i = 0; i < highRanges.length; i++) {
 					ranges.add(new Range(lowRanges[i], highRanges[i]));
-					axes.add(new Axis(i, labels.get(i), offsetX + i*offsetX, top, bottom , new Range(lowRanges[i], highRanges[i])));
+					axes.add(new Axis(i, labels.get(i), offsetX + i*offsetX, top, bottom, new Range(lowRanges[i], highRanges[i])));
 				} 
 				 
 				
@@ -160,15 +160,15 @@ public class Model {
 //			Debug.print(",  ");
 //			Debug.println("");
 //		}
-		for (Range range : ranges) {
+/*		for (Range range : ranges) {
 			Debug.print(range.toString());
 			Debug.print(",  ");
 			Debug.println("");
+		}*/
+		for (Data d : list) {
+			Debug.print(d.toString());
+			Debug.println("");
 		}
-//		for (Data d : list) {
-//			Debug.print(d.toString());
-//			Debug.println("");
-//		}
 		
 	}
     
