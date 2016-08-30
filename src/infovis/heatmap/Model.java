@@ -17,6 +17,14 @@ public class Model {
 	
 	private ArrayList<YearData> years = new ArrayList<YearData>();
 	
+	public ArrayList<YearData> getYears() {
+		return years;
+	}
+
+	public void setYears(ArrayList<YearData> years) {
+		this.years = years;
+	}
+
 	public Model(){
 		readFile("berlin2007.csv", 2007);
 		//readFile("berlin2008.csv", 2008);
