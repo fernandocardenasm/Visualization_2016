@@ -38,11 +38,10 @@ public class View extends JPanel {
 		y = 20;
         
 		//Probably the labels should be part of the Model, not from the Class YearData
-		int numRows = 10;
-		int numColumnsTotal = model.getYears().get(0).getLabels().size();
-		int numColumnsTemp = 3;
+		int numRows = Constants.mainNamesRow.length;
+		int numColumns = Constants.mainNamesCol.length;
 		
-		for (int j = 0; j < numColumnsTemp; j++){
+		for (int j = 0; j < numColumns; j++){
 			
 			for (int i = 0; i < numRows; i++) {
 				
@@ -55,24 +54,23 @@ public class View extends JPanel {
 			//String text = model.getYears().get(0).getLabels().get(j);
 			//TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
 			
-			String text = "";
 			
-			if (j == 0){
-				text = "E_E";
-			}
-			else if (j==1){
-				text = "E_A";
-			}
-			else if (j==2){
-				text = "MH_E";
-			}
+			String text = Constants.mainNamesCol[j];
 			
 			TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
 
 			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
 			
-			x = x + plotSizeWidth;
+			x += plotSizeWidth;
 			y = 20;
+		}
+		
+		x += 10;
+		
+		for (int i = 0; i < numRows; i++){
+			String text = Constants.mainNamesRow[i];
+			TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
+			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
 		}
 		
 		
