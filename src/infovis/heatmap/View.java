@@ -67,6 +67,7 @@ public class View extends JPanel {
 		
 		x += 10;
 		
+		
 		for (int i = 0; i < numRows; i++){
 			String text = Constants.mainNamesRow[i];
 			TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
