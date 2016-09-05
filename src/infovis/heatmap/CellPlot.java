@@ -46,9 +46,15 @@ public class CellPlot {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
+	
+	public void setColorInterpolation(double normalizedValue) {
+	    this.color = Color.getHSBColor(100, (float) normalizedValue, 1);
+	}
 
-
-
+	public double normalizeValue(double value, double min, double max){
+		return (value - min) / (max - min);
+	}
+	
 	// element position value on X axis in the screen
 	public void calculatePositionX(double value, int offset, int plotSize, int posLabel, double min, double max) {
 		double x;

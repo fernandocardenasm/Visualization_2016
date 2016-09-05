@@ -17,7 +17,7 @@ public class View extends JPanel {
     
     private int plotSizeWidth = 40; // edge size for each scatter plot cell
     private int plotSizeHeight = 20; // edge size for each scatter plot cell
- 
+    
     //Please, upgrade these two values if needed
 	 private int offSetX = 50; // offset at the beginning of X axis
 	 private int offSetY = 30; // offset at the beginning of Y axis
@@ -26,6 +26,8 @@ public class View extends JPanel {
 	public void paint(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.scale(1, 1);
+		
+		//int minPeople = model.getYears().get(0).getRanges()
 		
 		int x = 10;
 		int y = 20 + plotSizeHeight;
@@ -48,6 +50,8 @@ public class View extends JPanel {
 				CellPlot cell = new CellPlot(i, j, x, y + i*plotSizeHeight, true);
 				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
 				g2D.draw(labelRectangle);
+				
+				
 				
 			}
 			
