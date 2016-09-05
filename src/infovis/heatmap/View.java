@@ -15,7 +15,7 @@ public class View extends JPanel {
     private Rectangle2D labelRectangle = new Rectangle2D.Double(0,0,0,0);
     private Color color = Color.BLACK;
     
-    private int plotSizeWidth = 60; // edge size for each scatter plot cell
+    private int plotSizeWidth = 40; // edge size for each scatter plot cell
     private int plotSizeHeight = 20; // edge size for each scatter plot cell
  
     //Please, upgrade these two values if needed
@@ -39,21 +39,36 @@ public class View extends JPanel {
         
 		//Probably the labels should be part of the Model, not from the Class YearData
 		int numRows = 10;
-		int numColumns = model.getYears().get(0).getLabels().size();
+		int numColumnsTotal = model.getYears().get(0).getLabels().size();
+		int numColumnsTemp = 3;
 		
-		for (int j = 0; j < numColumns; j++){
+		for (int j = 0; j < numColumnsTemp; j++){
 			
 			for (int i = 0; i < numRows; i++) {
 				
-				CellPlot cell = new CellPlot("1", x, y + i*plotSizeHeight);
+				CellPlot cell = new CellPlot(i, j, x, y + i*plotSizeHeight, true);
 				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
 				g2D.draw(labelRectangle);
 				
 			}
 			
-			String text = model.getYears().get(0).getLabels().get(j);
-			TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
+			//String text = model.getYears().get(0).getLabels().get(j);
+			//TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
 			
+			String text = "";
+			
+			if (j == 0){
+				text = "E_E";
+			}
+			else if (j==1){
+				text = "E_A";
+			}
+			else if (j==2){
+				text = "MH_E";
+			}
+			
+			TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
+
 			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
 			
 			x = x + plotSizeWidth;

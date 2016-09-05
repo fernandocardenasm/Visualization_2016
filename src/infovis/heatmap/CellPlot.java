@@ -3,27 +3,31 @@ package infovis.heatmap;
 import java.awt.Color;
 
 public class CellPlot {
-	String regionId; //It is not unique, it is used to know which RectanglePlot belongs to a car object
+	int regionId; //It is not unique, it is used to know which RectanglePlot belongs to a car object
+	int idReference; // 0: E_E (alle einwohner), 1: E_A (ausländer), 2: MH_E (einwohner mit migrationshintergrund) 
+	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
 	int posX; //It is X real position on Screen
 	int posY;
 	private String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
 	private Color color;
 	
-	public CellPlot(String regionId, int posX, int posY) {
+	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain) {
 		super();
 		this.regionId = regionId;
+		this.idReference = idReference;
 		this.posX = posX;
 		this.posY = posY;
 		this.color = Color.black;
 		this.status = "OFF";
+		this.isMain = isMain;
 		
 	}
 
-	public String getId() {
+	public int getId() {
 		return regionId;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.regionId = id;
 	}
 

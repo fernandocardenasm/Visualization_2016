@@ -26,7 +26,7 @@ public class Model {
 	}
 
 	public Model(){
-		readFile("berlin2007.csv", 2007);
+		readFile("EWR_2007.csv", 2007);
 		//readFile("berlin2008.csv", 2008);
 		
 		Debug.println("All year data saved:");
