@@ -47,8 +47,18 @@ public class CellPlot {
 		this.posY = posY;
 	}
 	
+	
+	
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
 	public void setColorInterpolation(double normalizedValue) {
-	    this.color = Color.getHSBColor(100, (float) normalizedValue, 1);
+	    this.color = new Color(0,0,255, (int)(normalizedValue * 255));
 	}
 
 	public double normalizeValue(double value, double min, double max){

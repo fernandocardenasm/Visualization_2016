@@ -6,6 +6,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
+import infovis.debug.Debug;
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -43,17 +45,45 @@ public class View extends JPanel {
 		int numRows = Constants.mainNamesRow.length;
 		int numColumns = Constants.mainNamesCol.length;
 		
+		Debug.print(model.getYears().get(0).getList().get(1).getValue(0) + ": AA");
+		Debug.print(model.getYears().get(0).getList().get(0).getValue(0) + ": BB");
+
+		
 		for (int j = 0; j < numColumns; j++){
 			
 			for (int i = 0; i < numRows; i++) {
 				
+				
 				CellPlot cell = new CellPlot(i, j, x, y + i*plotSizeHeight, true);
-				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
-				g2D.draw(labelRectangle);
+		        labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
+
 				
+				int currentPos = 0;
+				if (j == 0){
+					currentPos = 0;
+				}
+				else if (j == 1) {
+					currentPos = 21;
+				}
+				else if (j == 2) {
+					currentPos = 33;
+				}
 				
+				double min = model.getYears().get(0).getRanges().get(currentPos).getMin();
+				double max = model.getYears().get(0).getRanges().get(currentPos).getMax();
+				double value = model.getYears().get(0).getList().get(i).getValue(currentPos);
 				
+				double normalizedValue = cell.normalizeValue(value, min, max);
+				
+				cell.setColorInterpolation(normalizedValue);
+				
+				g2D.setColor(cell.getColor());
+		        g2D.fill(labelRectangle);
+		        g2D.draw(labelRectangle);
+
 			}
+			
+			g2D.setColor(color);
 			
 			//String text = model.getYears().get(0).getLabels().get(j);
 			//TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
@@ -78,13 +108,6 @@ public class View extends JPanel {
 			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
 		}
 		
-		
-        //Rectangle2D rect = new Rectangle2D.Double(50, 50, 50, 50);
-        
-        //Color color = Color.GREEN;
-        //g2D.setColor(color);
-        //g2D.fill(rect);
-        //g2D.draw(rect);
 	}
 	
 	@Override

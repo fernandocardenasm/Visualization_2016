@@ -54,7 +54,7 @@ public class Model {
 			// probably should take out the " characters when they appear or pre-modify the data files with R
 			year.setLabels(labels);
 			
-			 int offset = 2; // ZEIT and RAUMID are ignored
+			 int offset = 1; // BEZ Values are ignored
 			// prepare ranges
 			 double lowRanges [] = new double[l.length-offset];
 			 for (int i = 0; i < lowRanges.length; i++) lowRanges[i] = Double.MAX_VALUE;
