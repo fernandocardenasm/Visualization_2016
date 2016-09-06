@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 
 import infovis.debug.Debug;
+import infovis.scatterplot.RectanglePlot;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -23,6 +24,11 @@ public class View extends JPanel {
     //Please, upgrade these two values if needed
 	 private int offSetX = 50; // offset at the beginning of X axis
 	 private int offSetY = 30; // offset at the beginning of Y axis
+	 
+ 	 private boolean initialized = false;
+ 	 
+ 	int numRows;
+	int numColumns;
 	
 	@Override
 	public void paint(Graphics g) {
@@ -40,80 +46,110 @@ public class View extends JPanel {
 		
 		x = 10;
 		y = 20;
-        
-		//Probably the labels should be part of the Model, not from the Class YearData
-		int numRows = Constants.mainNamesRow.length;
-		int numColumns = Constants.mainNamesCol.length;
 		
-		Debug.print(model.getYears().get(0).getList().get(1).getValue(0) + ": AA");
-		Debug.print(model.getYears().get(0).getList().get(0).getValue(0) + ": BB");
-		
-		y = 20;
+		numRows = Constants.mainNamesRow.length;
+		numColumns = model.getYears().get(0).getLabels().size();
 		
 		for (int i = 0; i < numRows; i++){
 			String text = Constants.mainNamesRow[i];
-			TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
-			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
+			//TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
+			g2D.drawString(text, x, y + 20 + i * plotSizeHeight);
 		}
 		
 		x += plotSizeWidth + 30;
 		
-		for (int j = 0; j < numColumns; j++){
-			
-			for (int i = 0; i < numRows; i++) {
-				
-				
-				CellPlot cell = new CellPlot(i, j, x, y + i*plotSizeHeight, true);
-		        labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
-
-				
-				int currentPos = 0;
-				if (j == 0){
-					currentPos = 0;
-				}
-				else if (j == 1) {
-					currentPos = 21;
-				}
-				else if (j == 2) {
-					currentPos = 33;
-				}
-				
-				double min = model.getYears().get(0).getRanges().get(currentPos).getMin();
-				double max = model.getYears().get(0).getRanges().get(currentPos).getMax();
-				double value = model.getYears().get(0).getList().get(i).getValue(currentPos);
-				
-				double normalizedValue = cell.normalizeValue(value, min, max);
-				
-				cell.setColorInterpolation(normalizedValue);
-				
-				g2D.setColor(cell.getColor());
-		        g2D.fill(labelRectangle);
-		        g2D.draw(labelRectangle);
-
-			}
-			
-			g2D.setColor(color);
-			
-			//String text = model.getYears().get(0).getLabels().get(j);
-			//TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
-			
-			
-			String text = Constants.mainNamesCol[j];
-			
-			TextPlot textLabel = new TextPlot(text, x, y + 20 + numRows * plotSizeHeight);
-
-			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
-			
-			x += plotSizeWidth;
-			y = 20;
+		if (!this.initialized){
+			initCellsAndLabels(x, y);
+			this.initialized = true;
 		}
 		
-		x += 10;
+		for (CellPlot cell : model.getCells()) {
+			
+			
+			
+			// if element is selected, draw red
+			if (cell.getStatus().equals("ON") || cell.isMain == true){
+				g2D.setColor(cell.getColor());
+		        labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
+		        g2D.fill(labelRectangle);
+		        g2D.draw(labelRectangle);
+				//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
+			} else {
+				// otherwise black
+			}
+			
+		}
 		
+		g2D.setColor(color);
 		
-		
+		for (TextPlot label : model.getColumnLabels()) {
+			
+			// if element is selected, draw red
+			if (label.getStatus().equals("ON") || label.isMain == true){
+				g2D.drawString(label.getTextLabel(), label.getPosX(), label.getPosY());
+				//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
+			} else {
+				// otherwise black
+			}
+			
+		}
 		
 	}
+	
+	public void initCellsAndLabels(int x, int y){
+		
+		Debug.p("Size: " + numColumns);
+		
+		for (int j = 0; j < numColumns; j++){
+			
+			String label = model.getYears().get(0).getLabels().get(j);
+			
+			boolean isMain = false;
+			
+			
+			if (label.toString().equalsIgnoreCase("MH_EM") || label.toString().equalsIgnoreCase("MH_EW") || label.toString().equalsIgnoreCase("E_AM") || label.toString().equalsIgnoreCase("E_AW") || label.toString().equalsIgnoreCase("E_EM") || label.toString().equalsIgnoreCase("E_EW")){
+				//Ignore these cases
+			}
+			else {
+				if (label.toString().equalsIgnoreCase("MH_E") || label.toString().equalsIgnoreCase("E_A") || label.toString().equalsIgnoreCase("E_E")){
+					Debug.p("label: " + label);
+					isMain = true;
+				}
+				else {
+					isMain = false;
+				}
+				
+					
+				for (int i = 0; i < numRows; i++) {
+					
+					//Ignore label related to Men and Women
+					
+					
+					CellPlot cell = new CellPlot(i, j, x, y + i*plotSizeHeight, isMain);
+					
+					double min = model.getYears().get(0).getRanges().get(j).getMin();
+					double max = model.getYears().get(0).getRanges().get(j).getMax();
+					double value = model.getYears().get(0).getList().get(i).getValue(j);
+					
+					double normalizedValue = cell.normalizeValue(value, min, max);
+					
+					cell.setColorInterpolation(normalizedValue);
+					
+					model.addCell(cell);
+					
+				}
+
+				
+				TextPlot textLabel = new TextPlot(label, x, y + 20 + numRows * plotSizeHeight, isMain);
+				
+				model.addTextLabel(textLabel);
+
+				x += plotSizeWidth;
+				y = 20;
+			}
+
+		}
+	} 
 	
 	@Override
 	public void update(Graphics g) {

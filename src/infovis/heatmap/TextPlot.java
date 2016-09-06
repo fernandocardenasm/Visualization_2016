@@ -4,11 +4,16 @@ public class TextPlot {
 	private String textLabel; //It is not unique, it is used to know which RectanglePlot belongs to a car object
 	private int posX; //It is X real position on Screen
 	private int posY;
-	public TextPlot(String textLabel, int posX, int posY) {
+	private String status;
+	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
+	
+	public TextPlot(String textLabel, int posX, int posY, boolean isMain) {
 		super();
 		this.textLabel = textLabel;
 		this.posX = posX;
 		this.posY = posY;
+		this.status = "OFF";
+		this.isMain = isMain;
 	}
 	public String getTextLabel() {
 		return textLabel;
@@ -29,6 +34,15 @@ public class TextPlot {
 		this.posY = posY;
 	}
 	
+	public void changeStatusToOn(){
+		this.status = "ON";
+	}
+	public void changeStatusToOff(){
+		this.status = "OFF";
+	}
+	public String getStatus(){
+		return this.status;
+	}
 	
 	
 }
