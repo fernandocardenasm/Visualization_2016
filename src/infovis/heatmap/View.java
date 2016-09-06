@@ -17,8 +17,8 @@ public class View extends JPanel {
     private Rectangle2D labelRectangle = new Rectangle2D.Double(0,0,0,0);
     private Color color = Color.BLACK;
     
-    private int plotSizeWidth = 40; // edge size for each scatter plot cell
-    private int plotSizeHeight = 20; // edge size for each scatter plot cell
+    private int plotSizeWidth = 60; // edge size for each scatter plot cell
+    private int plotSizeHeight = 30; // edge size for each scatter plot cell
     
     //Please, upgrade these two values if needed
 	 private int offSetX = 50; // offset at the beginning of X axis
@@ -47,7 +47,16 @@ public class View extends JPanel {
 		
 		Debug.print(model.getYears().get(0).getList().get(1).getValue(0) + ": AA");
 		Debug.print(model.getYears().get(0).getList().get(0).getValue(0) + ": BB");
-
+		
+		y = 20;
+		
+		for (int i = 0; i < numRows; i++){
+			String text = Constants.mainNamesRow[i];
+			TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
+			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
+		}
+		
+		x += plotSizeWidth + 30;
 		
 		for (int j = 0; j < numColumns; j++){
 			
@@ -102,11 +111,7 @@ public class View extends JPanel {
 		x += 10;
 		
 		
-		for (int i = 0; i < numRows; i++){
-			String text = Constants.mainNamesRow[i];
-			TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
-			g2D.drawString(textLabel.getTextLabel(), textLabel.getPosX(), textLabel.getPosY());
-		}
+		
 		
 	}
 	
