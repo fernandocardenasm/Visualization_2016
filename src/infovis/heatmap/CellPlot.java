@@ -62,7 +62,9 @@ public class CellPlot {
 	}
 
 	public double normalizeValue(double value, double min, double max){
-		return (value - min) / (max - min);
+		double normalValue = (value - min) / (max - min);
+		
+		return normalValue;
 	}
 	
 	// element position value on X axis in the screen
