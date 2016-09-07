@@ -4,16 +4,20 @@ public class TextPlot {
 	private String textLabel; //It is not unique, it is used to know which RectanglePlot belongs to a car object
 	private int posX; //It is X real position on Screen
 	private int posY;
+	int posJ;
+	private int idReference;
 	private String status;
 	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
 	
-	public TextPlot(String textLabel, int posX, int posY, boolean isMain) {
+	public TextPlot(String textLabel, int posX, int posY, boolean isMain, int idReference, int posJ) {
 		super();
 		this.textLabel = textLabel;
 		this.posX = posX;
 		this.posY = posY;
 		this.status = "OFF";
 		this.isMain = isMain;
+		this.idReference = idReference;
+		this.posJ = posJ;
 	}
 	public String getTextLabel() {
 		return textLabel;
@@ -42,6 +46,18 @@ public class TextPlot {
 	}
 	public String getStatus(){
 		return this.status;
+	}
+	public int getIdReference() {
+		return idReference;
+	}
+	public void setIdReference(int idReference) {
+		this.idReference = idReference;
+	}
+	public boolean isMain() {
+		return isMain;
+	}
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
 	}
 	
 	

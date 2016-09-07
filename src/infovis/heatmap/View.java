@@ -63,55 +63,48 @@ public class View extends JPanel {
 			this.initialized = true;
 		}
 		
-		for (CellPlot cell : model.getCells()) {
-			
-			
-			
-			// if element is selected, draw red
+		for(CellPlot cell: model.getCells()){
 			if (cell.getStatus().equals("ON") || cell.isMain == true){
 				g2D.setColor(cell.getColor());
-		        labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
-		        g2D.fill(labelRectangle);
-		        g2D.draw(labelRectangle);
-				//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
+				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
+				g2D.fill(labelRectangle);
+				g2D.draw(labelRectangle);
+			//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
 			} else {
-				// otherwise black
+			// otherwise black
 			}
-			
 		}
+		
 		
 		g2D.setColor(color);
 		
-		for (TextPlot label : model.getColumnLabels()) {
-			
-			// if element is selected, draw red
+		for(TextPlot label: model.getColumnLabels()){
 			if (label.getStatus().equals("ON") || label.isMain == true){
 				g2D.drawString(label.getTextLabel(), label.getPosX(), label.getPosY());
 				//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
 			} else {
 				// otherwise black
 			}
-			
 		}
 		
 	}
 	
 	public void initCellsAndLabels(int x, int y){
 		
-		Debug.p("Size: " + numColumns);
+		int intJ = 0;
 		
 		for (int j = 0; j < numColumns; j++){
 			
-			String label = model.getYears().get(0).getLabels().get(j);
+			String label = model.getYears().get(0).getLabels().get(j).toString();
 			
 			boolean isMain = false;
 			
 			
-			if (label.toString().equalsIgnoreCase("MH_EM") || label.toString().equalsIgnoreCase("MH_EW") || label.toString().equalsIgnoreCase("E_AM") || label.toString().equalsIgnoreCase("E_AW") || label.toString().equalsIgnoreCase("E_EM") || label.toString().equalsIgnoreCase("E_EW")){
+			if (label.equalsIgnoreCase("MH_EM") || label.equalsIgnoreCase("MH_EW") || label.equalsIgnoreCase("E_AM") || label.equalsIgnoreCase("E_AW") || label.equalsIgnoreCase("E_EM") || label.equalsIgnoreCase("E_EW")){
 				//Ignore these cases
 			}
 			else {
-				if (label.toString().equalsIgnoreCase("MH_E") || label.toString().equalsIgnoreCase("E_A") || label.toString().equalsIgnoreCase("E_E")){
+				if (label.equalsIgnoreCase("MH_E") || label.equalsIgnoreCase("E_A") || label.equalsIgnoreCase("E_E")){
 					Debug.p("label: " + label);
 					isMain = true;
 				}
@@ -119,17 +112,30 @@ public class View extends JPanel {
 					isMain = false;
 				}
 				
+				int caseIdColumn = 0;
+				
+				if (label.contains("MH_")){
+					caseIdColumn = 0;
+				}
+				else if (label.contains("E_A")){
+					caseIdColumn = 1;
+				}
+				else {
+					caseIdColumn = 2;
+				}
+				
+				Debug.p("case: " + caseIdColumn);
 					
 				for (int i = 0; i < numRows; i++) {
 					
 					//Ignore label related to Men and Women
 					
 					
-					CellPlot cell = new CellPlot(i, j, x, y + i*plotSizeHeight, isMain);
+					CellPlot cell = new CellPlot(i, caseIdColumn, x, y + i*plotSizeHeight, isMain, intJ);
 					
-					double min = model.getYears().get(0).getRanges().get(j).getMin();
-					double max = model.getYears().get(0).getRanges().get(j).getMax();
-					double value = model.getYears().get(0).getList().get(i).getValue(j);
+					double min = model.getYears().get(0).getRanges().get(intJ).getMin();
+					double max = model.getYears().get(0).getRanges().get(intJ).getMax();
+					double value = model.getYears().get(0).getList().get(i).getValue(intJ);
 					
 					double normalizedValue = cell.normalizeValue(value, min, max);
 					
@@ -138,18 +144,29 @@ public class View extends JPanel {
 					model.addCell(cell);
 					
 				}
-
 				
-				TextPlot textLabel = new TextPlot(label, x, y + 20 + numRows * plotSizeHeight, isMain);
+				TextPlot textLabel = new TextPlot(label, x, y + 20 + numRows * plotSizeHeight, isMain, caseIdColumn, intJ);
 				
 				model.addTextLabel(textLabel);
-
-				x += plotSizeWidth;
-				y = 20;
+				
+				if (isMain){
+					x += plotSizeWidth;
+					y = 20;
+				}
+				
+				intJ++;
 			}
 
 		}
-	} 
+	}
+	
+	public int getPlotSizeWidth(){
+		return plotSizeWidth;
+	}
+	
+	public int getPlotSizeHeight(){
+		return plotSizeHeight;
+	}
 	
 	@Override
 	public void update(Graphics g) {

@@ -24,8 +24,6 @@ public class Model {
 	private ArrayList<CellPlot> cells  = new ArrayList<CellPlot>();
 	private ArrayList<TextPlot> labels  = new ArrayList<TextPlot>();
 	
-	
-	
 	public ArrayList<CellPlot> getCells() {
 		return cells;
 	}
