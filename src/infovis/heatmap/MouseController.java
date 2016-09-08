@@ -34,10 +34,15 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		
 		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);
 		
-		int cont0 = 0;
-		int cont1 = 0; 
+		
+		
+		int posX2_1 = 0;
+		int posX2_2 = 0;
 		
 		for(CellPlot cell: model.getCells()){
+			
+			int cont0 = 0;
+			int cont1 = 0;
 			
 			rectangleTemp.setRect(cell.getPosX(), cell.getPosY(), view.getPlotSizeWidth(), view.getPlotSizeHeight());
 			if(rectangleTemp.contains(new Point2D.Double(e.getX(), e.getY()))){
@@ -69,7 +74,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 					//Debug.p("idColumns: " + inCell.idReference + " isMain: " + inCell.isMain + " I: " + inCell.regionId + "J: " + inCell.posJ + " case: " + caseAction);
 					
 					
-					if (inCell.idReference == idCell && inCell.isMain){
+					if (caseAction == 1 && inCell.idReference == idCell && inCell.isMain){
 						inCell.changeStatusToOn();
 					}
 					
@@ -118,42 +123,41 @@ public class MouseController implements MouseListener, MouseMotionListener {
 							//lastPosX += view.getPlotSizeWidth();
 						//}
 						
-						inCell.changeStatusToOff();
+						inCell.changeStatusToOff();						
 						model.getColumnLabels().get(inCell.posJ).changeStatusToOff();
-
+						
 					}
 					
+					
 					if (inCell.idReference == 0 && inCell.getStatus().equals("ON")){
-						//cont0++;
-						//Debug.p("SW0 idR: " + cell.idReference + " J: " + cell.posJ + "status: " + cell.getStatus());
+						cont0++;
+						//Debug.p("SW0 idR: " + inCell.idReference + " J: " + inCell.posJ + "main: " + inCell.isMain );
 					}
 
 					if (inCell.idReference == 1 && inCell.getStatus().equals("ON")){
-						//cont1++;
-						//Debug.p("SW0 idR: " + cell.idReference + " J: " + cell.posJ);
+						cont1++;
+						//Debug.p("SW1 idR: " + inCell.idReference + " J: " + inCell.posJ + "main: " + inCell.isMain );
 					}					
 					
 				}
 				
 				for (CellPlot visCell: model.getCells()){
 					
-					Debug.p("sw0: " + cont0);
-					Debug.p("sw1: " + cont1);
-
+					Debug.p("Cont0: " + cont0);
+					Debug.p("Cont1: " + cont1);
 					
 					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
 					}
-					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
+					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
 					}
-					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
+					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
 					}
-					
 					
 				}
 				
