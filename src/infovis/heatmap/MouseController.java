@@ -35,10 +35,6 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);
 		
 		
-		
-		int posX2_1 = 0;
-		int posX2_2 = 0;
-		
 		for(CellPlot cell: model.getCells()){
 			
 			int cont0 = 0;
@@ -90,7 +86,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						//Debug.p("J: " + inCell.posJ + " Id: " + inCell.idReference + " IsMain: " + inCell.isMain);
 						inCell.changeStatusToOn();
 						
-						//Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
+						Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
 						
 						model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
 						model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
@@ -143,20 +139,38 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				
 				for (CellPlot visCell: model.getCells()){
 					
-					Debug.p("Cont0: " + cont0);
-					Debug.p("Cont1: " + cont1);
+					//Debug.p("Cont0: " + cont0);
+					//Debug.p("Cont1: " + cont1);
 					
-					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1){
+					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1 && cont0 == 0 && cont1 == 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
+						Debug.p("Case0");
 					}
-					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2){
+					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1 && cont0 == 0 && cont1 != 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
+						Debug.p("Case1");
 					}
-					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2){
+					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
+						Debug.p("Case2");
+					}
+					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
+						visCell.returnElementToInit();
+						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
+						Debug.p("Case3");
+					}
+					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 !=0 && cont1 == 0){
+						visCell.posX = 740;
+						model.getColumnLabels().get(visCell.posJ).posX = visCell.posX;
+						Debug.p("Case5");
+					}
+					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 !=0 && cont1 != 0){
+						visCell.posX = 760;
+						model.getColumnLabels().get(visCell.posJ).posX = visCell.posX;
+						Debug.p("Case6");
 					}
 					
 				}
