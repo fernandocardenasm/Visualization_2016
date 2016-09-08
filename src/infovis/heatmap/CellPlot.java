@@ -11,6 +11,7 @@ public class CellPlot {
 	int posY;
 	private String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
 	private Color color;
+	int initPosX;
 	
 	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain, int posJ) {
 		super();
@@ -22,6 +23,7 @@ public class CellPlot {
 		this.status = "OFF";
 		this.isMain = isMain;
 		this.posJ = posJ;
+		this.initPosX = posX;
 		
 	}
 
@@ -49,7 +51,9 @@ public class CellPlot {
 		this.posY = posY;
 	}
 	
-	
+	public void returnElementToInit(){
+		this.posX = this.initPosX;
+	}
 	
 	public Color getColor() {
 		return color;

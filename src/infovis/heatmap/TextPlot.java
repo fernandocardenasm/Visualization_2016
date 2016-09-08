@@ -8,6 +8,7 @@ public class TextPlot {
 	private int idReference;
 	private String status;
 	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
+	int initPosX;
 	
 	public TextPlot(String textLabel, int posX, int posY, boolean isMain, int idReference, int posJ) {
 		super();
@@ -18,6 +19,7 @@ public class TextPlot {
 		this.isMain = isMain;
 		this.idReference = idReference;
 		this.posJ = posJ;
+		this.initPosX = posX;
 	}
 	public String getTextLabel() {
 		return textLabel;
@@ -60,5 +62,8 @@ public class TextPlot {
 		this.isMain = isMain;
 	}
 	
+	public void returnElementToInit(){
+		this.posX = this.initPosX;
+	}
 	
 }
