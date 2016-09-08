@@ -124,7 +124,7 @@ public class View extends JPanel {
 					caseIdColumn = 2;
 				}
 				
-				Debug.p("case: " + caseIdColumn);
+				//Debug.p("case: " + caseIdColumn);
 					
 				for (int i = 0; i < numRows; i++) {
 					

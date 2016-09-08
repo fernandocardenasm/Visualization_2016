@@ -2,7 +2,7 @@ package infovis.heatmap;
 
 public class TextPlot {
 	private String textLabel; //It is not unique, it is used to know which RectanglePlot belongs to a car object
-	private int posX; //It is X real position on Screen
+	int posX; //It is X real position on Screen
 	private int posY;
 	int posJ;
 	private int idReference;

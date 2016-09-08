@@ -45,46 +45,78 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				int x = cell.getPosX();
 				
 				if (cell.isMain && cell.getStatus().equals("OFF")){
-					caseAction = 0;
+					caseAction = 1;
+					idCell = cell.idReference;
+					x = cell.getPosX();
+					//Debug.p("idColumns: " + cell.idReference + " isMain: " + cell.isMain + " I: " + cell.regionId + "J: " + cell.posJ);
+
 				}
 				else if(cell.getStatus().equals("ON")){
-					caseAction = 1;
+					caseAction = 2;
 				}
 				
 				
+				int lastPosX = x;
+				int lastJ = 0;
 				
 				for (CellPlot inCell:model.getCells()){
+					
+					//Debug.p("idColumns: " + inCell.idReference + " isMain: " + inCell.isMain + " I: " + inCell.regionId + "J: " + inCell.posJ + " case: " + caseAction);
+					
+					
 					
 					if (inCell.idReference == idCell && inCell.isMain){
 						inCell.changeStatusToOn();
 					}
 					
-					if ((caseAction == 0 && inCell.idReference == idCell && inCell.isMain == false)){
-						inCell.posX = x + (inCell.posJ) * view.getPlotSizeWidth();
-						Debug.p("J: " + inCell.posJ + " Id: " + inCell.idReference + " IsMain: " + inCell.isMain);
+					if ((caseAction == 1 && inCell.idReference == idCell && inCell.isMain == false)){
+						
+						if (inCell.regionId == 0){
+							lastPosX += view.getPlotSizeWidth();
+						}
+						
+						Debug.p("idColumn: " + inCell.idReference + " posX: " + lastPosX + " posJ: " + inCell.posJ + " I: " + inCell.regionId + " initPos: " +x);
+						
+						inCell.posX = lastPosX;
+						//Debug.p("J: " + inCell.posJ + " Id: " + inCell.idReference + " IsMain: " + inCell.isMain);
 						inCell.changeStatusToOn();
+						
+						Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
+						
+						model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
+						model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
+
+						
 					}
 					
-					if (caseAction == 0 && inCell.idReference > idCell && inCell.getStatus().equals("ON")){
+					if (caseAction == 1 && inCell.idReference > idCell && inCell.getStatus().equals("ON")){
 						//inCell.posX = x + (inCell.posJ) * view.getPlotSizeWidth();
 						//Debug.p("J: " + inCell.posJ);
 					}
 					
-					else if(caseAction == 1 && inCell.idReference == idCell){
+					else if(caseAction == 2 && inCell.idReference == idCell){
 						inCell.changeStatusToOff();
 					}
 					
 				}
 				
+				/*
 				for (TextPlot label:model.getColumnLabels()){
-					if ((caseAction == 0 && label.getIdReference() == idCell && label.isMain == false) || (label.getIdReference() > idCell)){
-						label.setPosX(x + (label.posJ) * view.getPlotSizeWidth());
+					if ((caseAction == 1 && label.getIdReference() == idCell && label.isMain == false) || (label.getIdReference() > idCell)){
+						if (lastJ != label.posJ){
+							lastJ = label.posJ;
+							lastPosX += view.getPlotSizeWidth();
+						}
+						
+						label.posX = lastPosX + view.getPlotSizeWidth();
+						//Debug.p("J: " + inCell.posJ + " Id: " + inCell.idReference + " IsMain: " + inCell.isMain);
 						label.changeStatusToOn();
 					}
-					else if(caseAction == 1 && label.getIdReference() == idCell){
+					else if(caseAction == 2 && label.getIdReference() == idCell){
 						label.changeStatusToOff();
 					}
 				}
+				*/
 				
 				
 			}
