@@ -34,6 +34,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		
 		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);
 		
+		int cont0 = 0;
+		int cont1 = 0; 
+		
 		for(CellPlot cell: model.getCells()){
 			
 			rectangleTemp.setRect(cell.getPosX(), cell.getPosY(), view.getPlotSizeWidth(), view.getPlotSizeHeight());
@@ -44,6 +47,8 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				int idCell = cell.idReference;
 				int x = cell.getPosX();
 				
+
+				
 				if (cell.isMain && cell.getStatus().equals("OFF")){
 					caseAction = 1;
 					idCell = cell.idReference;
@@ -53,11 +58,11 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				}
 				else if(cell.getStatus().equals("ON")){
 					caseAction = 2;
+					idCell = cell.idReference;
+					x = cell.getPosX();
 				}
 				
 				int lastPosX = x;
-				int sw0 = 0;
-				int sw1 = 0;
 				
 				for (CellPlot inCell:model.getCells()){
 					
@@ -107,7 +112,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						
 					}
 					
-					else if(caseAction == 2 && inCell.idReference == idCell){
+					if(caseAction == 2 && inCell.idReference == idCell){
 						
 						//if (inCell.regionId == 0){
 							//lastPosX += view.getPlotSizeWidth();
@@ -118,36 +123,38 @@ public class MouseController implements MouseListener, MouseMotionListener {
 
 					}
 					
-					if (cell.idReference == 0 && cell.getStatus().equals("ON")){
-						sw0 = 1;
-						//Debug.p("SW0 idR: " + cell.idReference + " J: " + cell.posJ);
+					if (inCell.idReference == 0 && inCell.getStatus().equals("ON")){
+						//cont0++;
+						//Debug.p("SW0 idR: " + cell.idReference + " J: " + cell.posJ + "status: " + cell.getStatus());
 					}
-					if (cell.idReference == 1 && cell.getStatus().equals("ON")){
-						sw1 = 1;
+
+					if (inCell.idReference == 1 && inCell.getStatus().equals("ON")){
+						//cont1++;
 						//Debug.p("SW0 idR: " + cell.idReference + " J: " + cell.posJ);
-					}
-					
+					}					
 					
 				}
 				
 				for (CellPlot visCell: model.getCells()){
 					
-					Debug.p("sw0: " + sw0);
-					Debug.p("sw1: " + sw0);
+					Debug.p("sw0: " + cont0);
+					Debug.p("sw1: " + cont1);
+
 					
 					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
 					}
-					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2 && sw0 == 0 && sw1 == 0){
+					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
 					}
-					/*if (caseAction == 2 && idCell == 1 && inCell.idReference == 2 && sw0 == 0 && sw1 == 1){
-						inCell.returnElementToInit();
-						model.getColumnLabels().get(inCell.posJ).returnElementToInit();
+					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
+						visCell.returnElementToInit();
+						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
 					}
-					*/
+					
+					
 				}
 				
 				
