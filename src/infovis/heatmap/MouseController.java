@@ -64,7 +64,6 @@ public class MouseController implements MouseListener, MouseMotionListener {
 					//Debug.p("idColumns: " + inCell.idReference + " isMain: " + inCell.isMain + " I: " + inCell.regionId + "J: " + inCell.posJ + " case: " + caseAction);
 					
 					
-					
 					if (inCell.idReference == idCell && inCell.isMain){
 						inCell.changeStatusToOn();
 					}
@@ -88,7 +87,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 
 					}
 					
-					int lastPosX0 = 0;
+					/*int lastPosX0 = 0;
 					int lastPosJ0 = 0;
 					int lastPosX1 = 0;
 					int lastPosJ1 = 0;
@@ -102,6 +101,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						lastPosX1 = inCell.posX + view.getPlotSizeWidth();
 						lastPosJ1 = inCell.posJ;
 					}
+					*/
 					
 					
 					if (caseAction == 1 && ((inCell.idReference > idCell && inCell.getStatus().equals("ON")) || inCell.isMain)){
