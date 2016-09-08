@@ -163,7 +163,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						Debug.p("Case3");
 					}
 					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 !=0 && cont1 == 0){
-						visCell.posX = 740;
+						visCell.posX = 760;
 						model.getColumnLabels().get(visCell.posJ).posX = visCell.posX;
 						Debug.p("Case5");
 					}
