@@ -81,21 +81,67 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						//Debug.p("J: " + inCell.posJ + " Id: " + inCell.idReference + " IsMain: " + inCell.isMain);
 						inCell.changeStatusToOn();
 						
-						Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
+						//Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
 						
 						model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
 						model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
 
-						
 					}
 					
-					if (caseAction == 1 && inCell.idReference > idCell && inCell.getStatus().equals("ON")){
+					int lastPosX0 = 0;
+					int lastPosJ0 = 0;
+					int lastPosX1 = 0;
+					int lastPosJ1 = 0;
+					
+					if (inCell.regionId == 0 && inCell.idReference == 0){
+						lastPosX0 = inCell.posX + view.getPlotSizeWidth();
+						lastPosJ0 = inCell.posJ;
+					}
+					
+					if (inCell.regionId == 0 && inCell.idReference == 1){
+						lastPosX1 = inCell.posX + view.getPlotSizeWidth();
+						lastPosJ1 = inCell.posJ;
+					}
+					
+					
+					if (caseAction == 1 && ((inCell.idReference > idCell && inCell.getStatus().equals("ON")) || inCell.isMain)){
 						//inCell.posX = x + (inCell.posJ) * view.getPlotSizeWidth();
 						//Debug.p("J: " + inCell.posJ);
+						
+						/*
+						if (inCell.posJ - 1 == lastPosJ0 && inCell.idReference == 1){
+							
+							if (inCell.regionId == 0){
+								lastPosJ0 = inCell.posJ;
+								lastPosX0 += view.getPlotSizeWidth();
+							}
+							
+							inCell.posX = lastPosX0;
+							
+							model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
+							model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
+						}
+						
+						if (inCell.posJ - 1 == lastPosJ1 && inCell.idReference == 2){
+							
+							if (inCell.regionId == 0){
+								lastPosJ1 = inCell.posJ;
+								lastPosX1 += view.getPlotSizeWidth();
+							}
+							
+							inCell.posX = lastPosX1;
+							
+							model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
+							model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
+						}
+						*/
+						
 					}
 					
 					else if(caseAction == 2 && inCell.idReference == idCell){
 						inCell.changeStatusToOff();
+						model.getColumnLabels().get(inCell.posJ).changeStatusToOff();
+
 					}
 					
 				}
