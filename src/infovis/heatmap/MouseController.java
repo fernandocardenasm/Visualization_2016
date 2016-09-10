@@ -29,7 +29,6 @@ public class MouseController implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		Debug.p(initPosX + "");
 		
 		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);

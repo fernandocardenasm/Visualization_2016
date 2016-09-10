@@ -3,6 +3,8 @@ package infovis.gui;
 import infovis.debug.Debug;
 import infovis.diagram.Diagram;
 import infovis.diagram.MenuController;
+import infovis.heatmap.CellPlot;
+import infovis.heatmap.Model;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -569,58 +571,68 @@ public class GUI {
 		
 		for (int i = 0; i < districtsPolygons.getLength(); i++){
 			EventTarget district = (EventTarget) districtsPolygons.item(i);
-			district.addEventListener("mousedown", new OnClickListener(i), false);
-			
 			// Assign a color to the polygons of each district
 			Element polygon = (Element) districtsPolygons.item(i);
 			
 			switch(i){
 			case 0: case 14: case 50: case 58: case 60: case 78: case 80:
 				// Charlottenburg-Wilmersdorf
+				district.addEventListener("mousedown", new OnClickListener(i, 3), false);
 				polygon.setAttribute("fill", districtColors[3]);
 				break;
 			case 1: case 7: case 8: case 26: case 35: case 52: case 53: case 59: case 95:
 				// Spandau
+				district.addEventListener("mousedown", new OnClickListener(i, 4), false);
 				polygon.setAttribute("fill", districtColors[8]);
 				break;
 			case 2: case 11: case 33: case 37: case 39: case 62: case 65: case 68: case 72: case 83: case 90: case 94: case 102:
 				// Pankow
+				district.addEventListener("mousedown", new OnClickListener(i, 2), false);
 				polygon.setAttribute("fill", districtColors[7]);
 				break;
 			case 3: case 4: case 9: case 13: case 27: case 30: case 32: case 40: case 46: case 61: case 67: case 69: case 81: case 91: case 92:
 				// Treptow-Koepenick
+				district.addEventListener("mousedown", new OnClickListener(i, 8), false);
 				polygon.setAttribute("fill", districtColors[6]);
 				break;
 			case 5: case 19: case 20: case 23: case 24: case 42: case 70:
 				// Steglitz-Zehlendorf
+				district.addEventListener("mousedown", new OnClickListener(i, 5), false);
 				polygon.setAttribute("fill", districtColors[4]);
 				break;
 			case 6: case 16: case 21: case 31: case 45: case 51:
 				// Mitte
+				district.addEventListener("mousedown", new OnClickListener(i, 0), false);
 				polygon.setAttribute("fill", districtColors[11]);
 				break;
 			case 10: case 15: case 25: case 41: case 56: case 57: case 66: case 73: case 79: case 84:
 				// Reinickendorf
+				district.addEventListener("mousedown", new OnClickListener(i, 11), false);
 				polygon.setAttribute("fill", districtColors[0]);
 				break;
 			case 12: case 17: case 29: case 47: case 54: case 87:
 				// Neukoelln
+				district.addEventListener("mousedown", new OnClickListener(i, 7), false);
 				polygon.setAttribute("fill", districtColors[10]);
 				break;
 			case 18: case 63:
 				// Friedrichshain-Kreuzberg
+				district.addEventListener("mousedown", new OnClickListener(i, 1), false);
 				polygon.setAttribute("fill", districtColors[5]);
 				break;
 			case 28: case 34: case 36: case 43: case 76: case 85: case 86: case 89: case 100: case 101:
 				// Lichtenberg
+				district.addEventListener("mousedown", new OnClickListener(i, 10), false);
 				polygon.setAttribute("fill", districtColors[2]);
 				break;
 			case 44: case 55: case 71: case 77: case 88: case 93:
 				// Tempelhof-Schoeneberg
+				district.addEventListener("mousedown", new OnClickListener(i, 6), false);
 				polygon.setAttribute("fill", districtColors[9]);
 				break;
 			case 74: case 96: case 97: case 98: case 99:
 				// Marzahn-Hellersdorf
+				district.addEventListener("mousedown", new OnClickListener(i, 9), false);
 				polygon.setAttribute("fill", districtColors[1]);
 				break;
 			default:
@@ -632,16 +644,25 @@ public class GUI {
 	public class OnClickListener implements EventListener {
 
 		private int polygonID;
-		// should add the regionID here
+		private int districtID;
 		
-		public OnClickListener(int polygonID) {
+		public OnClickListener(int polygonID, int districtID) {
 			super();
 			this.polygonID = polygonID;
+			this.districtID = districtID;
 		}
 
 		@Override
 		public void handleEvent(org.w3c.dom.events.Event arg0) {
-			Debug.println("District polygon clicked: " + polygonID);
+			Debug.println("District " + districtID + " clicked on map");
+			if (showMap) {
+				for(CellPlot cell: Model.getModelInstance().getCells()){
+					if (cell.getId() == districtID){
+						cell.setSelected(true);
+					}
+				}
+				view.repaint();
+			}
 		}
 	}
 }

@@ -15,14 +15,21 @@ import infovis.scatterplot.Range;
 
 public class Model {
 	
+	private static Model model = null;
 	private ArrayList<YearData> years = new ArrayList<YearData>();
+	private ArrayList<CellPlot> cells  = new ArrayList<CellPlot>();
+	private ArrayList<TextPlot> labels  = new ArrayList<TextPlot>();
+	
+	public static Model getModelInstance(){
+		if(model == null){
+			model = new Model();
+		}
+		return model;
+	}
 	
 	public ArrayList<YearData> getYears() {
 		return years;
 	}
-	
-	private ArrayList<CellPlot> cells  = new ArrayList<CellPlot>();
-	private ArrayList<TextPlot> labels  = new ArrayList<TextPlot>();
 	
 	public ArrayList<CellPlot> getCells() {
 		return cells;
@@ -46,7 +53,16 @@ public class Model {
 
 	public Model(){
 		readFile("EWR_2007.csv", 2007);
-		//readFile("berlin2008.csv", 2008);
+		// Other years
+		readFile("EWR_2008.csv", 2008);
+		readFile("EWR_2009.csv", 2009);
+		readFile("EWR_2010.csv", 2010);
+		readFile("EWR_2011.csv", 2011);
+		readFile("EWR_2012.csv", 2012);
+		readFile("EWR_2013.csv", 2013);
+		// unfortunately, the 2014 data has inconsistencies
+		readFile("EWR_2015.csv", 2015);
+		
 		
 		Debug.println("All year data saved:");
 		for (YearData year: years){

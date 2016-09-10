@@ -22,7 +22,7 @@ public class Heatmap {
 	}
 	
 	private void generateHeatmap() {
-		model = new Model();
+		model = Model.getModelInstance();
 		view = new View();
 		controller = new MouseController();
 		

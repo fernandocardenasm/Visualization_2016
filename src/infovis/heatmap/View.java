@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import infovis.debug.Debug;
 import infovis.scatterplot.RectanglePlot;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 
@@ -38,20 +39,22 @@ public class View extends JPanel {
 		//int minPeople = model.getYears().get(0).getRanges()
 		
 		int x = 10;
-		int y = 20 + plotSizeHeight;
+		int y = 20 + plotSizeHeight + offSetY;
 		int cont = 0;
 		
 		g2D.clearRect(0, 0, getWidth(), getHeight());
-		g2D.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+		g2D.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		x = 10;
-		y = 20;
+		y = 20 + offSetY;
 		
 		numRows = Constants.mainNamesRow.length;
 		numColumns = model.getYears().get(0).getLabels().size();
 		
+		// Writing district names
 		for (int i = 0; i < numRows; i++){
 			String text = Constants.mainNamesRow[i];
+			//Debug.println(text); // maybe put in bold letters the selected one?
 			//TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
 			g2D.drawString(text, x, y + 20 + i * plotSizeHeight);
 		}
@@ -59,29 +62,34 @@ public class View extends JPanel {
 		x += plotSizeWidth + 30;
 		
 		if (!this.initialized){
-			initCellsAndLabels(x, y);
+			initCellsAndLabels(x, y, 0); // 0 indicates first year, change value for showing a different year
 			this.initialized = true;
 		}
 		
+		// drawing heatmap grid, each cell is a rectangle
 		for(CellPlot cell: model.getCells()){
 			if (cell.getStatus().equals("ON") || cell.isMain == true){
 				g2D.setColor(cell.getColor());
+				if (cell.isSelected()) {
+					g2D.setStroke(new BasicStroke(4.0f));
+				} else {
+					g2D.setStroke(new BasicStroke(1.0f));
+				}
+				// Debug.println("columna = " + cell.getId()); from 0 to 11
 				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
 				g2D.fill(labelRectangle);
 				g2D.draw(labelRectangle);
-			//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
 			} else {
 			// otherwise black
 			}
 		}
 		
-		
 		g2D.setColor(color);
 		
+		// writing variable names under the grid
 		for(TextPlot label: model.getColumnLabels()){
 			if (label.getStatus().equals("ON") || label.isMain == true){
 				g2D.drawString(label.getTextLabel(), label.getPosX(), label.getPosY());
-				//Debug.p("selected id: " + e.id + " (X: " + e.posX + " Y: " + e.posY + ") status: " + e.getStatus());
 			} else {
 				// otherwise black
 			}
@@ -89,21 +97,22 @@ public class View extends JPanel {
 		
 	}
 	
-	public void initCellsAndLabels(int x, int y){
+	// Creating the heatmap grid and saving to the model, according to year data
+	public void initCellsAndLabels(int x, int y, int year){
 		
 		int intJ = 0;
 		
 		for (int j = 0; j < numColumns; j++){
 			
-			String label = model.getYears().get(0).getLabels().get(j).toString();
-			
+			String label = model.getYears().get(year).getLabels().get(j).toString();
 			boolean isMain = false;
 			
-			
-			if (label.equalsIgnoreCase("MH_EM") || label.equalsIgnoreCase("MH_EW") || label.equalsIgnoreCase("E_AM") || label.equalsIgnoreCase("E_AW") || label.equalsIgnoreCase("E_EM") || label.equalsIgnoreCase("E_EW")){
-				//Ignore these cases
+			if (label.equalsIgnoreCase("MH_EM") || label.equalsIgnoreCase("MH_EW") || label.equalsIgnoreCase("E_AM") ||
+					label.equalsIgnoreCase("E_AW") || label.equalsIgnoreCase("E_EM") || label.equalsIgnoreCase("E_EW")){
+				// Ignore these cases: maennlich and weiblich
 			}
 			else {
+				// 3 main labels, always present
 				if (label.equalsIgnoreCase("MH_E") || label.equalsIgnoreCase("E_A") || label.equalsIgnoreCase("E_E")){
 					Debug.p("label: " + label);
 					isMain = true;
@@ -114,6 +123,7 @@ public class View extends JPanel {
 				
 				int caseIdColumn = 0;
 				
+				// columns: 1 = MH_E, 2 = E_A, 3 = E_E
 				if (label.contains("MH_")){
 					caseIdColumn = 0;
 				}
@@ -123,35 +133,32 @@ public class View extends JPanel {
 				else {
 					caseIdColumn = 2;
 				}
-				
 				//Debug.p("case: " + caseIdColumn);
 					
 				for (int i = 0; i < numRows; i++) {
-					
-					//Ignore label related to Men and Women
-					
-					
+
+					// i = row, each row = each district
 					CellPlot cell = new CellPlot(i, caseIdColumn, x, y + i*plotSizeHeight, isMain, intJ);
 					
-					double min = model.getYears().get(0).getRanges().get(intJ).getMin();
-					double max = model.getYears().get(0).getRanges().get(intJ).getMax();
-					double value = model.getYears().get(0).getList().get(i).getValue(intJ);
+					// assign cell color according to numerical value
+					double min = model.getYears().get(year).getRanges().get(intJ).getMin();
+					double max = model.getYears().get(year).getRanges().get(intJ).getMax();
+					double value = model.getYears().get(year).getList().get(i).getValue(intJ);
 					
 					double normalizedValue = cell.normalizeValue(value, min, max);
-					
 					cell.setColorInterpolation(normalizedValue);
 					
 					model.addCell(cell);
-					
 				}
 				
+				// all variable names
+				// TODO: we should substitute the variable names for normal words when showing
 				TextPlot textLabel = new TextPlot(label, x, y + 20 + numRows * plotSizeHeight, isMain, caseIdColumn, intJ);
-				
 				model.addTextLabel(textLabel);
 				
 				if (isMain){
 					x += plotSizeWidth;
-					y = 20;
+					y = 20  + offSetY;
 				}
 				
 				intJ++;
