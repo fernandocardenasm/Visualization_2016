@@ -217,29 +217,45 @@ public class View extends JPanel {
 	}
 
 	public void drawLegend(Graphics2D g2D){
-		g2D.setColor(getColorCellLegend(0.3));
+		g2D.setColor(getColorCellLegend(0.0));
 		labelRectangle.setRect(20, 460, 60, 20);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
 		
 		g2D.setColor(color);
-		g2D.drawString("" + (int) max * 0.3 , 20, 500);
+		g2D.drawString(">= 0" + (int) 0 , 20, 500);
 		
-		g2D.setColor(getColorCellLegend(0.6));
+		g2D.setColor(getColorCellLegend(0.2));
 		labelRectangle.setRect(80, 460, 60, 20);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
 		
 		g2D.setColor(color);
-		g2D.drawString("" + (int) max * 0.6 , 80, 500);
+		g2D.drawString(">=" + (int) max * 0.2 , 80, 500);
 		
-		g2D.setColor(getColorCellLegend(0.99));
+		g2D.setColor(getColorCellLegend(0.4));
 		labelRectangle.setRect(140, 460, 60, 20);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
 		
 		g2D.setColor(color);
-		g2D.drawString("" + (int) max * 0.6 , 140, 500);
+		g2D.drawString(">=" + (int) max * 0.4 , 140, 500);
+		
+		g2D.setColor(getColorCellLegend(0.6));
+		labelRectangle.setRect(200, 460, 60, 20);
+		g2D.fill(labelRectangle);
+		g2D.draw(labelRectangle);
+		
+		g2D.setColor(color);
+		g2D.drawString(">=" + (int) max * 0.6 , 200, 500);
+		
+		g2D.setColor(getColorCellLegend(0.8));
+		labelRectangle.setRect(260, 460, 60, 20);
+		g2D.fill(labelRectangle);
+		g2D.draw(labelRectangle);
+		
+		g2D.setColor(color);
+		g2D.drawString(">=" + (int) max * 0.6 , 260, 500);
 	}
 	
 	public int getPlotSizeWidth(){
