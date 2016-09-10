@@ -2,13 +2,24 @@ package infovis.heatmap;
 
 public class TextPlot {
 	private String textLabel; //It is not unique, it is used to know which RectanglePlot belongs to a car object
-	private int posX; //It is X real position on Screen
+	int posX; //It is X real position on Screen
 	private int posY;
-	public TextPlot(String textLabel, int posX, int posY) {
+	int posJ;
+	private int idReference;
+	private String status;
+	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
+	int initPosX;
+	
+	public TextPlot(String textLabel, int posX, int posY, boolean isMain, int idReference, int posJ) {
 		super();
 		this.textLabel = textLabel;
 		this.posX = posX;
 		this.posY = posY;
+		this.status = "OFF";
+		this.isMain = isMain;
+		this.idReference = idReference;
+		this.posJ = posJ;
+		this.initPosX = posX;
 	}
 	public String getTextLabel() {
 		return textLabel;
@@ -29,6 +40,30 @@ public class TextPlot {
 		this.posY = posY;
 	}
 	
+	public void changeStatusToOn(){
+		this.status = "ON";
+	}
+	public void changeStatusToOff(){
+		this.status = "OFF";
+	}
+	public String getStatus(){
+		return this.status;
+	}
+	public int getIdReference() {
+		return idReference;
+	}
+	public void setIdReference(int idReference) {
+		this.idReference = idReference;
+	}
+	public boolean isMain() {
+		return isMain;
+	}
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
+	}
 	
+	public void returnElementToInit(){
+		this.posX = this.initPosX;
+	}
 	
 }

@@ -20,6 +20,25 @@ public class Model {
 	public ArrayList<YearData> getYears() {
 		return years;
 	}
+	
+	private ArrayList<CellPlot> cells  = new ArrayList<CellPlot>();
+	private ArrayList<TextPlot> labels  = new ArrayList<TextPlot>();
+	
+	public ArrayList<CellPlot> getCells() {
+		return cells;
+	}
+	
+	public void addCell(CellPlot cell){
+		cells.add(cell);
+	}
+
+	public ArrayList<TextPlot> getColumnLabels() {
+		return labels;
+	}
+	
+	public void addTextLabel(TextPlot label){
+		labels.add(label);
+	}
 
 	public void setYears(ArrayList<YearData> years) {
 		this.years = years;
@@ -54,7 +73,7 @@ public class Model {
 			// probably should take out the " characters when they appear or pre-modify the data files with R
 			year.setLabels(labels);
 			
-			 int offset = 1; // BEZ Values are ignored
+			 int offset = 0; // BEZ Values were deleted, but it is logical ordered from 1 to 12.
 			// prepare ranges
 			 double lowRanges [] = new double[l.length-offset];
 			 for (int i = 0; i < lowRanges.length; i++) lowRanges[i] = Double.MAX_VALUE;

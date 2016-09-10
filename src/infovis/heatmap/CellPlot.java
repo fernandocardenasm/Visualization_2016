@@ -4,22 +4,26 @@ import java.awt.Color;
 
 public class CellPlot {
 	int regionId; //It is not unique, it is used to know which RectanglePlot belongs to a car object
-	int idReference; // 0: E_E (alle einwohner), 1: E_A (ausländer), 2: MH_E (einwohner mit migrationshintergrund) 
+	int idReference; // Only 3.
+	int posJ;
 	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
 	int posX; //It is X real position on Screen
 	int posY;
 	private String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
 	private Color color;
+	int initPosX;
 	
-	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain) {
+	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain, int posJ) {
 		super();
-		this.regionId = regionId;
-		this.idReference = idReference;
+		this.regionId = regionId; // Id for the Row. //A row sub i has only 1 id.
+		this.idReference = idReference; //
 		this.posX = posX;
 		this.posY = posY;
 		this.color = Color.black;
 		this.status = "OFF";
 		this.isMain = isMain;
+		this.posJ = posJ;
+		this.initPosX = posX;
 		
 	}
 
@@ -47,7 +51,9 @@ public class CellPlot {
 		this.posY = posY;
 	}
 	
-	
+	public void returnElementToInit(){
+		this.posX = this.initPosX;
+	}
 	
 	public Color getColor() {
 		return color;
