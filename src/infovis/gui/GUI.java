@@ -639,6 +639,8 @@ public class GUI {
 				break;
 			}
 		}
+		EventTarget targetRectangle = (EventTarget) rectangle;
+		targetRectangle.addEventListener("mousedown", new UnselectOnClickListener(), false);
 	}
 	
 	public class OnClickListener implements EventListener {
@@ -664,5 +666,21 @@ public class GUI {
 				view.repaint();
 			}
 		}
+	}
+	
+	public class UnselectOnClickListener implements EventListener {
+
+		@Override
+		public void handleEvent(org.w3c.dom.events.Event arg0) {
+			// unselect all cells
+			if (showMap) {
+				for(CellPlot cell: Model.getModelInstance().getCells()){
+					cell.setSelected(false);
+				}
+				view.repaint();
+			}
+			
+		}
+		
 	}
 }
