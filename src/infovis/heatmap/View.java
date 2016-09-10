@@ -70,9 +70,8 @@ public class View extends JPanel {
 		if (!this.initialized){
 			initCellsAndLabels(x, y, yearSelection); // 0 indicates first year, change value for showing a different year
 			this.initialized = true;
-			
-			drawLegend(g2D);
 		}
+		drawLegend(g2D);
 		
 		// drawing heatmap grid, each cell is a rectangle
 		for(CellPlot cell: model.getCells()){
@@ -83,7 +82,7 @@ public class View extends JPanel {
 				} else {
 					g2D.setStroke(new BasicStroke(1.0f));
 				}
-				// Debug.println("columna = " + cell.getId()); from 0 to 11
+				// cell.getId from 0 to 11
 				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
 				g2D.fill(labelRectangle);
 				g2D.draw(labelRectangle);
@@ -152,14 +151,13 @@ public class View extends JPanel {
 				for (int i = 0; i < numRows; i++) {
 
 					// i = row, each row = each district
-					CellPlot cell = new CellPlot(i, caseIdColumn, x, y + i*plotSizeHeight, isMain, intJ);
+					CellPlot cell = new CellPlot(i, caseIdColumn, x, y + i * plotSizeHeight, isMain, intJ);
 					
 					// assign cell color according to numerical value
-					
 					double value = model.getYears().get(year).getList().get(i).getValue(intJ);
 					
 					double normalizedValue = cell.normalizeValue(value, min, max);
-					Debug.p("No Value: " + normalizedValue);
+					Debug.p("Normalized Value: " + normalizedValue);
 					cell.setColorInterpolation(normalizedValue);
 					
 					model.addCell(cell);
@@ -174,88 +172,84 @@ public class View extends JPanel {
 					x += plotSizeWidth;
 					y = 20  + offSetY;
 				}
-				
 				intJ++;
 			}
 
 		}
 	}
 	
+	// get maximum global value on a specific year data
 	public double getMaxRange(int year){
 		
 		double max = Double.NEGATIVE_INFINITY;
 		
 		for (int j = 0; j < numColumns; j++){
 			double valueMax = model.getYears().get(year).getRanges().get(j).getMax();
-			
 			if (valueMax > max){
 				max = valueMax;
 			}
 		}
-		
 		return max;
-		
 	}
 	
+	// get minimum global value on a specific year data
 	public double getMinRange(int year){
 		
 		double min = Double.POSITIVE_INFINITY;
 		
 		for (int j = 0; j < numColumns; j++){
 			double valueMin = model.getYears().get(year).getRanges().get(j).getMin();
-			
 			if (valueMin < min){
 				min = valueMin;
 			}
 		}
-		
 		return min;
 	}
 	
 	public Color getColorCellLegend(double normalizedValue) {
-	    return new Color(0,0,255, (int)(normalizedValue * 255));
+	    return new Color(0, 0, 255, (int)(normalizedValue * 255));
 	}
 
 	public void drawLegend(Graphics2D g2D){
+		int width = 100;
+		int height = 20;
+		
+		// With a gradient range, how to do a proper color legend? 
+		
 		g2D.setColor(getColorCellLegend(0.0));
-		labelRectangle.setRect(20, 460, 60, 20);
+		labelRectangle.setRect(20, 460, width, height);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
-		
 		g2D.setColor(color);
-		g2D.drawString(">= 0" + (int) 0 , 20, 500);
+		g2D.drawString(">= 0" + (int) 0, 20, 500);
 		
 		g2D.setColor(getColorCellLegend(0.2));
-		labelRectangle.setRect(80, 460, 60, 20);
+		labelRectangle.setRect(120, 460, width, height);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
-		
 		g2D.setColor(color);
-		g2D.drawString(">=" + (int) max * 0.2 , 80, 500);
+		g2D.drawString(">=" + (int) max * 0.2, 120, 500);
 		
 		g2D.setColor(getColorCellLegend(0.4));
-		labelRectangle.setRect(140, 460, 60, 20);
+		labelRectangle.setRect(220, 460, width, height);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
-		
 		g2D.setColor(color);
-		g2D.drawString(">=" + (int) max * 0.4 , 140, 500);
+		g2D.drawString(">=" + (int) max * 0.4, 220, 500);
 		
 		g2D.setColor(getColorCellLegend(0.6));
-		labelRectangle.setRect(200, 460, 60, 20);
+		labelRectangle.setRect(320, 460, width, height);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
-		
 		g2D.setColor(color);
-		g2D.drawString(">=" + (int) max * 0.6 , 200, 500);
+		g2D.drawString(">=" + (int) max * 0.6, 320, 500);
 		
 		g2D.setColor(getColorCellLegend(0.8));
-		labelRectangle.setRect(260, 460, 60, 20);
+		labelRectangle.setRect(420, 460, width, height);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
-		
 		g2D.setColor(color);
-		g2D.drawString(">=" + (int) max * 0.6 , 260, 500);
+		g2D.drawString(">=" + (int) max * 0.6 , 420, 500);
 	}
 	
 	public int getPlotSizeWidth(){

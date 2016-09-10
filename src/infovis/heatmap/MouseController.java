@@ -144,32 +144,32 @@ public class MouseController implements MouseListener, MouseMotionListener {
 					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1 && cont0 == 0 && cont1 == 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
-						Debug.p("Case0");
+						//Debug.p("Case0");
 					}
 					if (caseAction == 2 && idCell == 0 && visCell.idReference == 1 && cont0 == 0 && cont1 != 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
-						Debug.p("Case1");
+						//Debug.p("Case1");
 					}
 					if (caseAction == 2 && idCell == 0 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
-						Debug.p("Case2");
+						//Debug.p("Case2");
 					}
 					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 == 0 && cont1 == 0){
 						visCell.returnElementToInit();
 						model.getColumnLabels().get(visCell.posJ).returnElementToInit();
-						Debug.p("Case3");
+						//Debug.p("Case3");
 					}
 					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 !=0 && cont1 == 0){
 						visCell.posX = 760;
 						model.getColumnLabels().get(visCell.posJ).posX = visCell.posX;
-						Debug.p("Case5");
+						//Debug.p("Case5");
 					}
 					if (caseAction == 2 && idCell == 1 && visCell.idReference == 2 && cont0 !=0 && cont1 != 0){
 						visCell.posX = 760;
 						model.getColumnLabels().get(visCell.posJ).posX = visCell.posX;
-						Debug.p("Case6");
+						//Debug.p("Case6");
 					}
 					
 				}
