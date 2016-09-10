@@ -30,6 +30,10 @@ public class View extends JPanel {
  	 
  	int numRows;
 	int numColumns;
+	int yearSelection = 0;
+	
+	double min = 0;
+	double max = 0;
 	
 	@Override
 	public void paint(Graphics g) {
@@ -49,7 +53,9 @@ public class View extends JPanel {
 		y = 20 + offSetY;
 		
 		numRows = Constants.mainNamesRow.length;
-		numColumns = model.getYears().get(0).getLabels().size();
+		numColumns = model.getYears().get(yearSelection).getLabels().size();
+		
+		Debug.p("Num Columns: " + numColumns);
 		
 		// Writing district names
 		for (int i = 0; i < numRows; i++){
@@ -62,8 +68,10 @@ public class View extends JPanel {
 		x += plotSizeWidth + 30;
 		
 		if (!this.initialized){
-			initCellsAndLabels(x, y, 0); // 0 indicates first year, change value for showing a different year
+			initCellsAndLabels(x, y, yearSelection); // 0 indicates first year, change value for showing a different year
 			this.initialized = true;
+			
+			drawLegend(g2D);
 		}
 		
 		// drawing heatmap grid, each cell is a rectangle
@@ -101,6 +109,12 @@ public class View extends JPanel {
 	public void initCellsAndLabels(int x, int y, int year){
 		
 		int intJ = 0;
+		
+		min = getMinRange(year);
+		max = getMaxRange(year);
+		
+		Debug.p("Max Value: " + max);
+		Debug.p("Min Value: " + min);
 		
 		for (int j = 0; j < numColumns; j++){
 			
@@ -141,11 +155,11 @@ public class View extends JPanel {
 					CellPlot cell = new CellPlot(i, caseIdColumn, x, y + i*plotSizeHeight, isMain, intJ);
 					
 					// assign cell color according to numerical value
-					double min = model.getYears().get(year).getRanges().get(intJ).getMin();
-					double max = model.getYears().get(year).getRanges().get(intJ).getMax();
+					
 					double value = model.getYears().get(year).getList().get(i).getValue(intJ);
 					
 					double normalizedValue = cell.normalizeValue(value, min, max);
+					Debug.p("No Value: " + normalizedValue);
 					cell.setColorInterpolation(normalizedValue);
 					
 					model.addCell(cell);
@@ -165,6 +179,67 @@ public class View extends JPanel {
 			}
 
 		}
+	}
+	
+	public double getMaxRange(int year){
+		
+		double max = Double.NEGATIVE_INFINITY;
+		
+		for (int j = 0; j < numColumns; j++){
+			double valueMax = model.getYears().get(year).getRanges().get(j).getMax();
+			
+			if (valueMax > max){
+				max = valueMax;
+			}
+		}
+		
+		return max;
+		
+	}
+	
+	public double getMinRange(int year){
+		
+		double min = Double.POSITIVE_INFINITY;
+		
+		for (int j = 0; j < numColumns; j++){
+			double valueMin = model.getYears().get(year).getRanges().get(j).getMin();
+			
+			if (valueMin < min){
+				min = valueMin;
+			}
+		}
+		
+		return min;
+	}
+	
+	public Color getColorCellLegend(double normalizedValue) {
+	    return new Color(0,0,255, (int)(normalizedValue * 255));
+	}
+
+	public void drawLegend(Graphics2D g2D){
+		g2D.setColor(getColorCellLegend(0.3));
+		labelRectangle.setRect(20, 460, 60, 20);
+		g2D.fill(labelRectangle);
+		g2D.draw(labelRectangle);
+		
+		g2D.setColor(color);
+		g2D.drawString("" + (int) max * 0.3 , 20, 500);
+		
+		g2D.setColor(getColorCellLegend(0.6));
+		labelRectangle.setRect(80, 460, 60, 20);
+		g2D.fill(labelRectangle);
+		g2D.draw(labelRectangle);
+		
+		g2D.setColor(color);
+		g2D.drawString("" + (int) max * 0.6 , 80, 500);
+		
+		g2D.setColor(getColorCellLegend(0.99));
+		labelRectangle.setRect(140, 460, 60, 20);
+		g2D.fill(labelRectangle);
+		g2D.draw(labelRectangle);
+		
+		g2D.setColor(color);
+		g2D.drawString("" + (int) max * 0.6 , 140, 500);
 	}
 	
 	public int getPlotSizeWidth(){

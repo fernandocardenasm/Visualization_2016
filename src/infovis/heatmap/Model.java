@@ -61,6 +61,7 @@ public class Model {
 		readFile("EWR_2012.csv", 2012);
 		readFile("EWR_2013.csv", 2013);
 		// unfortunately, the 2014 data has inconsistencies
+		readFile("EWR_2014.csv", 2014);
 		readFile("EWR_2015.csv", 2015);
 		
 		

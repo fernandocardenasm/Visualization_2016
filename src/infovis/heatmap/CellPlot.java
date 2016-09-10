@@ -74,35 +74,7 @@ public class CellPlot {
 		return normalValue;
 	}
 	
-	// element position value on X axis in the screen
-	public void calculatePositionX(double value, int offset, int plotSize, int posLabel, double min, double max) {
-		double x;
-		if (value >= max){
-			x = 0.99;
-		}
-		else {
-			x = (value - min) / (max - min);
-		}
-		// posLabel = posLabel + 1; // to start in 1
-		
-		//this.posX = (int) (x * plotSize * posLabel + offset);
-		this.posX = (int) (x * plotSize + offset);
-		//y + i*plotSize
-	}
 	
-	// element position value on Y axis in the screen
-	public void calculatePositionY(double value, int offset, int plotSize, int posLabel, double min, double max) {
-		double y;
-		if (value >= max){
-			y = 0.99;
-		}
-		else {
-			y = (value - min) / (max - min);
-		}
-		//posLabel = posLabel + 1;
-		//this.posY = (int) (y * plotSize * posLabel + offset); 
-		this.posY = (int) (y * plotSize + offset); 
-	}
 	
 	public void changeStatusToOn(){
 		this.status = "ON";
