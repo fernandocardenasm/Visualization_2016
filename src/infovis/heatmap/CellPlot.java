@@ -65,25 +65,26 @@ public class CellPlot {
 	}
 
 	public void setColorInterpolation(double normalizedValue) {
-		/*int r = 0;
+		int r = 0;
 		int g = 0;
 		int b = 0;
-		if (normalizedValue >= 0 && normalizedValue < 0.17){
+		
+		if (normalizedValue >= 0 && normalizedValue < 0.02){
 			r = 63;
 			g = 75;
 			b = 86;
 		}
-		else if (normalizedValue >= 0.17 && normalizedValue < 0.34){
+		else if (normalizedValue >= 0.02 && normalizedValue < 0.15){
 			r = 85;
 			g = 77;
 			b = 102;
 		}
-		else if (normalizedValue >= 0.34 && normalizedValue < 0.51){
+		else if (normalizedValue >= 0.15 && normalizedValue < 0.40){
 			r = 127;
 			g = 97;
 			b = 135;
 		}
-		else if (normalizedValue >= 0.51 && normalizedValue < 0.68){
+		else if (normalizedValue >= 0.40 && normalizedValue < 0.68){
 			r = 168;
 			g = 119;
 			b = 168;
@@ -99,9 +100,9 @@ public class CellPlot {
 			b = 235;
 		}
 	    this.color = new Color(r,g,b);
-	    */
+	    
 		
-		this.color = new Color (0,0,255, (int) (normalizedValue * 255));
+		//this.color = new Color (0,0,255, (int) (normalizedValue * 255));
 	}
 
 	public double normalizeValue(double value, double min, double max){
