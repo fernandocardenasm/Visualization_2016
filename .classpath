@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/gcmolinaleon/Documents/GitHub/visualization_workspace/Visualization_2016/lib/batik-1.8/batik-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gcmolinaleon/Documents/GitHub/visualization_workspace/Visualization_2016/lib/batik-1.8/batik-rasterizer-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gcmolinaleon/Documents/GitHub/visualization_workspace/Visualization_2016/lib/batik-1.8/batik-slideshow-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gcmolinaleon/Documents/GitHub/visualization_workspace/Visualization_2016/lib/batik-1.8/batik-squiggle-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gcmolinaleon/Documents/GitHub/visualization_workspace/Visualization_2016/lib/batik-1.8/batik-svgpp-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gcmolinaleon/Documents/GitHub/visualization_workspace/Visualization_2016/lib/batik-1.8/batik-ttf2svg-1.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

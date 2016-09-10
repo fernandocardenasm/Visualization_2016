@@ -41,6 +41,7 @@ public class Heatmap {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				GUI application = new GUI();
+				application.showMap(true);
 				application.setView(new Heatmap().getView());
 				application.getJFrame().setVisible(true);
 			}

@@ -1,16 +1,22 @@
 package infovis.gui;
 
+import infovis.debug.Debug;
 import infovis.diagram.Diagram;
 import infovis.diagram.MenuController;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -25,6 +31,17 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.gvt.InteractorAdapter;
+import org.apache.batik.util.XMLResourceDescriptor;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.events.EventListener;
+import org.w3c.dom.events.EventTarget;
+import org.w3c.dom.svg.SVGDocument;
 
 
 public class GUI {
@@ -75,6 +92,15 @@ public class GUI {
 
 	private boolean showToolbar = false;
 
+	private boolean showMap = false;
+	
+	private JSVGCanvas canvas = new JSVGCanvas();
+	
+	private Document svgDocument;
+	
+	private String[] districtColors = {"#E8F2AD", "#c6fdb0", "#fcb3a4", "#EBCEF2", "#ecc7b4", "#ff8fa6",
+			                           "#ecb1cf", "#ffd697", "#fdf5a2", "#feecd4", "#d7f9d0", "#ffb8ea"};
+
 	/**
 	 * This method initializes jFrame
 	 * 
@@ -88,6 +114,47 @@ public class GUI {
 			jFrame.setJMenuBar(getJJMenuBar());
 			jFrame.setSize(1000, 750);
 			jFrame.setContentPane(getJContentPane());
+			// SVG Canvas
+			if (showMap) {
+				try {
+					String uri = new File("map.svg").toURI().toString();
+					String parser = XMLResourceDescriptor.getXMLParserClassName();
+					SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+					svgDocument = f.createDocument(uri);
+					canvas.setDocumentState(JSVGCanvas.ALWAYS_INTERACTIVE);
+					canvas.setSVGDocument((SVGDocument) svgDocument);
+					svgDocument = canvas.getSVGDocument();
+					registerListeners();
+				} catch (IOException e) {
+					Debug.println("IOException happened while creating SVG document.");
+					e.printStackTrace();
+				}
+				canvas.setRecenterOnResize(false);
+				/*
+				canvas.getInteractors().add(new InteractorAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent me) {
+						Debug.println("User clicked!");
+					}
+					// Based on code in http://mcc.id.au/2007/09/batik-course/
+					protected boolean isClick(InputEvent ie){
+						if (ie instanceof MouseEvent) {
+							MouseEvent me = (MouseEvent) ie;
+							return me.getID() == MouseEvent.MOUSE_CLICKED
+									&& me.getButton() == MouseEvent.BUTTON1;
+						}
+						return false;
+					}
+					@Override
+					public boolean startInteraction(InputEvent ie) {
+						return isClick(ie);
+					}
+				});*/
+				JPanel panel = new JPanel(new BorderLayout());
+				panel.setPreferredSize(new Dimension(jFrame.getWidth()/2, jFrame.getHeight()/2));
+				panel.add(canvas, BorderLayout.CENTER);
+				jContentPane.add(panel, BorderLayout.EAST);
+			}
 			jFrame.setTitle("InfoVisEditor");
 		}
 		return jFrame;
@@ -482,5 +549,99 @@ public class GUI {
 	}
 	public void showToolbar(boolean showToolbar){
 		this.showToolbar  = showToolbar;
+	}
+	
+	/**
+	 * SVG Berlin map methods
+	 */
+	public void showMap(boolean showMap){
+		this.showMap  = showMap;
+	}
+	
+	// Adds mouse listeners to map
+	public void registerListeners() {
+		// set background to white
+		Element rectangle = svgDocument.getElementById("Brandenburg");
+		rectangle.setAttribute("fill", "white");
+		
+		// Add a click event listener to each district polygon
+		NodeList districtsPolygons = svgDocument.getElementById("DISTRICTS").getElementsByTagName("polygon");
+		
+		for (int i = 0; i < districtsPolygons.getLength(); i++){
+			EventTarget district = (EventTarget) districtsPolygons.item(i);
+			district.addEventListener("mousedown", new OnClickListener(i), false);
+			
+			// Assign a color to the polygons of each district
+			Element polygon = (Element) districtsPolygons.item(i);
+			
+			switch(i){
+			case 0: case 14: case 50: case 58: case 60: case 78: case 80:
+				// Charlottenburg-Wilmersdorf
+				polygon.setAttribute("fill", districtColors[3]);
+				break;
+			case 1: case 7: case 8: case 26: case 35: case 52: case 53: case 59: case 95:
+				// Spandau
+				polygon.setAttribute("fill", districtColors[8]);
+				break;
+			case 2: case 11: case 33: case 37: case 39: case 62: case 65: case 68: case 72: case 83: case 90: case 94: case 102:
+				// Pankow
+				polygon.setAttribute("fill", districtColors[7]);
+				break;
+			case 3: case 4: case 9: case 13: case 27: case 30: case 32: case 40: case 46: case 61: case 67: case 69: case 81: case 91: case 92:
+				// Treptow-Koepenick
+				polygon.setAttribute("fill", districtColors[6]);
+				break;
+			case 5: case 19: case 20: case 23: case 24: case 42: case 70:
+				// Steglitz-Zehlendorf
+				polygon.setAttribute("fill", districtColors[4]);
+				break;
+			case 6: case 16: case 21: case 31: case 45: case 51:
+				// Mitte
+				polygon.setAttribute("fill", districtColors[11]);
+				break;
+			case 10: case 15: case 25: case 41: case 56: case 57: case 66: case 73: case 79: case 84:
+				// Reinickendorf
+				polygon.setAttribute("fill", districtColors[0]);
+				break;
+			case 12: case 17: case 29: case 47: case 54: case 87:
+				// Neukoelln
+				polygon.setAttribute("fill", districtColors[10]);
+				break;
+			case 18: case 63:
+				// Friedrichshain-Kreuzberg
+				polygon.setAttribute("fill", districtColors[5]);
+				break;
+			case 28: case 34: case 36: case 43: case 76: case 85: case 86: case 89: case 100: case 101:
+				// Lichtenberg
+				polygon.setAttribute("fill", districtColors[2]);
+				break;
+			case 44: case 55: case 71: case 77: case 88: case 93:
+				// Tempelhof-Schoeneberg
+				polygon.setAttribute("fill", districtColors[9]);
+				break;
+			case 74: case 96: case 97: case 98: case 99:
+				// Marzahn-Hellersdorf
+				polygon.setAttribute("fill", districtColors[1]);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	public class OnClickListener implements EventListener {
+
+		private int polygonID;
+		// should add the regionID here
+		
+		public OnClickListener(int polygonID) {
+			super();
+			this.polygonID = polygonID;
+		}
+
+		@Override
+		public void handleEvent(org.w3c.dom.events.Event arg0) {
+			Debug.println("District polygon clicked: " + polygonID);
+		}
 	}
 }
