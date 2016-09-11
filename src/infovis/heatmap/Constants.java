@@ -3,14 +3,16 @@ package infovis.heatmap;
 import java.util.HashMap;
 
 public class Constants {
+	
 	static final HashMap<String, String> mainNamesCol;
     static
     {
     	mainNamesCol = new HashMap<String, String>();
-    	mainNamesCol.put("MH_E", "Migration B.");
+    	mainNamesCol.put("MH_E", "Migrant Bg.");
     	mainNamesCol.put("E_A", "Foreigners");
     	mainNamesCol.put("E_E", "Everyone");
     	
+    	// Age groups
     	mainNamesCol.put("MH_U1", "Age < 1");
     	mainNamesCol.put("E_AU1", "Age < 1");
     	mainNamesCol.put("E_U1", "Age < 1");
@@ -50,6 +52,18 @@ public class Constants {
     	mainNamesCol.put("MH_80U110", "80-110");
     	mainNamesCol.put("E_A80U110", "80-110");
     	mainNamesCol.put("E_80U110", "80-110");
+    	
+    	// Migration background regions
+    	mainNamesCol.put("HK_EU15", "EU15");
+    	mainNamesCol.put("HK_EU27", "EU27");
+    	mainNamesCol.put("HK_EU28", "EU28");
+    	mainNamesCol.put("HK_Polen", "Poland");
+    	mainNamesCol.put("HK_EheJug", "Yugoslavia");
+    	mainNamesCol.put("HK_EheSU", "USSR");
+    	mainNamesCol.put("HK_Turk", "Turkey");
+    	mainNamesCol.put("HK_Arab", "Arab States");
+    	mainNamesCol.put("HK_Sonst", "Others");
+    	mainNamesCol.put("HK_NZOrd", "Unspecified");
     }
     
 	static String[] mainNamesRow = {"Mitte", "Friedrichshain", "Pankow", "Charlottenburg", "Spandau", "Steglitz","Tempelhof", "Neukoelln", "Treptow", "Marzahn", "Lichtenberg", "Reinickendorf"};
