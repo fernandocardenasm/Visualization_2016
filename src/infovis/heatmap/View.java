@@ -43,8 +43,6 @@ public class View extends JPanel {
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.scale(1, 1);
 		
-		//int minPeople = model.getYears().get(0).getRanges()
-		
 		int x = 10;
 		int y = 20 + plotSizeHeight + offSetY;
 		int cont = 0;
@@ -56,6 +54,11 @@ public class View extends JPanel {
 		y = 20 + offSetY;
 		
 		numRows = Constants.mainNamesRow.length;
+		if (yearSelection != model.getCurrentYear()) {
+			yearSelection = model.getCurrentYear();
+			this.initialized = false;
+		}
+		Debug.println("I have to get data of year: " + (yearSelection + 2007));
 		numColumns = model.getYears().get(yearSelection).getLabels().size();
 		
 		//Debug.p("Num Columns: " + numColumns);

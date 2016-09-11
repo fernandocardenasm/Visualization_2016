@@ -7,9 +7,13 @@ import infovis.heatmap.CellPlot;
 import infovis.heatmap.Model;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -93,6 +97,8 @@ public class GUI {
 	private JToggleButton fisheyeToggleButton = null;
 
 	private boolean showToolbar = false;
+	
+	// Heatmap
 
 	private boolean showMap = false;
 	
@@ -102,6 +108,9 @@ public class GUI {
 	
 	private String[] districtColors = {"#E8F2AD", "#c6fdb0", "#fcb3a4", "#EBCEF2", "#ecc7b4", "#ff8fa6",
 			                           "#ecb1cf", "#ffd697", "#fdf5a2", "#feecd4", "#d7f9d0", "#ffb8ea"};
+	private JSlider jYearSlider = null;
+	
+	private JPanel yearPanel = null;
 
 	/**
 	 * This method initializes jFrame
@@ -172,6 +181,14 @@ public class GUI {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
 			if (showToolbar) jContentPane.add(getJJToolBarBar(), BorderLayout.NORTH);
+			if (showMap) {
+				yearPanel = new JPanel(new GridLayout(2, 2));
+				yearPanel.add(getJYearSlider());
+				fillYearPanel(false);
+				fillYearPanel(true);
+				fillYearPanel(false);
+				jContentPane.add(yearPanel, BorderLayout.SOUTH);
+			}
 			jContentPane.add(getView(), BorderLayout.CENTER);
 		}
 		return jContentPane;
@@ -464,13 +481,51 @@ public class GUI {
 			jSlider.setPaintTicks(true); 
 			jSlider.addChangeListener(new javax.swing.event.ChangeListener() {
 				public void stateChanged(javax.swing.event.ChangeEvent e) {
-					//Debug.print("stateChanged() with Value:" + jSlider.getValue()); 
+					//Debug.println("stateChanged() with Value:" + jSlider.getValue()); 
 					MenuController.getInstance().setScale(Math.pow(10,jSlider.getValue()/ 10.0));
-					
 				}
 			});
 		}
 		return jSlider;
+	}
+
+	/**
+	 * This method initializes jYearSlider	
+	 * 	
+	 * @return javax.swing.JSlider	
+	 */
+	private JSlider getJYearSlider() {
+		if (jYearSlider == null) {
+			jYearSlider = new JSlider(2007, 2015);
+			jYearSlider.setPreferredSize(new Dimension(300, 50));
+			jYearSlider.setMajorTickSpacing(1);
+			jYearSlider.setMinorTickSpacing(1);
+			jYearSlider.setValue(2007);
+			jYearSlider.setPaintTicks(true);
+			jYearSlider.setPaintLabels(true);
+			jYearSlider.setBackground(Color.WHITE);
+			jYearSlider.setFont(new Font("Arial", Font.PLAIN, 12));
+			jYearSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+				public void stateChanged(javax.swing.event.ChangeEvent e) {
+					Debug.println("stateChanged() with value: " + jYearSlider.getValue());
+					Debug.println("passed value: " + (jYearSlider.getValue() - 2007));
+					Model.getModelInstance().setCurrentYear((jYearSlider.getValue() - 2007));
+					view.repaint();
+				}
+			});
+		}
+		return jYearSlider;
+	}
+	
+	private void fillYearPanel(boolean title){
+		JPanel gridPanel = new JPanel();
+		gridPanel.setBackground(Color.WHITE);
+		if (title) {
+			JLabel jLabel = new JLabel("Years");
+			jLabel.setFont(new Font("Arial", Font.BOLD, 12));
+			gridPanel.add(jLabel, BorderLayout.SOUTH);
+		}
+		yearPanel.add(gridPanel);
 	}
 
 	/**

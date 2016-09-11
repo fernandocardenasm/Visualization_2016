@@ -19,6 +19,7 @@ public class Model {
 	private ArrayList<YearData> years = new ArrayList<YearData>();
 	private ArrayList<CellPlot> cells  = new ArrayList<CellPlot>();
 	private ArrayList<TextPlot> labels  = new ArrayList<TextPlot>();
+	private int currentYear = 0;
 	
 	public static Model getModelInstance(){
 		if(model == null){
@@ -49,6 +50,14 @@ public class Model {
 
 	public void setYears(ArrayList<YearData> years) {
 		this.years = years;
+	}
+
+	public int getCurrentYear() {
+		return currentYear;
+	}
+
+	public void setCurrentYear(int currentYear) {
+		this.currentYear = currentYear;
 	}
 
 	public Model(){
