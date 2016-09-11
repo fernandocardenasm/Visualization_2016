@@ -24,7 +24,26 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);
+		
+		boolean found = false;
+		
+		for(CellPlot cell: model.getCells()){
+			rectangleTemp.setRect(cell.getPosX(), cell.getPosY(), view.getPlotSizeWidth(), view.getPlotSizeHeight());
+			
+			if(rectangleTemp.contains(new Point2D.Double(arg0.getX(), arg0.getY())) && (cell.getStatus() == "ON" || cell.isMain)){
+				view.displayRectangle.setRect(cell.getPosX() + 10, cell.posY - view.getPlotSizeHeight() + 14, 80, 20);
+				view.displayText = "v: " + cell.value;
+				found = true;
+			}
+		}
+		
+		if (!found){
+			view.displayRectangle = new Rectangle2D.Double(0,0,0,0);
+			view.displayText = "";
+		}
+		
+		view.repaint();
 	}
 
 	@Override
@@ -191,13 +210,13 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

@@ -17,6 +17,8 @@ public class View extends JPanel {
 
 	private Model model = null;
     private Rectangle2D labelRectangle = new Rectangle2D.Double(0,0,0,0);
+    Rectangle2D displayRectangle = new Rectangle2D.Double(0,0,0,0);
+    String displayText = "";
     private Color color = Color.BLACK;
     
     private int plotSizeWidth = 60; // edge size for each scatter plot cell
@@ -55,7 +57,7 @@ public class View extends JPanel {
 		numRows = Constants.mainNamesRow.length;
 		numColumns = model.getYears().get(yearSelection).getLabels().size();
 		
-		Debug.p("Num Columns: " + numColumns);
+		//Debug.p("Num Columns: " + numColumns);
 		
 		// Writing district names
 		for (int i = 0; i < numRows; i++){
@@ -102,6 +104,14 @@ public class View extends JPanel {
 			}
 		}
 		
+		//displayRectangle
+		g2D.setStroke(new BasicStroke(1.0f));
+		g2D.setColor(Color.GREEN);
+		g2D.fill(displayRectangle);
+		g2D.draw(displayRectangle);
+		
+		g2D.setColor(color);
+		g2D.drawString(displayText, (int) (displayRectangle.getX() + 10), (int) (displayRectangle.getY() + 15));
 	}
 	
 	// Creating the heatmap grid and saving to the model, according to year data
@@ -112,8 +122,8 @@ public class View extends JPanel {
 		min = getMinRange(year);
 		max = getMaxRange(year);
 		
-		Debug.p("Max Value: " + max);
-		Debug.p("Min Value: " + min);
+		//Debug.p("Max Value: " + max);
+		//Debug.p("Min Value: " + min);
 		
 		for (int j = 0; j < numColumns; j++){
 			
@@ -127,7 +137,7 @@ public class View extends JPanel {
 			else {
 				// 3 main labels, always present
 				if (label.equalsIgnoreCase("MH_E") || label.equalsIgnoreCase("E_A") || label.equalsIgnoreCase("E_E")){
-					Debug.p("label: " + label);
+					//Debug.p("label: " + label);
 					isMain = true;
 				}
 				else {
@@ -154,10 +164,10 @@ public class View extends JPanel {
 					CellPlot cell = new CellPlot(i, caseIdColumn, x, y + i * plotSizeHeight, isMain, intJ);
 					
 					// assign cell color according to numerical value
-					double value = model.getYears().get(year).getList().get(i).getValue(intJ);
-					
+					double value = model.getYears().get(year).getList().get(i).getValue(j);
+					cell.value = value;
 					double normalizedValue = cell.normalizeValue(value, min, max);
-					Debug.p("Normalized Value: " + normalizedValue);
+					//Debug.p("Normalized Value: " + normalizedValue);
 					cell.setColorInterpolation(normalizedValue);
 					
 					model.addCell(cell);

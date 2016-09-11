@@ -14,6 +14,7 @@ public class CellPlot {
 	private String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
 	private Color color;
 	int initPosX;
+	double value;
 	private boolean selected; // if cell should be drawn selected or not
 	
 	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain, int posJ) {
@@ -71,7 +72,7 @@ public class CellPlot {
 		int r = 168;
 		int g = 119;
 		int b = 168;
-		Debug.println("normalizedValue = " + normalizedValue);
+		//Debug.println("normalizedValue = " + normalizedValue);
 		/*
 		if (normalizedValue >= 0 && normalizedValue < 0.01){
 			r = 63;
