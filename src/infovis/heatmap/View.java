@@ -153,10 +153,8 @@ public class View extends JPanel {
 			
 			if (isGender(label) || (isAgeGroup(label) && !ageGroupsIncluded) || (isMBRegion(label) && ageGroupsIncluded)){
 				// ignore these cases: gender and age group *if* indicated by constant
-				Debug.println(label + " is being ignored.");
 			}
 			else {
-				// Debug.println(label + " accepted");
 				// 3 main labels, always present
 				if (label.equalsIgnoreCase("MH_E") || label.equalsIgnoreCase("E_A") || label.equalsIgnoreCase("E_E")){
 					isMain = true;
@@ -327,7 +325,6 @@ public class View extends JPanel {
 	}
 	
 	public boolean isAgeGroupsIncluded() {
-		Debug.println("view.isAgeGroupsIncluded() = " + this.model.isAgeGroupsIncluded());
 		return this.model.isAgeGroupsIncluded();
 	}
 
