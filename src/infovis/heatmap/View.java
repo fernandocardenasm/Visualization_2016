@@ -26,7 +26,7 @@ public class View extends JPanel {
     private int plotSizeHeight = 30; // edge size for each scatter plot cell
     
     //Please, upgrade these two values if needed
-	 private int offSetX = 50; // offset at the beginning of X axis
+	 private int offSetX = 100; // offset at the beginning of X axis
 	 private int offSetY = 30; // offset at the beginning of Y axis
 	 
  	 private boolean initialized = false;
@@ -48,10 +48,13 @@ public class View extends JPanel {
 		int cont = 0;
 		
 		g2D.clearRect(0, 0, getWidth(), getHeight());
-		g2D.setFont(new Font("Arial", Font.PLAIN, 11));
+		g2D.setFont(new Font("Arial", Font.PLAIN, 12));
 		
 		x = 10;
 		y = 20 + offSetY;
+		
+		g2D.drawString("Berlin Interactive Heatmap", 250, 30);
+		g2D.setFont(new Font("Arial", Font.PLAIN, 11));
 		
 		numRows = Constants.mainNamesRow.length;
 		if (yearSelection != model.getCurrentYear()) {
@@ -79,14 +82,16 @@ public class View extends JPanel {
 		for(CellPlot cell: model.getCells()){
 			if (cell.getStatus().equals("ON") || cell.isMain == true){
 				g2D.setColor(cell.getColor());
+				// cell.getId from 0 to 11 according to district
+				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
+				g2D.fill(labelRectangle);
+				// select rows have an orange border
 				if (cell.isSelected()) {
-					g2D.setStroke(new BasicStroke(4.0f));
+					g2D.setColor(Color.ORANGE);
+					g2D.setStroke(new BasicStroke(2.0f));
 				} else {
 					g2D.setStroke(new BasicStroke(1.0f));
 				}
-				// cell.getId from 0 to 11
-				labelRectangle.setRect(cell.getPosX(), cell.getPosY(), plotSizeWidth, plotSizeHeight);
-				g2D.fill(labelRectangle);
 				g2D.draw(labelRectangle);
 			} else {
 			// otherwise black
@@ -227,12 +232,10 @@ public class View extends JPanel {
 	}
 
 	public void drawLegend(Graphics2D g2D){
-		int lX = 20;
+		int lX = offSetX;
 		int lY = 460;
 		int lWidth = 4;
 		int lHeight = 20;
-		
-		// With a gradient range, how to do a proper color legend? 
 		
 		for (double i = 0.00; i < 1; i+= 0.01){
 			g2D.setColor(getColorCellLegend(i));
@@ -243,10 +246,12 @@ public class View extends JPanel {
 		}
 		
 		g2D.setColor(color);
-		g2D.drawString("0", 20, 495);
+		g2D.drawString("0", offSetX, 495);
 		
-		g2D.setColor(color);
-		g2D.drawString("" + (max - lWidth), lX, 495);
+		//g2D.setColor(color);
+		g2D.drawString("" + (int) (max - lWidth), lX - 4*lWidth, 495);
+		
+		g2D.drawString("Inhabitants", offSetX + (lX - offSetX)/2 - 20, 500);
 		
 		/*g2D.setColor(getColorCellLegend(0.0));
 		labelRectangle.setRect(20, 460, width, height);
