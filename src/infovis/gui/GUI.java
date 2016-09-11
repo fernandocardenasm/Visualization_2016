@@ -510,6 +510,7 @@ public class GUI {
 					Debug.println("stateChanged() with value: " + jYearSlider.getValue());
 					Debug.println("passed value: " + (jYearSlider.getValue() - 2007));
 					Model.getModelInstance().setCurrentYear((jYearSlider.getValue() - 2007));
+					
 					view.repaint();
 				}
 			});

@@ -29,7 +29,7 @@ public class View extends JPanel {
 	 private int offSetX = 100; // offset at the beginning of X axis
 	 private int offSetY = 30; // offset at the beginning of Y axis
 	 
- 	 private boolean initialized = false;
+ 	boolean initialized = false;
  	 
  	int numRows;
 	int numColumns;
@@ -124,6 +124,9 @@ public class View extends JPanel {
 	public void initCellsAndLabels(int x, int y, int year){
 		
 		int intJ = 0;
+		
+		model.getCells().clear();
+		model.getColumnLabels().clear();
 		
 		min = getMinRange(year);
 		max = getMaxRange(year);
