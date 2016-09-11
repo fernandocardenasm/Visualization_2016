@@ -49,34 +49,35 @@ public class MouseController implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Debug.p(initPosX + "");
-		
+		//Debug.p(initPosX + "");
 		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);
 		
-		
+		// check which cell has been clicked
 		for(CellPlot cell: model.getCells()){
 			
 			int cont0 = 0;
 			int cont1 = 0;
-			
+			// rectangle of the size of a cell
 			rectangleTemp.setRect(cell.getPosX(), cell.getPosY(), view.getPlotSizeWidth(), view.getPlotSizeHeight());
+			// this cell has been clicked
 			if(rectangleTemp.contains(new Point2D.Double(e.getX(), e.getY()))){
-				//e.changeStatusToOn();
 				
 				int caseAction = 0;
 				int idCell = cell.idReference;
 				int x = cell.getPosX();
 				
-
-				
+				// one of main cells to be expanded
 				if (cell.isMain && cell.getStatus().equals("OFF")){
+					//Debug.println("One of main cells and OFF");
 					caseAction = 1;
 					idCell = cell.idReference;
 					x = cell.getPosX();
 					//Debug.p("idColumns: " + cell.idReference + " isMain: " + cell.isMain + " I: " + cell.regionId + "J: " + cell.posJ);
 
 				}
+				// cell to be compressed or to disappear
 				else if(cell.getStatus().equals("ON")){
+					//Debug.println("cell ON");
 					caseAction = 2;
 					idCell = cell.idReference;
 					x = cell.getPosX();
@@ -84,15 +85,15 @@ public class MouseController implements MouseListener, MouseMotionListener {
 				
 				int lastPosX = x;
 				
-				for (CellPlot inCell:model.getCells()){
+				for (CellPlot inCell: model.getCells()){
 					
 					//Debug.p("idColumns: " + inCell.idReference + " isMain: " + inCell.isMain + " I: " + inCell.regionId + "J: " + inCell.posJ + " case: " + caseAction);
 					
-					
+					// a main cell is being expanded, it is this one and this cell belongs to the category
 					if (caseAction == 1 && inCell.idReference == idCell && inCell.isMain){
 						inCell.changeStatusToOn();
 					}
-					
+					// a main cell is being expanded and this cell belongs to the category
 					if ((caseAction == 1 && inCell.idReference == idCell && inCell.isMain == false)){
 						
 						if (inCell.regionId == 0){
@@ -105,15 +106,12 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						//Debug.p("J: " + inCell.posJ + " Id: " + inCell.idReference + " IsMain: " + inCell.isMain);
 						inCell.changeStatusToOn();
 						
-						Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
+						//Debug.p("idColumn: " + inCell.idReference + " posX: " + inCell.posX + " posJ: " + inCell.posJ + " initPos: " +x);
 						
 						model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
 						model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
-						
-
 					}
-					
-					
+					// a main cell is being expanded and this one is to its right, and needs to be shown or it is a main one
 					if (caseAction == 1 && ((inCell.idReference > idCell && inCell.getStatus().equals("ON")) || (inCell.isMain && inCell.idReference > idCell))){
 						//inCell.posX = x + (inCell.posJ) * view.getPlotSizeWidth();
 						//Debug.p("J: " + inCell.posJ);
@@ -128,19 +126,15 @@ public class MouseController implements MouseListener, MouseMotionListener {
 						//model.getColumnLabels().get(inCell.posJ).changeStatusToOn();
 						
 						model.getColumnLabels().get(inCell.posJ).posX = lastPosX;
-						
-						
 					}
 					
+					// this cell will disappear
 					if(caseAction == 2 && inCell.idReference == idCell){
-						
 						//if (inCell.regionId == 0){
 							//lastPosX += view.getPlotSizeWidth();
 						//}
-						
 						inCell.changeStatusToOff();						
 						model.getColumnLabels().get(inCell.posJ).changeStatusToOff();
-						
 					}
 					
 					

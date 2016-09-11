@@ -20,6 +20,7 @@ public class Model {
 	private ArrayList<CellPlot> cells  = new ArrayList<CellPlot>();
 	private ArrayList<TextPlot> labels  = new ArrayList<TextPlot>();
 	private int currentYear = 0;
+	private boolean ageGroupsIncluded = true;
 	
 	public static Model getModelInstance(){
 		if(model == null){
@@ -95,7 +96,10 @@ public class Model {
 			String l [] = thisLine.split(";");
 			
 			// file header: variable names
-			for (int i = 0; i < l.length; i++) labels.add(l[i]);
+			for (int i = 0; i < l.length; i++) {
+				String label = l[i].replace("\"", ""); // remove quotations marks if present
+				labels.add(label);
+			}
 			// probably should take out the " characters when they appear or pre-modify the data files with R
 			year.setLabels(labels);
 			
@@ -135,6 +139,15 @@ public class Model {
 			Debug.println("IO Exception happened while reading file: " + name);
 			e.printStackTrace();
 		}
+	}
+
+	public boolean isAgeGroupsIncluded() {
+		return ageGroupsIncluded;
+	}
+
+	public void setAgeGroupsIncluded(boolean ageGroupsIncluded) {
+		this.ageGroupsIncluded = ageGroupsIncluded;
+		Debug.println("ageGroupsIncluded = " + ageGroupsIncluded);
 	}
 
 }

@@ -5,9 +5,9 @@ import java.awt.Color;
 import infovis.debug.Debug;
 
 public class CellPlot {
-	int regionId; //It is not unique, it is used to know which RectanglePlot belongs to a car object
-	int idReference; // Only 3.
-	int posJ;
+	int regionId; // It is not unique, district/Bezirk ID
+	int idReference; // Only 3 for each main column.
+	int posJ; // id of column according to its position on file
 	boolean isMain; //Only our 3 main references are the main ones. "True" for them.
 	int posX; //It is X real position on Screen
 	int posY;
@@ -20,7 +20,7 @@ public class CellPlot {
 	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain, int posJ) {
 		super();
 		this.regionId = regionId; // Id for the Row. //A row sub i has only 1 id.
-		this.idReference = idReference; //
+		this.idReference = idReference; 
 		this.posX = posX;
 		this.posY = posY;
 		this.color = Color.black;

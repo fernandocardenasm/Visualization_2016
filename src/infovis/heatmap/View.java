@@ -26,10 +26,11 @@ public class View extends JPanel {
     private int plotSizeHeight = 30; // edge size for each scatter plot cell
     
     //Please, upgrade these two values if needed
-	 private int offSetX = 100; // offset at the beginning of X axis
-	 private int offSetY = 30; // offset at the beginning of Y axis
+	private int offSetX = 100; // offset at the beginning of X axis
+	private int offSetY = 30; // offset at the beginning of Y axis
 	 
  	boolean initialized = false;
+ 	private boolean ageGroupsIncluded = true;
  	 
  	int numRows;
 	int numColumns;
@@ -61,7 +62,15 @@ public class View extends JPanel {
 			yearSelection = model.getCurrentYear();
 			this.initialized = false;
 		}
-		Debug.println("I have to get data of year: " + (yearSelection + 2007));
+		
+		// if radioboxes have been changed
+		if (this.ageGroupsIncluded != isAgeGroupsIncluded()) {
+			this.ageGroupsIncluded = isAgeGroupsIncluded();
+			this.initialized = false;
+		}
+		
+		
+		//Debug.println("I have to get data of year: " + (yearSelection + 2007));
 		numColumns = model.getYears().get(yearSelection).getLabels().size();
 		
 		// Writing district names
@@ -131,6 +140,8 @@ public class View extends JPanel {
 		min = getMinRange(year);
 		max = getMaxRange(year);
 		
+		this.ageGroupsIncluded = isAgeGroupsIncluded();
+		
 		//Debug.p("Max Value: " + max);
 		//Debug.p("Min Value: " + min);
 		
@@ -140,14 +151,14 @@ public class View extends JPanel {
 			String columnLabel = label;
 			boolean isMain = false;
 			
-			if (label.equalsIgnoreCase("MH_EM") || label.equalsIgnoreCase("MH_EW") || label.equalsIgnoreCase("E_AM") ||
-					label.equalsIgnoreCase("E_AW") || label.equalsIgnoreCase("E_EM") || label.equalsIgnoreCase("E_EW")){
-				// Ignore these cases: maennlich and weiblich
+			if (isGender(label) || (isAgeGroup(label) && !ageGroupsIncluded) || (isMBRegion(label) && ageGroupsIncluded)){
+				// ignore these cases: gender and age group *if* indicated by constant
+				Debug.println(label + " is being ignored.");
 			}
 			else {
+				// Debug.println(label + " accepted");
 				// 3 main labels, always present
 				if (label.equalsIgnoreCase("MH_E") || label.equalsIgnoreCase("E_A") || label.equalsIgnoreCase("E_E")){
-					//Debug.p("label: " + label);
 					isMain = true;
 				}
 				else {
@@ -158,7 +169,8 @@ public class View extends JPanel {
 				
 				int caseIdColumn = 0;
 				// columns: 1 = MH_E, 2 = E_A, 3 = E_E
-				if (label.contains("MH_")){
+				if (label.contains("MH_") || (label.contains("HK_") && !ageGroupsIncluded)){
+					Debug.println("Case 0: " + label);
 					caseIdColumn = 0;
 				}
 				else if (label.contains("E_A")){
@@ -312,6 +324,30 @@ public class View extends JPanel {
 
 	public void setModel(Model model) {
 		this.model = model;
+	}
+	
+	public boolean isAgeGroupsIncluded() {
+		Debug.println("view.isAgeGroupsIncluded() = " + this.model.isAgeGroupsIncluded());
+		return this.model.isAgeGroupsIncluded();
+	}
+
+	// true if the variable belongs to a gender category
+	private boolean isGender(String label) {
+		return (label.equalsIgnoreCase("MH_EM") || label.equalsIgnoreCase("MH_EW") || label.equalsIgnoreCase("E_AM") ||
+				label.equalsIgnoreCase("E_AW") || label.equalsIgnoreCase("E_EM") || label.equalsIgnoreCase("E_EW"));
+	}
+	
+	// true if the variable belongs to an age group category
+	private boolean isAgeGroup(String label) {
+		return (label.contains("MH_U") || label.contains("E_AU") || label.contains("1U6") ||
+				label.contains("6U15") || label.contains("15U18") || label.contains("18U25") ||
+				label.contains("25U55") || label.contains("55U65") || label.contains("65U80") ||
+				label.contains("80U110") || label.equalsIgnoreCase("E_U1"));
+	}
+	
+	// true if the variable belongs to a migration background region category
+	private boolean isMBRegion(String label) {
+		return (label.contains("HK_"));
 	}
 
 }

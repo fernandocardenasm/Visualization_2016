@@ -19,11 +19,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -32,6 +34,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -50,7 +53,7 @@ import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.svg.SVGDocument;
 
 
-public class GUI {
+public class GUI implements ItemListener {
 
 	private JFrame jFrame = null;
 
@@ -111,6 +114,12 @@ public class GUI {
 	private JSlider jYearSlider = null;
 	
 	private JPanel yearPanel = null;
+	
+	private ButtonGroup buttonGroup = null;
+	
+	private JRadioButton ageGroupButton = null;
+	
+	private JRadioButton migrationBackgroundButton = null;
 
 	/**
 	 * This method initializes jFrame
@@ -184,9 +193,9 @@ public class GUI {
 			if (showMap) {
 				yearPanel = new JPanel(new GridLayout(2, 2));
 				yearPanel.add(getJYearSlider());
-				fillYearPanel(false);
-				fillYearPanel(true);
-				fillYearPanel(false);
+				fillYearPanel(false, false);
+				fillYearPanel(true, false);
+				fillYearPanel(false, true);
 				jContentPane.add(yearPanel, BorderLayout.SOUTH);
 			}
 			jContentPane.add(getView(), BorderLayout.CENTER);
@@ -518,7 +527,7 @@ public class GUI {
 		return jYearSlider;
 	}
 	
-	private void fillYearPanel(boolean title){
+	private void fillYearPanel(boolean title, boolean radioButtons){
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(Color.WHITE);
 		if (title) {
@@ -526,7 +535,40 @@ public class GUI {
 			jLabel.setFont(new Font("Arial", Font.BOLD, 12));
 			gridPanel.add(jLabel, BorderLayout.SOUTH);
 		}
+		if (radioButtons) {
+			JLabel jLabel = new JLabel("Sub-divisions according to:");
+			jLabel.setFont(new Font("Arial", Font.BOLD, 12));
+			ageGroupButton = new JRadioButton("Age groups", true);
+			ageGroupButton.setBackground(Color.WHITE);
+			ageGroupButton.setFont(new Font("Arial", Font.PLAIN, 12));
+			ageGroupButton.addItemListener(this);
+			migrationBackgroundButton = new JRadioButton("Region of origin (only for Migrant Bg.)");
+			migrationBackgroundButton.setBackground(Color.WHITE);
+			migrationBackgroundButton.setFont(new Font("Arial", Font.PLAIN, 12));
+			migrationBackgroundButton.addItemListener(this);
+			buttonGroup = new ButtonGroup();
+			buttonGroup.add(ageGroupButton);
+			buttonGroup.add(migrationBackgroundButton);
+			gridPanel.add(jLabel);
+			gridPanel.add(ageGroupButton);
+			gridPanel.add(migrationBackgroundButton);
+		}
 		yearPanel.add(gridPanel);
+	}
+	
+	// method that changes the heatmap data according to radio button selection
+	public void itemStateChanged(ItemEvent e) {
+	    Object source = e.getItemSelectable();
+	    
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+		    if (source == ageGroupButton) {
+		        Model.getModelInstance().setAgeGroupsIncluded(true);
+		    } else if (source == migrationBackgroundButton) {
+		        Model.getModelInstance().setAgeGroupsIncluded(false);
+		    }
+		    view.repaint();
+	    }
+	    
 	}
 
 	/**
