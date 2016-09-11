@@ -112,7 +112,7 @@ public class View extends JPanel {
 		g2D.draw(displayRectangle);
 		
 		g2D.setColor(color);
-		g2D.drawString(displayText, (int) (displayRectangle.getX() + 10), (int) (displayRectangle.getY() + 15));
+		g2D.drawString(displayText, (int) (displayRectangle.getX() + 5), (int) (displayRectangle.getY() + 15));
 	}
 	
 	// Creating the heatmap grid and saving to the model, according to year data
@@ -166,7 +166,7 @@ public class View extends JPanel {
 					
 					// assign cell color according to numerical value
 					double value = model.getYears().get(year).getList().get(i).getValue(j);
-					cell.value = value;
+					cell.setValue(value);
 					double normalizedValue = cell.normalizeValue(value, min, max);
 					//Debug.p("Normalized Value: " + normalizedValue);
 					cell.setColorInterpolation(normalizedValue);

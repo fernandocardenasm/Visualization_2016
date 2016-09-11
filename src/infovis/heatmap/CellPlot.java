@@ -14,7 +14,7 @@ public class CellPlot {
 	private String status; //ON OR OFF, ON: It is selected, OFF: It is not selected
 	private Color color;
 	int initPosX;
-	double value;
+	private double value;
 	private boolean selected; // if cell should be drawn selected or not
 	
 	public CellPlot(int regionId, int idReference, int posX, int posY, boolean isMain, int posJ) {
@@ -121,6 +121,14 @@ public class CellPlot {
 	}
 	public String getStatus(){
 		return this.status;
+	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
 	}
 
 	public boolean isSelected() {

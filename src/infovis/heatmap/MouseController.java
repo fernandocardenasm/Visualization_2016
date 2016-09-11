@@ -21,9 +21,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 
 	}
 
+	// Show cell value when user hovers over the cell
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		Rectangle2D rectangleTemp = new Rectangle2D.Double(0,0,0,0);
 		
 		boolean found = false;
@@ -32,8 +32,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 			rectangleTemp.setRect(cell.getPosX(), cell.getPosY(), view.getPlotSizeWidth(), view.getPlotSizeHeight());
 			
 			if(rectangleTemp.contains(new Point2D.Double(arg0.getX(), arg0.getY())) && (cell.getStatus() == "ON" || cell.isMain)){
-				view.displayRectangle.setRect(cell.getPosX() + 10, cell.posY - view.getPlotSizeHeight() + 14, 80, 20);
-				view.displayText = "v: " + cell.value;
+				view.displayRectangle.setRect(cell.getPosX() + 10, cell.posY - view.getPlotSizeHeight() + 14, 45, 20);
+				int val = (int) cell.getValue();
+				view.displayText = Integer.toString(val);
 				found = true;
 			}
 		}
