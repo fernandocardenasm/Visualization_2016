@@ -61,13 +61,9 @@ public class View extends JPanel {
 		Debug.println("I have to get data of year: " + (yearSelection + 2007));
 		numColumns = model.getYears().get(yearSelection).getLabels().size();
 		
-		//Debug.p("Num Columns: " + numColumns);
-		
 		// Writing district names
 		for (int i = 0; i < numRows; i++){
 			String text = Constants.mainNamesRow[i];
-			//Debug.println(text); // maybe put in bold letters the selected one?
-			//TextPlot textLabel = new TextPlot(text, x, y + 20 + i * plotSizeHeight);
 			g2D.drawString(text, x, y + 20 + i * plotSizeHeight);
 		}
 		
@@ -98,15 +94,16 @@ public class View extends JPanel {
 		}
 		
 		g2D.setColor(color);
+		//g2D.rotate(-Math.toRadians(45));
 		
 		// writing variable names under the grid
 		for(TextPlot label: model.getColumnLabels()){
 			if (label.getStatus().equals("ON") || label.isMain == true){
 				g2D.drawString(label.getTextLabel(), label.getPosX(), label.getPosY());
-			} else {
-				// otherwise black
+				//Debug.println("x = " + label.getPosX() + " , y = " + label.getPosY());
 			}
 		}
+		//g2D.rotate(Math.toRadians(45));
 		
 		//displayRectangle
 		g2D.setStroke(new BasicStroke(1.0f));
@@ -132,6 +129,7 @@ public class View extends JPanel {
 		for (int j = 0; j < numColumns; j++){
 			
 			String label = model.getYears().get(year).getLabels().get(j).toString();
+			String columnLabel = label;
 			boolean isMain = false;
 			
 			if (label.equalsIgnoreCase("MH_EM") || label.equalsIgnoreCase("MH_EW") || label.equalsIgnoreCase("E_AM") ||
@@ -147,9 +145,10 @@ public class View extends JPanel {
 				else {
 					isMain = false;
 				}
+				// get proper variable description
+				columnLabel = Constants.mainNamesCol.get(label);
 				
 				int caseIdColumn = 0;
-				
 				// columns: 1 = MH_E, 2 = E_A, 3 = E_E
 				if (label.contains("MH_")){
 					caseIdColumn = 0;
@@ -179,7 +178,7 @@ public class View extends JPanel {
 				
 				// all variable names
 				// TODO: we should substitute the variable names for normal words when showing
-				TextPlot textLabel = new TextPlot(label, x, y + 20 + numRows * plotSizeHeight, isMain, caseIdColumn, intJ);
+				TextPlot textLabel = new TextPlot(columnLabel, x, y + 20 + numRows * plotSizeHeight, isMain, caseIdColumn, intJ);
 				model.addTextLabel(textLabel);
 				
 				if (isMain){
