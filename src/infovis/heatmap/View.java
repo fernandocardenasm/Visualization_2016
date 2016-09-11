@@ -2,6 +2,7 @@ package infovis.heatmap;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
@@ -217,16 +218,35 @@ public class View extends JPanel {
 	}
 	
 	public Color getColorCellLegend(double normalizedValue) {
-	    return new Color(0, 0, 255, (int)(normalizedValue * 255));
+		int r = 168;
+		int g = 119;
+		int b = 168;
+	    return new Color(r, g, b, (int)(normalizedValue * 255));
 	}
 
 	public void drawLegend(Graphics2D g2D){
-		int width = 100;
-		int height = 20;
+		int lX = 20;
+		int lY = 460;
+		int lWidth = 4;
+		int lHeight = 20;
 		
 		// With a gradient range, how to do a proper color legend? 
 		
-		g2D.setColor(getColorCellLegend(0.0));
+		for (double i = 0.00; i < 1; i+= 0.01){
+			g2D.setColor(getColorCellLegend(i));
+			labelRectangle.setRect(lX, lY, lWidth, lHeight);
+			g2D.fill(labelRectangle);
+			g2D.draw(labelRectangle);
+			lX += lWidth;
+		}
+		
+		g2D.setColor(color);
+		g2D.drawString("0", 20, 495);
+		
+		g2D.setColor(color);
+		g2D.drawString("" + (max - lWidth), lX, 495);
+		
+		/*g2D.setColor(getColorCellLegend(0.0));
 		labelRectangle.setRect(20, 460, width, height);
 		g2D.fill(labelRectangle);
 		g2D.draw(labelRectangle);
@@ -260,6 +280,7 @@ public class View extends JPanel {
 		g2D.draw(labelRectangle);
 		g2D.setColor(color);
 		g2D.drawString(">=" + (int) max * 0.6 , 420, 500);
+		*/
 	}
 	
 	public int getPlotSizeWidth(){
